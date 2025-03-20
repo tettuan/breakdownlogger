@@ -23,4 +23,4 @@ export interface LogEntry {
  */
 export interface LoggerConfig {
   initialLevel?: LogLevel;
-} 
+}

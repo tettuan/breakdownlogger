@@ -1,4 +1,5 @@
-import { LogEntry, LogLevel, LoggerConfig } from "./types.ts";
+import { LogLevel } from "./types.ts";
+import type { LogEntry, LoggerConfig } from "./types.ts";
 
 /**
  * BreakdownLogger class for debugging and logging in test environments
@@ -44,11 +45,11 @@ export class BreakdownLogger {
   private formatLogEntry(entry: LogEntry): string {
     const timestamp = new Date(entry.timestamp).toISOString();
     let output = `[${timestamp}] [${entry.level}] ${entry.message}`;
-    
+
     if (entry.data !== undefined) {
       output += "\nデータ: " + JSON.stringify(entry.data, null, 2);
     }
-    
+
     return output;
   }
 
@@ -97,4 +98,4 @@ export class BreakdownLogger {
   public error(message: string, data?: unknown): void {
     this.log(LogLevel.ERROR, message, data);
   }
-} 
+}
