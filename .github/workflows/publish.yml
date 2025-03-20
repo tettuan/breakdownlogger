@@ -1,0 +1,21 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      
+      - name: Publish to JSR
+        env:
+          JSR_TOKEN: ${{ secrets.JSR_TOKEN }}
+        run: deno publish 

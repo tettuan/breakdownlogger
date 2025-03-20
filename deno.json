@@ -1,0 +1,20 @@
+{
+  "name": "@tettuan/breakdownlogger",
+  "version": "0.1.0",
+  "exports": "./mod.ts",
+  "tasks": {
+    "test": "deno test --allow-env",
+    "test:watch": "deno test --allow-env --watch",
+    "test:debug": "LOG_LEVEL=debug deno test --allow-env"
+  },
+  "fmt": {
+    "include": ["src/", "test/"],
+    "exclude": ["README.md", "docs/"]
+  },
+  "lint": {
+    "include": ["src/", "test/"]
+  },
+  "test": {
+    "include": ["test/"]
+  }
+} 
