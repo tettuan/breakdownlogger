@@ -19,27 +19,28 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Get latest version from JSR
+# Try to get latest version from JSR
 echo "Checking latest version from JSR..."
 latest_jsr_version=$(curl -s https://jsr.io/@tettuan/breakdownlogger/versions | grep -o '0\.[0-9]\+\.[0-9]\+' | head -n 1)
 
 if [ -z "$latest_jsr_version" ]; then
-    echo "Error: Could not determine latest version from JSR"
-    exit 1
+    echo "Warning: Could not determine latest version from JSR, using local version"
+    # Read current version from deno.json
+    latest_jsr_version=$(deno eval "const config = JSON.parse(await Deno.readTextFile('deno.json')); console.log(config.version);")
 fi
 
-echo "Latest JSR version: $latest_jsr_version"
+echo "Latest version: $latest_jsr_version"
 
 # Get all GitHub tags
 echo "Checking GitHub tags..."
 git fetch --tags
 all_tags=$(git tag -l "v*" | sort -V)
 
-# Remove tags newer than JSR version
+# Remove tags newer than latest version
 for tag in $all_tags; do
     tag_version=${tag#v}
     if [ "$(printf '%s\n%s\n' "$tag_version" "$latest_jsr_version" | sort -V | tail -n 1)" = "$tag_version" ]; then
-        echo "Removing tag $tag (newer than JSR version $latest_jsr_version)"
+        echo "Removing tag $tag (newer than version $latest_jsr_version)"
         git tag -d "$tag"
         git push origin ":refs/tags/$tag"
     fi
