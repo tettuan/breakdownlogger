@@ -1,18 +1,18 @@
 /**
  * @module breakdownlogger/logger
- * 
+ *
  * Core logging functionality for the breakdownlogger package.
  * This module provides the BreakdownLogger class which handles all logging operations
  * with support for different log levels and configurable output formatting.
- * 
+ *
  * The logger can be configured through environment variables or programmatically:
  * - Environment variable: `LOG_LEVEL` (DEBUG, INFO, WARN, ERROR)
  * - Programmatic configuration: `initialLevel` in LoggerConfig
- * 
+ *
  * @example
  * ```ts
  * import { BreakdownLogger, LogLevel } from "@tettuan/breakdownlogger/logger";
- * 
+ *
  * const logger = new BreakdownLogger({ initialLevel: LogLevel.DEBUG });
  * logger.debug("Detailed debug information");
  * logger.info("General information");
