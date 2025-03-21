@@ -7,7 +7,7 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 # Read current version from deno.json
-current_version=$(deno eval "import { load } from 'https://deno.land/std@0.220.1/json/mod.ts'; const config = await load('deno.json'); console.log(config.version);")
+current_version=$(deno eval "const config = JSON.parse(await Deno.readTextFile('deno.json')); console.log(config.version);")
 
 # Split version into major.minor.patch
 IFS='.' read -r major minor patch <<< "$current_version"
@@ -20,7 +20,7 @@ echo "Current version: $current_version"
 echo "New version: $new_version"
 
 # Update version in deno.json
-deno eval "import { load } from 'https://deno.land/std@0.220.1/json/mod.ts'; const config = await load('deno.json'); config.version = '$new_version'; await Deno.writeTextFile('deno.json', JSON.stringify(config, null, 2));"
+deno eval "const config = JSON.parse(await Deno.readTextFile('deno.json')); config.version = '$new_version'; await Deno.writeTextFile('deno.json', JSON.stringify(config, null, 2));"
 
 # Commit the version change
 git add deno.json
