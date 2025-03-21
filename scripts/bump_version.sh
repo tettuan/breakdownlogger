@@ -6,6 +6,19 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
+# Get the latest commit hash
+latest_commit=$(git rev-parse HEAD)
+
+# Check GitHub Actions status
+echo "Checking GitHub Actions status..."
+gh run list --workflow=test.yml --limit=1 --json status,conclusion,headSha | jq -e '.[0].status == "completed" and .[0].conclusion == "success" and .[0].headSha == "'$latest_commit'"' > /dev/null
+
+if [ $? -ne 0 ]; then
+    echo "Error: Latest GitHub Actions workflow has not completed successfully."
+    echo "Please ensure all tests pass before bumping version."
+    exit 1
+fi
+
 # Read current version from deno.json
 current_version=$(deno eval "const config = JSON.parse(await Deno.readTextFile('deno.json')); console.log(config.version);")
 
