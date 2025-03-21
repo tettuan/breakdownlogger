@@ -20,7 +20,7 @@ echo "Current version: $current_version"
 echo "New version: $new_version"
 
 # Update only the version in deno.json
-deno eval "const config = JSON.parse(await Deno.readTextFile('deno.json')); config.version = '$new_version'; await Deno.writeTextFile('deno.json', JSON.stringify(config, null, 2) + '\n');"
+deno eval "const config = JSON.parse(await Deno.readTextFile('deno.json')); config.version = '$new_version'; await Deno.writeTextFile('deno.json', JSON.stringify(config, null, 2));"
 
 # Commit the version change
 git add deno.json
