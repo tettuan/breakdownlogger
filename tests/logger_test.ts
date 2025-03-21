@@ -144,12 +144,15 @@ Deno.test("BreakdownLogger", async (t) => {
     fn: () => {
       cleanup();
       const logger = new BreakdownLogger({ initialLevel: LogLevel.INFO });
-      const specialMessage = "Special chars: \n\t\r\b\f";
+      const specialMessage = "Special chars: \\n\\t\\r\\b\\f";
       
       logger.info(specialMessage);
 
       assertEquals(capture.logs.length, 1);
-      assertMatch(capture.logs[0], /\[INFO\]\sSpecial chars: \n\t\r\b\f/);
+      assertMatch(
+        capture.logs[0],
+        /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\]\s\[INFO\]\sSpecial chars: \\n\\t\\r\\b\\f/,
+      );
     },
   });
 

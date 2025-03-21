@@ -1,19 +1,19 @@
 # BreakdownLogger
 
-A simple, lightweight logging utility for Deno test environments. This logger is designed to help debug application configuration and path resolution during testing.
+A debug logging library for Deno applications, designed specifically for test environments and debugging purposes.
 
 ## Features
 
-- Multiple log levels (DEBUG, INFO, WARN, ERROR)
+- Hierarchical log levels (DEBUG, INFO, WARN, ERROR)
 - Environment variable configuration
-- Optional data object logging
-- Timestamp-based logging
-- Test-focused design
+- Structured data output
+- Dynamic log level control
+- Test environment optimization
 
 ## Installation
 
 ```typescript
-import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger";
+import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@0.1.0";
 ```
 
 ## Usage
@@ -21,68 +21,98 @@ import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger";
 ### Basic Usage
 
 ```typescript
-import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger";
+import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@0.1.0";
 
 const logger = new BreakdownLogger();
 
-logger.info("Application started");
-logger.debug("Debug information", { someData: "value" });
-logger.warn("Warning message");
-logger.error("Error occurred", new Error("Something went wrong"));
+// Default log level is INFO
+logger.debug("This won't be logged");
+logger.info("This will be logged");
+logger.warn("This will be logged");
+logger.error("This will be logged");
+
+// Log with structured data
+logger.info("User data", { id: 123, name: "Test User" });
+
+// Change log level dynamically
+logger.setLogLevel(LogLevel.DEBUG);
+logger.debug("Now this will be logged");
 ```
 
-### Configuration
+### Environment Variable Configuration
 
-#### Environment Variable
-
-Set the log level using the `LOG_LEVEL` environment variable:
+Set the `LOG_LEVEL` environment variable to control the log level:
 
 ```bash
-LOG_LEVEL=debug deno test
+# Run with DEBUG level
+LOG_LEVEL=debug deno run -A your_script.ts
+
+# Run with WARN level
+LOG_LEVEL=warn deno run -A your_script.ts
 ```
 
-Available levels: `debug`, `info`, `warn`, `error`
-
-#### Programmatic Configuration
+### Test Environment Usage
 
 ```typescript
-const logger = new BreakdownLogger({
-  initialLevel: LogLevel.DEBUG
+import { BreakdownLogger } from "jsr:@tettuan/breakdownlogger@0.1.0";
+
+Deno.test("My test", async (t) => {
+  const logger = new BreakdownLogger();
+
+  await t.step("test case", () => {
+    logger.debug("Test data", { input: "test" });
+    // ... test implementation
+  });
 });
-
-// Change log level at runtime
-logger.setLogLevel(LogLevel.WARN);
 ```
 
-### Output Format
+## API Reference
 
-Logs are formatted as follows:
+### BreakdownLogger
 
+The main logger class.
+
+#### Constructor
+
+```typescript
+new BreakdownLogger(config?: LoggerConfig)
 ```
-[2024-03-20T12:34:56.789Z] [INFO] Your message
-データ: {
-  "key": "value"
+
+#### Methods
+
+- `debug(message: string, data?: unknown): void`
+- `info(message: string, data?: unknown): void`
+- `warn(message: string, data?: unknown): void`
+- `error(message: string, data?: unknown): void`
+- `setLogLevel(level: LogLevel): void`
+
+### LogLevel
+
+Enum for log levels:
+
+```typescript
+enum LogLevel {
+  DEBUG = "DEBUG",
+  INFO = "INFO",
+  WARN = "WARN",
+  ERROR = "ERROR"
 }
 ```
 
-## Testing
+### LoggerConfig
 
-Run tests with:
+Configuration interface:
 
-```bash
-deno task test        # Run tests
-deno task test:watch  # Run tests in watch mode
-deno task test:debug  # Run tests with debug logging
+```typescript
+interface LoggerConfig {
+  initialLevel?: LogLevel;
+}
 ```
+
+## Examples
+
+See the [examples](./example) directory for detailed usage examples.
 
 ## License
 
-MIT License - see LICENSE file for details.
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request 
+MIT License - see [LICENSE](./LICENSE) for details. 
