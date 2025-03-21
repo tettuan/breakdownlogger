@@ -2,7 +2,7 @@ import { BreakdownLogger, LogLevel } from "../mod.ts";
 
 /**
  * 基本的な使用例
- * 
+ *
  * このサンプルでは以下の機能をデモンストレーションします：
  * 1. デフォルトのログレベル（INFO）での動作
  * 2. 環境変数によるログレベルの設定
@@ -46,4 +46,4 @@ logger.setLogLevel(LogLevel.ERROR);
 logger.debug("このメッセージは出力されません");
 logger.info("このメッセージは出力されません");
 logger.warn("このメッセージは出力されません");
-logger.error("このメッセージのみ出力されます"); 
+logger.error("このメッセージのみ出力されます");

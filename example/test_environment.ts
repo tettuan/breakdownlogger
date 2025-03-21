@@ -1,8 +1,8 @@
-import { BreakdownLogger, LogLevel } from "../mod.ts";
+import { BreakdownLogger } from "../mod.ts";
 
 /**
  * テスト環境での使用例
- * 
+ *
  * このサンプルでは以下の機能をデモンストレーションします：
  * 1. 環境変数によるログレベルの設定
  * 2. テストケースでのログ出力
@@ -47,24 +47,27 @@ async function runTestSuite() {
 
 // テスト用のモック関数
 async function simulateNormalOperation() {
-  await new Promise(resolve => setTimeout(resolve, 100));
+  await new Promise((resolve) => setTimeout(resolve, 100));
   return { status: "success", data: "テストデータ" };
 }
 
 async function simulateErrorOperation() {
-  await new Promise(resolve => setTimeout(resolve, 100));
+  await new Promise((resolve) => setTimeout(resolve, 100));
   throw new Error("意図的なエラー");
 }
 
 async function simulatePerformanceTest() {
-  await new Promise(resolve => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 500));
 }
 
 // テストスイートの実行
 console.log("=== テスト環境での使用例 ===");
-console.log("環境変数 LOG_LEVEL の設定:", Deno.env.get("LOG_LEVEL") || "未設定");
+console.log(
+  "環境変数 LOG_LEVEL の設定:",
+  Deno.env.get("LOG_LEVEL") || "未設定",
+);
 console.log("テストスイートを開始します...\n");
 
-runTestSuite().catch(error => {
+runTestSuite().catch((error) => {
   console.error("テストスイートの実行中にエラーが発生しました:", error);
-}); 
+});

@@ -6,13 +6,13 @@ import { BreakdownLogger, LogLevel } from "../mod.ts";
 
 /**
  * BreakdownLogger のテストスイート
- * 
+ *
  * 目的：
  * - ログ出力の階層的フィルタリングの検証
  * - 環境変数とコンフィグによる設定の検証
  * - エラー処理の検証
  * - 各ログレベルの出力フォーマットの検証
- * 
+ *
  * 成功定義：
  * 1. ログレベルに応じて適切にフィルタリングされること
  * 2. 環境変数とコンフィグが正しく反映されること
@@ -96,7 +96,7 @@ Deno.test("BreakdownLogger", async (t) => {
       cleanup();
       const logger = new BreakdownLogger({ initialLevel: LogLevel.DEBUG });
       const testData = { key: "value", nested: { test: true } };
-      
+
       logger.debug("Message with data", testData);
 
       assertEquals(capture.logs.length, 1);
@@ -135,7 +135,10 @@ Deno.test("BreakdownLogger", async (t) => {
       logger.debug("Should not log");
 
       assertEquals(capture.logs.length, 1);
-      assertMatch(capture.logs[0], /\[INFO\]\sShould log with default INFO level/);
+      assertMatch(
+        capture.logs[0],
+        /\[INFO\]\sShould log with default INFO level/,
+      );
     },
   });
 
@@ -144,14 +147,17 @@ Deno.test("BreakdownLogger", async (t) => {
     fn: () => {
       cleanup();
       const logger = new BreakdownLogger({ initialLevel: LogLevel.INFO });
-      const specialMessage = "Special chars: \\n\\t\\r\\b\\f";
-      
+      const specialMessage = "Special chars: \n\t\r\b\f";
+
       logger.info(specialMessage);
 
       assertEquals(capture.logs.length, 1);
-      assertMatch(
+      const timestamp = capture.logs[0].match(
+        /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\]/,
+      )?.[0];
+      assertEquals(
         capture.logs[0],
-        /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\]\s\[INFO\]\sSpecial chars: \\n\\t\\r\\b\\f/,
+        `${timestamp} [INFO] Special chars: \n\t\r\b\f`,
       );
     },
   });
@@ -162,7 +168,7 @@ Deno.test("BreakdownLogger", async (t) => {
       cleanup();
       const logger = new BreakdownLogger({ initialLevel: LogLevel.INFO });
       const largeData = Array(1000).fill({ test: "data" });
-      
+
       logger.info("Large data object", largeData);
 
       assertEquals(capture.logs.length, 1);
@@ -188,4 +194,4 @@ Deno.test("BreakdownLogger", async (t) => {
       assertMatch(capture.logs[1], /\[ERROR\]\sShould log with ERROR level/);
     },
   });
-}); 
+});

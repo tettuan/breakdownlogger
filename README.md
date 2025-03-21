@@ -1,6 +1,7 @@
 # BreakdownLogger
 
-A debug logging library for Deno applications, designed specifically for test environments and debugging purposes.
+A debug logging library for Deno applications, designed specifically for test
+environments and debugging purposes.
 
 ## Features
 
@@ -95,7 +96,7 @@ enum LogLevel {
   DEBUG = "DEBUG",
   INFO = "INFO",
   WARN = "WARN",
-  ERROR = "ERROR"
+  ERROR = "ERROR",
 }
 ```
 
@@ -115,4 +116,4 @@ See the [examples](./example) directory for detailed usage examples.
 
 ## License
 
-MIT License - see [LICENSE](./LICENSE) for details. 
+MIT License - see [LICENSE](./LICENSE) for details.

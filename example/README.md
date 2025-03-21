@@ -1,18 +1,21 @@
 # BreakdownLogger 使用例
 
-このディレクトリには、BreakdownLogger の使用例を示すサンプルコードが含まれています。
+このディレクトリには、BreakdownLogger
+の使用例を示すサンプルコードが含まれています。
 
 ## サンプル一覧
 
 ### 1. 基本的な使用例 (`basic_usage.ts`)
 
 基本的な機能をデモンストレーションします：
+
 - デフォルトのログレベル（INFO）での動作
 - 環境変数によるログレベルの設定
 - 構造化データの出力
 - ログレベルの動的変更
 
 実行方法：
+
 ```bash
 deno run -A example/basic_usage.ts
 ```
@@ -20,12 +23,14 @@ deno run -A example/basic_usage.ts
 ### 2. テスト環境での使用例 (`test_environment.ts`)
 
 テスト環境での使用例を示します：
+
 - 環境変数によるログレベルの設定
 - テストケースでのログ出力
 - エラーケースのログ出力
 - パフォーマンス計測のログ出力
 
 実行方法：
+
 ```bash
 # デフォルトのログレベル（INFO）で実行
 deno run -A example/test_environment.ts
@@ -40,6 +45,7 @@ LOG_LEVEL=warn deno run -A example/test_environment.ts
 ## 実行結果の例
 
 ### デフォルトのログレベル（INFO）での実行
+
 ```
 === テスト環境での使用例 ===
 環境変数 LOG_LEVEL の設定: 未設定
@@ -55,6 +61,7 @@ LOG_LEVEL=warn deno run -A example/test_environment.ts
 ```
 
 ### DEBUGレベルでの実行
+
 ```
 === テスト環境での使用例 ===
 環境変数 LOG_LEVEL の設定: debug
@@ -93,4 +100,4 @@ LOG_LEVEL=warn deno run -A example/test_environment.ts
 3. テスト環境での使用
    - テストケースの実行状況を詳細に把握できます
    - エラー発生時のデバッグが容易になります
-   - パフォーマンス計測結果の記録が可能です 
+   - パフォーマンス計測結果の記録が可能です
