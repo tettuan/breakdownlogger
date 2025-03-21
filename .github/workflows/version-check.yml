@@ -18,7 +18,12 @@ jobs:
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.x
+          deno-version: v1.41.3
+
+      - name: Clear cache and regenerate lockfile
+        run: |
+          rm -f deno.lock
+          deno cache --reload mod.ts
 
       - name: Get latest tag
         id: get_latest_tag
@@ -41,4 +46,4 @@ jobs:
             echo "Please ensure the version in deno.json matches the latest git tag."
             exit 1
           fi
-          echo "Version check passed! Both versions are ${{ steps.get_version.outputs.version }}" 
+          echo "Version check passed! Both versions are ${{ steps.get_version.outputs.version }}"
