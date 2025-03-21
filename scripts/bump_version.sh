@@ -30,6 +30,21 @@ fi
 
 echo "Latest JSR version: $latest_jsr_version"
 
+# Get all GitHub tags
+echo "Checking GitHub tags..."
+git fetch --tags
+all_tags=$(git tag -l "v*" | sort -V)
+
+# Remove tags newer than JSR version
+for tag in $all_tags; do
+    tag_version=${tag#v}
+    if [ "$(printf '%s\n%s\n' "$tag_version" "$latest_jsr_version" | sort -V | tail -n 1)" = "$tag_version" ]; then
+        echo "Removing tag $tag (newer than JSR version $latest_jsr_version)"
+        git tag -d "$tag"
+        git push origin ":refs/tags/$tag"
+    fi
+done
+
 # Split version into major.minor.patch
 IFS='.' read -r major minor patch <<< "$latest_jsr_version"
 
