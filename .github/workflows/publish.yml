@@ -34,5 +34,3 @@ jobs:
 
       - name: Publish to JSR
         run: deno publish
-        env:
-          DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
