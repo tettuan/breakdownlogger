@@ -1,11 +1,14 @@
 {
   "name": "@tettuan/breakdownlogger",
   "version": "0.1.2",
-  "exports": "./mod.ts",
-  "types": "./mod.ts",
+  "exports": {
+    ".": "./mod.ts",
+    "./logger": "./logger.ts"
+  },
   "description": "A debug logging library for Deno applications",
   "repository": "https://github.com/tettuan/breakdownlogger",
   "keywords": [
+    "deno",
     "logging",
     "debug",
     "test",
@@ -14,10 +17,10 @@
   "author": "tettuan",
   "license": "MIT",
   "imports": {
-    "std/": "https://deno.land/std@0.219.0/"
+    "std/": "https://deno.land/std@0.220.1/"
   },
   "tasks": {
-    "test": "deno test -A --env",
+    "test": "deno test --allow-env",
     "fmt": "deno fmt",
     "lint": "deno lint",
     "check": "deno check **/*.ts",
@@ -26,9 +29,8 @@
   "publish": {
     "include": [
       "mod.ts",
-      "src/**/*.ts",
-      "README.md",
-      "LICENSE"
+      "logger.ts",
+      "README.md"
     ]
   }
 }
