@@ -130,6 +130,7 @@ This script prepares your local changes for publishing:
 ```
 
 The script:
+
 - Checks for uncommitted changes
 - Verifies GitHub Actions workflow status
 - Regenerates `deno.lock` file
@@ -145,6 +146,7 @@ This script handles version bumping and tag creation:
 ```
 
 The script:
+
 - Verifies GitHub Actions workflow status
 - Checks latest version from JSR
 - Removes any GitHub tags newer than the JSR version
@@ -153,6 +155,7 @@ The script:
 - Creates and pushes a new version tag
 
 Typical publishing workflow:
+
 1. Make your changes
 2. Run `./scripts/publish.sh` to prepare
 3. Run `./scripts/bump_version.sh` to create a new version
