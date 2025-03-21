@@ -2,9 +2,9 @@ name: Test
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   test:
@@ -12,15 +12,23 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v1
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
 
-      - name: Run tests
-        run: deno test --allow-env
+      - name: Remove old lockfile
+        run: rm -f deno.lock
 
-      - name: Check formatting
+      - name: Cache dependencies
+        run: deno cache mod.ts
+
+      - name: Format check
         run: deno fmt --check
 
-      - name: Run linter
+      - name: Lint
         run: deno lint
+
+      - name: Test
+        run: deno test --allow-env
