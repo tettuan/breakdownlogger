@@ -33,6 +33,4 @@ jobs:
         run: deno test --allow-env
 
       - name: Publish to JSR
-        run: deno publish
-        env:
-          JSR_TOKEN: ${{ secrets.JSR_TOKEN }}
+        run: deno publish --gh-oidc
