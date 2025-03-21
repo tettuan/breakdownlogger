@@ -114,6 +114,49 @@ interface LoggerConfig {
 
 See the [examples](./example) directory for detailed usage examples.
 
+## Development Scripts
+
+The project includes two utility scripts to help with development and publishing:
+
+### Publishing Process
+
+#### 1. Local Preparation (`scripts/publish.sh`)
+
+This script prepares your local changes for publishing:
+
+```bash
+./scripts/publish.sh
+```
+
+The script:
+- Checks for uncommitted changes
+- Verifies GitHub Actions workflow status
+- Regenerates `deno.lock` file
+- Runs format, lint, and test checks
+- Commits and pushes the updated `deno.lock`
+
+#### 2. Version Management (`scripts/bump_version.sh`)
+
+This script handles version bumping and tag creation:
+
+```bash
+./scripts/bump_version.sh
+```
+
+The script:
+- Verifies GitHub Actions workflow status
+- Checks latest version from JSR
+- Removes any GitHub tags newer than the JSR version
+- Increments the patch version
+- Updates `deno.json`
+- Creates and pushes a new version tag
+
+Typical publishing workflow:
+1. Make your changes
+2. Run `./scripts/publish.sh` to prepare
+3. Run `./scripts/bump_version.sh` to create a new version
+4. The GitHub Actions workflow will automatically publish to JSR
+
 ## License
 
 MIT License - see [LICENSE](./LICENSE) for details.
