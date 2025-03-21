@@ -19,17 +19,24 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Read current version from deno.json
-current_version=$(deno eval "const config = JSON.parse(await Deno.readTextFile('deno.json')); console.log(config.version);")
+# Get latest version from JSR
+echo "Checking latest version from JSR..."
+latest_jsr_version=$(curl -s https://jsr.io/@tettuan/breakdownlogger/versions | grep -o '0\.[0-9]\+\.[0-9]\+' | head -n 1)
+
+if [ -z "$latest_jsr_version" ]; then
+    echo "Error: Could not determine latest version from JSR"
+    exit 1
+fi
+
+echo "Latest JSR version: $latest_jsr_version"
 
 # Split version into major.minor.patch
-IFS='.' read -r major minor patch <<< "$current_version"
+IFS='.' read -r major minor patch <<< "$latest_jsr_version"
 
 # Increment patch version
 new_patch=$((patch + 1))
 new_version="$major.$minor.$new_patch"
 
-echo "Current version: $current_version"
 echo "New version: $new_version"
 
 # Update only the version in deno.json
