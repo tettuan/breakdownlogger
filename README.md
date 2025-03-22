@@ -28,7 +28,8 @@ import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@0.1.0";
 
 2. **Log Level Management**
    - Set log level explicitly for each test run
-   - While `.env` configuration is supported, avoid using DEBUG level in `.env` due to excessive output
+   - While `.env` configuration is supported, avoid using DEBUG level in `.env`
+     due to excessive output
    - Recommended: Set log level via command line for specific test runs
 
 3. **Strategic Checkpoints**
