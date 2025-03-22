@@ -19,6 +19,25 @@ import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@0.1.0";
 
 ## Usage
 
+### Important Guidelines
+
+1. **Test-Only Usage**
+   - This logger is designed exclusively for test environments
+   - Do not use it in application code
+   - It's optimized for debugging test scenarios
+
+2. **Log Level Management**
+   - Set log level explicitly for each test run
+   - While `.env` configuration is supported, avoid using DEBUG level in `.env` due to excessive output
+   - Recommended: Set log level via command line for specific test runs
+
+3. **Strategic Checkpoints**
+   Place logging statements at key points:
+   - Before and after function calls
+   - Before and after parameter processing
+   - Before and after return value handling
+   - Before and after data transformations
+
 ### Basic Usage
 
 ```typescript
