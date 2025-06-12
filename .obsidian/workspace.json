@@ -170,6 +170,8 @@
   },
   "active": "dded59377fcd2036",
   "lastOpenFiles": [
+    "test_ci_debug.ts",
+    "test_singleton_behavior.ts",
     "test_truncation.ts",
     "test_debug.ts",
     "test_logger_behavior.ts",
@@ -182,8 +184,6 @@
     "coverage_dir/06d5036b-9bcf-4030-8374-383edc64a670.json",
     "coverage_dir/ae66266d-4856-4122-b879-54a3b75f2df7.json",
     "coverage_dir/75df9bca-8c87-44f8-a967-fa4f24fcebdc.json",
-    "coverage_dir/d327c841-0550-48f9-85c4-9f05dc9190e8.json",
-    "coverage_dir/9525e40d-a155-4e90-85fc-428efc7e09e3.json",
     "tmp/complete_report.md",
     "CLAUDE.md"
   ]

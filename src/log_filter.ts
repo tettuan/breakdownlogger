@@ -36,7 +36,9 @@ export class LogFilter {
     // Denoのテストランナーが含まれているかチェック
     const isDenoTest = stack.includes("ext:cli/40_test.js") ||
       stack.includes("$deno$test$") ||
-      stack.includes("TestContext");
+      stack.includes("TestContext") ||
+      stack.includes("ext:deno_test/") || // CI環境でのテストランナー
+      stack.includes("deno:test"); // 別のテストランナーパターン
 
     // テストファイルパターンをチェック
     const hasTestPattern = stack.includes("_test.ts") ||
@@ -45,7 +47,9 @@ export class LogFilter {
       stack.includes("_test.jsx") ||
       stack.includes("_test.tsx") ||
       stack.includes(".test.ts") ||
-      stack.includes(".test.js");
+      stack.includes(".test.js") ||
+      stack.includes("_test.") || // より広範なパターン
+      stack.includes(".test."); // より広範なパターン
 
     return isDenoTest || hasTestPattern;
   }

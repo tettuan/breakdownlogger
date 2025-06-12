@@ -49,6 +49,8 @@ Deno.test("Logger should be disabled in non-test files by default", () => {
     if (originalLogKey !== undefined) {
       Deno.env.set("LOG_KEY", originalLogKey);
     }
+    // Reset the singleton after restoring environment
+    EnvironmentConfig.reset();
   }
 });
 
@@ -89,6 +91,8 @@ Deno.test("Logger works in test files with default INFO level", () => {
     } else {
       Deno.env.delete("LOG_LEVEL");
     }
+    // Reset the singleton after restoring environment
+    EnvironmentConfig.reset();
   }
 });
 
