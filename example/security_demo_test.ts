@@ -4,7 +4,7 @@
  * BreakdownLoggerはテストファイル内でのみ動作するため、_test.tsという名前になっています。
  */
 
-import { BreakdownLogger } from "@tettuan/breakdownlogger";
+import { BreakdownLogger } from "../mod.ts";
 
 /**
  * BreakdownLoggerのセキュリティ機能のデモンストレーション
