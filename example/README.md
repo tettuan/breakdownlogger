@@ -1,11 +1,31 @@
 # BreakdownLogger 使用例
 
-このディレクトリには、BreakdownLogger の使用例を示すサンプルコードが含まれています。
+このディレクトリには、BreakdownLogger
+の使用例を示すサンプルコードが含まれています。
 JSR経由でインポートしたユーザーが、実際に利用する使い方を例示するとともに、実際の使い方に沿って動作確認する目的です。
+
+**重要**: これらのファイルは実際のテストではなく使用例のデモです。ファイル名が
+`_test.ts`
+で終わっているのは、BreakdownLoggerの制限により、テストファイル内でのみ動作するためです。
 
 ## 重要な制約
 
-**BreakdownLoggerはテスト環境でのみ動作します。** 通常のアプリケーションコードでは何も出力されません。これは設計上の制約であり、デバッグ目的でテストコード内でのみ使用することを想定しています。
+**BreakdownLoggerはテストファイル（`*_test.ts`、`*.test.ts`など）内でのみ動作します。**
+通常のアプリケーションファイルで呼び出されても何も出力されません。これは設計上のセキュリティ機能であり、メインコードでの誤った出力を防ぎ、内部処理の漏洩を防ぐためです。
+
+```typescript
+// app.ts（通常のファイル）
+const logger = new BreakdownLogger("app");
+logger.info("これは出力されません"); // ❌ テストファイルではないため動作しない
+
+// app_test.ts（テストファイル）
+const logger = new BreakdownLogger("app");
+logger.info("これは出力されます"); // ✅ テストファイル内なので動作する
+
+Deno.test("テストケース", () => {
+  logger.info("Deno.test内でも動作します"); // ✅
+});
+```
 
 ## サンプル一覧
 
@@ -21,14 +41,16 @@ JSR経由でインポートしたユーザーが、実際に利用する使い�
 実行方法：
 
 ```bash
-# 注意: 通常の実行では動作しません（テスト環境でのみ動作）
-deno run -A example/basic_usage.ts
-
-# テストファイルとして実行する必要があります
+# Deno.test()を含むファイルとして実行
 deno test --allow-env example/basic_usage.ts
 ```
 
 ### 2. テスト環境での使用例 (`test_environment.ts`)
+
+**注意**: このファイルは `test_environment.ts` という名前ですが、ファイル名が
+`_test.ts` や `.test.ts`
+で終わっていないため、通常の実行ではログが出力されません。`deno test`
+コマンドで実行することで、Denoのテストコンテキストとして認識され、ログが表示されます。
 
 テスト環境での使用例を示します：
 
@@ -48,6 +70,51 @@ LOG_LEVEL=debug deno test --allow-env example/test_environment.ts
 
 # WARNレベルで実行
 LOG_LEVEL=warn deno test --allow-env example/test_environment.ts
+```
+
+### 3. 高度な機能の使用例 (`advanced_usage_test.ts`)
+
+BreakdownLoggerの高度な機能をデモンストレーションします：
+
+- 複数のロガーインスタンスとキーの使い分け
+- ログメッセージの長さ制御（LOG_LENGTH）
+- キーによるフィルタリング（LOG_KEY）
+- デフォルトキーの使用
+- 実際のユースケース例
+
+### 4. セキュリティ機能のデモ (`security_demo_test.ts`)
+
+BreakdownLoggerのセキュリティ機能を実証します：
+
+- テストファイル内での動作確認
+- 通常のアプリケーションファイルでは動作しないことの説明
+- メインコードでの誤った出力を防ぐ設計の実証
+- 内部処理情報の漏洩防止機能の確認
+
+### 3. 高度な機能の使用例 (`advanced_usage_test.ts`) の実行方法：
+
+```bash
+# 全てのログを表示（デバッグレベル、全文表示）
+LOG_LEVEL=debug LOG_LENGTH=W deno test --allow-env example/advanced_usage_test.ts
+
+# 特定のキーのみ表示
+LOG_KEY=auth,api deno test --allow-env example/advanced_usage_test.ts
+
+# エラーのみ表示
+LOG_LEVEL=error deno test --allow-env example/advanced_usage_test.ts
+
+# 組み合わせ例
+LOG_LEVEL=debug LOG_LENGTH=S LOG_KEY=database,cache deno test --allow-env example/advanced_usage_test.ts
+```
+
+### 4. セキュリティ機能のデモ (`security_demo_test.ts`) の実行方法：
+
+```bash
+# セキュリティ機能の動作確認
+deno test --allow-env example/security_demo_test.ts
+
+# デバッグレベルで実行して内部動作を確認
+LOG_LEVEL=debug deno test --allow-env example/security_demo_test.ts
 ```
 
 ## 実行結果の例
@@ -152,11 +219,11 @@ LOG_KEY=auth/database deno test --allow-env your_test.ts
 ```typescript
 // キーを指定しない場合
 const logger = new BreakdownLogger();
-logger.info("デフォルトキーでのログ");  // [default] が表示される
+logger.info("デフォルトキーでのログ"); // [default] が表示される
 
 // 明示的にキーを指定
 const namedLogger = new BreakdownLogger("myapp");
-namedLogger.info("名前付きログ");  // [myapp] が表示される
+namedLogger.info("名前付きログ"); // [myapp] が表示される
 ```
 
 ### 6. 複数の環境変数の組み合わせ
@@ -173,10 +240,11 @@ LOG_LEVEL=warn LOG_LENGTH=S LOG_KEY=api deno test --allow-env your_test.ts
 
 ## 注意点
 
-1. **テスト環境専用**
-   - BreakdownLoggerはテスト環境でのみ動作します
-   - 通常のスクリプトやアプリケーションでは何も出力されません
-   - 必ず `deno test` コマンドで実行するか、テストファイル内で使用してください
+1. **テストファイル専用**
+   - BreakdownLoggerはテストファイル（`*_test.ts`、`*.test.ts`など）内でのみ動作します
+   - 通常のアプリケーションファイルでは何も出力されません
+   - これはメインコードでの誤った出力を防ぐセキュリティ機能です
+   - 内部処理情報の漏洩を防ぐ重要な設計です
 
 2. **環境変数の設定**
    - `LOG_LEVEL`: ログレベルの制御（`debug`, `info`, `warn`, `error`）

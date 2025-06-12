@@ -1,0 +1,26 @@
+{
+  "scriptId": "318",
+  "url": "file:///Users/tettuan/github/breakdownlogger/example/security_demo_test.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 2207, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 810, "endOffset": 1237, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 1276, "endOffset": 1678, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "calculateSum",
+      "ranges": [{ "startOffset": 1353, "endOffset": 1543, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

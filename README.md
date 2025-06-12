@@ -26,6 +26,43 @@ import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@0.1.0";
    - Do not use it in application code
    - It's optimized for debugging test scenarios
 
+   **Why Test-Only?**
+   - The logger is specifically designed to aid in debugging during test
+     development
+   - It provides verbose output that would be inappropriate for production
+     environments
+   - The logging overhead is acceptable in test scenarios but not in production
+   - Security: Debug logs may expose sensitive data that should never appear in
+     production logs
+
+   **Test Environment Setup**
+   ```bash
+   # Run tests with DEBUG level logging
+   LOG_LEVEL=debug deno test --allow-env --allow-write --allow-read
+
+   # Run specific test file with INFO level
+   LOG_LEVEL=info deno test --allow-env --allow-write --allow-read specific_test.ts
+
+   # Run with default INFO level (no environment variable needed)
+   deno test --allow-env --allow-write --allow-read
+   ```
+
+   **Using the Examples Directory** The `example/` directory contains practical
+   usage examples:
+   - `basic_usage.ts` - Simple usage demonstration
+   - `test_environment.ts` - Basic logger usage in test scenarios
+   - `advanced_usage_test.ts` - Advanced patterns and debugging techniques
+   - `security_demo_test.ts` - Demonstrates why this logger is test-only
+
+   To run examples:
+   ```bash
+   # Run all examples
+   LOG_LEVEL=debug deno test --allow-env --allow-write --allow-read example/
+
+   # Run specific example
+   LOG_LEVEL=debug deno test --allow-env --allow-write --allow-read example/test_environment.ts
+   ```
+
 2. **Log Level Management**
    - Set log level explicitly for each test run
    - While `.env` configuration is supported, avoid using DEBUG level in `.env`
@@ -53,10 +90,6 @@ logger.error("This will be logged");
 
 // Log with structured data
 logger.info("User data", { id: 123, name: "Test User" });
-
-// Change log level dynamically
-logger.setLogLevel(LogLevel.DEBUG);
-logger.debug("Now this will be logged");
 ```
 
 ### Environment Variable Configuration
@@ -95,7 +128,7 @@ The main logger class.
 #### Constructor
 
 ```typescript
-new BreakdownLogger(config?: LoggerConfig)
+new BreakdownLogger(key?: string)
 ```
 
 #### Methods
@@ -104,7 +137,6 @@ new BreakdownLogger(config?: LoggerConfig)
 - `info(message: string, data?: unknown): void`
 - `warn(message: string, data?: unknown): void`
 - `error(message: string, data?: unknown): void`
-- `setLogLevel(level: LogLevel): void`
 
 ### LogLevel
 
@@ -116,16 +148,6 @@ enum LogLevel {
   INFO = "INFO",
   WARN = "WARN",
   ERROR = "ERROR",
-}
-```
-
-### LoggerConfig
-
-Configuration interface:
-
-```typescript
-interface LoggerConfig {
-  initialLevel?: LogLevel;
 }
 ```
 

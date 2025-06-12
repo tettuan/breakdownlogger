@@ -1,13 +1,13 @@
-import { BreakdownLogger, LogLevel } from "../mod.ts";
+import { BreakdownLogger } from "../mod.ts";
 
 /**
  * 基本的な使用例
  *
  * このサンプルでは以下の機能をデモンストレーションします：
  * 1. デフォルトのログレベル（INFO）での動作
- * 2. 環境変数によるログレベルの設定
+ * 2. 環境変数によるログレベルの設定方法の説明
  * 3. 構造化データの出力
- * 4. ログレベルの動的変更
+ * 4. 異なるロガーインスタンスの使用
  */
 
 // デフォルトのログレベル（INFO）でロガーを初期化
@@ -32,18 +32,18 @@ const userData = {
 };
 logger.info("ユーザー情報", userData);
 
-// ログレベルの動的変更
-console.log("\n=== ログレベルの動的変更 ===");
-logger.setLogLevel(LogLevel.DEBUG);
-logger.debug("DEBUGレベルに変更したので、このメッセージは出力されます");
-logger.info("このメッセージも出力されます");
-logger.warn("このメッセージも出力されます");
-logger.error("このメッセージも出力されます");
+// 環境変数によるログレベル制御のデモ
+console.log("\n=== 環境変数によるログレベル制御 ===");
+console.log("現在のログレベル: INFO（デフォルト）");
+console.log("ログレベルを変更するには、環境変数 LOG_LEVEL を設定してください");
+console.log("例: LOG_LEVEL=debug deno run --allow-env example/basic_usage.ts");
 
-// より厳格なログレベルに変更
-console.log("\n=== より厳格なログレベル ===");
-logger.setLogLevel(LogLevel.ERROR);
-logger.debug("このメッセージは出力されません");
-logger.info("このメッセージは出力されません");
-logger.warn("このメッセージは出力されません");
-logger.error("このメッセージのみ出力されます");
+// 異なるロガーインスタンスの作成
+console.log("\n=== 異なるロガーインスタンス ===");
+const apiLogger = new BreakdownLogger("api");
+const dbLogger = new BreakdownLogger("database");
+
+apiLogger.info("APIリクエストを受信しました", { endpoint: "/users/123" });
+dbLogger.info("データベースクエリを実行しました", {
+  query: "SELECT * FROM users WHERE id = 123",
+});

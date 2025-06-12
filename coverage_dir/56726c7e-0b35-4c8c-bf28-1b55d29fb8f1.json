@@ -1,0 +1,33 @@
+{
+  "scriptId": "318",
+  "url": "file:///Users/tettuan/github/breakdownlogger/example/advanced_usage_test.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 3871, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        { "startOffset": 635, "endOffset": 3292, "count": 1 },
+        { "startOffset": 793, "endOffset": 815, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 1999, "endOffset": 2094, "count": 20 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "processUser",
+      "ranges": [
+        { "startOffset": 2500, "endOffset": 3268, "count": 1 },
+        { "startOffset": 2917, "endOffset": 2994, "count": 0 },
+        { "startOffset": 3089, "endOffset": 3264, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

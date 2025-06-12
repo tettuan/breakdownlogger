@@ -1,3 +1,9 @@
+/**
+ * デモンストレーション用ファイル
+ * これは実際のテストファイルではなく、BreakdownLoggerの使用例を示すためのものです。
+ * ファイル名が_test.tsで終わっていないため、deno testコマンドで実行する必要があります。
+ */
+
 import { BreakdownLogger } from "../mod.ts";
 
 /**
@@ -11,7 +17,7 @@ import { BreakdownLogger } from "../mod.ts";
 
 // テストケースの実行をシミュレート
 async function runTestSuite() {
-  // テスト環境用のロガーを初期化
+  // テストコード用のロガーを初期化
   const logger = new BreakdownLogger();
 
   // テストケース1: 正常系

@@ -1,10 +1,18 @@
 /**
- * Available log levels for the logger
+ * Available log levels for the logger.
+ * Higher values indicate higher severity.
+ * 
+ * @enum {number}
+ * @readonly
  */
 export enum LogLevel {
+  /** Detailed debug information. Lowest severity. */
   DEBUG = 0,
+  /** General informational messages. Default level. */
   INFO = 1,
+  /** Warning messages for potentially harmful situations. */
   WARN = 2,
+  /** Error messages. Highest severity, always shown. */
   ERROR = 3,
 }
 

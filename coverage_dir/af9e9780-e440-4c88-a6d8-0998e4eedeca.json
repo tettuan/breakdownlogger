@@ -1,0 +1,49 @@
+{
+  "scriptId": "323",
+  "url": "file:///Users/tettuan/github/breakdownlogger/src/log_formatter.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 1415, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "formatLogEntry",
+      "ranges": [
+        { "startOffset": 80, "endOffset": 536, "count": 19 },
+        { "startOffset": 380, "endOffset": 475, "count": 9 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "truncateMessage",
+      "ranges": [
+        { "startOffset": 539, "endOffset": 777, "count": 19 },
+        { "startOffset": 603, "endOffset": 618, "count": 0 },
+        { "startOffset": 665, "endOffset": 694, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "formatData",
+      "ranges": [
+        { "startOffset": 780, "endOffset": 1126, "count": 9 },
+        { "startOffset": 834, "endOffset": 848, "count": 0 },
+        { "startOffset": 879, "endOffset": 898, "count": 0 },
+        { "startOffset": 990, "endOffset": 1122, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getMaxLength",
+      "ranges": [
+        { "startOffset": 1129, "endOffset": 1412, "count": 19 },
+        { "startOffset": 1233, "endOffset": 1274, "count": 0 },
+        { "startOffset": 1281, "endOffset": 1321, "count": 0 },
+        { "startOffset": 1328, "endOffset": 1368, "count": 0 },
+        { "startOffset": 1375, "endOffset": 1402, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

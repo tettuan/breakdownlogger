@@ -1,0 +1,55 @@
+{
+  "scriptId": "356",
+  "url": "file:///Users/tettuan/github/breakdownlogger/src/log_filter.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 1146, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 27, "endOffset": 44, "count": 13 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "LogFilter",
+      "ranges": [{ "startOffset": 48, "endOffset": 124, "count": 13 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "shouldLog",
+      "ranges": [
+        { "startOffset": 127, "endOffset": 310, "count": 19 },
+        { "startOffset": 220, "endOffset": 247, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "shouldOutputKey",
+      "ranges": [
+        { "startOffset": 313, "endOffset": 506, "count": 15 },
+        { "startOffset": 410, "endOffset": 436, "count": 10 },
+        { "startOffset": 436, "endOffset": 505, "count": 5 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "checkTestEnvironment",
+      "ranges": [
+        { "startOffset": 509, "endOffset": 1143, "count": 13 },
+        { "startOffset": 664, "endOffset": 677, "count": 0 },
+        { "startOffset": 770, "endOffset": 802, "count": 0 },
+        { "startOffset": 803, "endOffset": 835, "count": 0 },
+        { "startOffset": 915, "endOffset": 944, "count": 0 },
+        { "startOffset": 945, "endOffset": 975, "count": 0 },
+        { "startOffset": 976, "endOffset": 1006, "count": 0 },
+        { "startOffset": 1007, "endOffset": 1037, "count": 0 },
+        { "startOffset": 1038, "endOffset": 1067, "count": 0 },
+        { "startOffset": 1068, "endOffset": 1097, "count": 0 },
+        { "startOffset": 1121, "endOffset": 1138, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

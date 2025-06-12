@@ -8,7 +8,7 @@ export class LogFilter {
   }
 
   shouldLog(level: LogLevel, currentLevel: LogLevel): boolean {
-    // テスト環境でない場合は常にfalse
+    // テストコードでない場合は常にfalse
     if (!this.isTestEnvironment) {
       return false;
     }
