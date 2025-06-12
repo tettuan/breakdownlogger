@@ -58,7 +58,7 @@ Deno.test("Logger works in test files with default INFO level", () => {
   try {
     // Even without LOG_LEVEL, logger works in test files
     Deno.env.delete("LOG_LEVEL");
-    
+
     // Reset the singleton to pick up the environment change
     EnvironmentConfig.reset();
 
@@ -74,11 +74,15 @@ Deno.test("Logger works in test files with default INFO level", () => {
     logger.info("Info message in test file");
 
     console.log = originalLog;
-    
+
     // Since we're in a test file, logs should be produced
     assertEquals(logs.length, 1, "Expected exactly one log in test file");
     // With default 30 char truncation, only timestamp fits, so check for ISO date pattern
-    assertEquals(/^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\]/.test(logs[0]), true, "Log should start with timestamp");
+    assertEquals(
+      /^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\]/.test(logs[0]),
+      true,
+      "Log should start with timestamp",
+    );
   } finally {
     if (originalLogLevel !== undefined) {
       Deno.env.set("LOG_LEVEL", originalLogLevel);
