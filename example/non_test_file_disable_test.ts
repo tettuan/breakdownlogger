@@ -35,7 +35,7 @@ Deno.test("Logger should be disabled in non-test files by default", () => {
 
     console.log = originalLog;
     console.error = originalError;
-    
+
     // In test files, logger should work even without LOG_LEVEL
     // So we expect logs to be produced
     assertEquals(logs.length + errors.length > 0, true);
@@ -82,22 +82,22 @@ Deno.test("Logger in non-test file should work when LOG_LEVEL is set", () => {
 
 Deno.test("Non-test file detection simulation", () => {
   const originalLogLevel = Deno.env.get("LOG_LEVEL");
-  
+
   try {
     // Remove LOG_LEVEL to simulate non-test file behavior
     Deno.env.delete("LOG_LEVEL");
-    
+
     // Create a file path that doesn't look like a test file
     // In production, this would detect if the file is a test file or not
     const nonTestFilePath = "/src/app.ts";
     const testFilePath = "/src/app_test.ts";
-    
+
     // This demonstrates the concept, though actual implementation
     // would need to check the actual file path
     const isTestFile = (path: string) => {
       return path.includes("_test.") || path.includes(".test.");
     };
-    
+
     assertEquals(isTestFile(nonTestFilePath), false);
     assertEquals(isTestFile(testFilePath), true);
   } finally {

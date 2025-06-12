@@ -6,7 +6,7 @@ import { LogFilter } from "./log_filter.ts";
 /**
  * A debug logging utility designed exclusively for test environments.
  * Provides configurable log levels, message filtering, and output formatting.
- * 
+ *
  * @example
  * ```ts
  * const logger = new BreakdownLogger("auth-module");
@@ -14,7 +14,7 @@ import { LogFilter } from "./log_filter.ts";
  * logger.info("User authenticated successfully");
  * logger.error("Authentication failed", { error: "Invalid token" });
  * ```
- * 
+ *
  * @remarks
  * This logger only works in test files (*_test.ts, *.test.ts) for security reasons.
  * Configure behavior using environment variables:
@@ -30,7 +30,7 @@ export class BreakdownLogger {
 
   /**
    * Creates a new BreakdownLogger instance.
-   * 
+   *
    * @param key - Identifier for this logger instance. Used for filtering logs.
    *              Defaults to "default" if not specified.
    */
@@ -74,7 +74,7 @@ export class BreakdownLogger {
 
   /**
    * Logs a debug message. Only shown when LOG_LEVEL=debug.
-   * 
+   *
    * @param message - The message to log
    * @param data - Optional structured data to include
    */
@@ -84,7 +84,7 @@ export class BreakdownLogger {
 
   /**
    * Logs an info message. Shown by default unless LOG_LEVEL is set higher.
-   * 
+   *
    * @param message - The message to log
    * @param data - Optional structured data to include
    */
@@ -94,7 +94,7 @@ export class BreakdownLogger {
 
   /**
    * Logs a warning message. Shown when LOG_LEVEL=warn or lower.
-   * 
+   *
    * @param message - The message to log
    * @param data - Optional structured data to include
    */
@@ -105,7 +105,7 @@ export class BreakdownLogger {
   /**
    * Logs an error message. Always shown regardless of LOG_LEVEL.
    * Output goes to stderr instead of stdout.
-   * 
+   *
    * @param message - The message to log
    * @param data - Optional structured data to include
    */

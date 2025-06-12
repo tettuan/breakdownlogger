@@ -1,7 +1,7 @@
 /**
  * Available log levels for the logger.
  * Higher values indicate higher severity.
- * 
+ *
  * @enum {number}
  * @readonly
  */
