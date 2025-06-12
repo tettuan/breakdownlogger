@@ -107,11 +107,11 @@ if [ "$DEBUG_MODE" = "true" ]; then
     TEST_ENV="LOG_LEVEL=debug"
 fi
 
-# Run all tests in tests directory
-if ! $TEST_ENV deno test $TEST_PERMISSIONS tests/ 2>&1; then
+# Run all tests (including example directory)
+if ! $TEST_ENV deno test $TEST_PERMISSIONS 2>&1; then
     if [ "$DEBUG_MODE" != "true" ]; then
         print_warning "Tests failed. Retrying with debug mode..."
-        if ! LOG_LEVEL=debug deno test $TEST_PERMISSIONS tests/ 2>&1; then
+        if ! LOG_LEVEL=debug deno test $TEST_PERMISSIONS 2>&1; then
             handle_error "Tests" "Tests failed. Run with DEBUG=true for more details"
         fi
     else

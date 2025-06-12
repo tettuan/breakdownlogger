@@ -1,4 +1,14 @@
 /**
+ * @fileoverview Core type definitions for the BreakdownLogger.
+ * 
+ * This module defines the fundamental types used throughout the logging system,
+ * including log levels, log entries, and configuration enums.
+ * 
+ * @module types
+ * @since 1.0.0
+ */
+
+/**
  * Available log levels for the logger.
  * Higher values indicate higher severity.
  *

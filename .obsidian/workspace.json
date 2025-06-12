@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "tmp/complete_report.md",
+                "file": "tmp/example_problems.ja.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "complete_report"
+              "title": "example_problems.ja"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "tmp/complete_report.md",
+                "file": "tmp/example_problems.ja.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for complete_report"
+              "title": "Backlinks for example_problems.ja"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "tmp/complete_report.md",
+                "file": "tmp/example_problems.ja.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from complete_report"
+              "title": "Outgoing links from example_problems.ja"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "tmp/complete_report.md",
+                "file": "tmp/example_problems.ja.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of complete_report"
+              "title": "Outline of example_problems.ja"
             }
           }
         ]
@@ -170,6 +170,8 @@
   },
   "active": "dded59377fcd2036",
   "lastOpenFiles": [
+    "tmp/complete_report.md",
+    "tmp/complete_report-done.md",
     "test_ci_debug.ts",
     "test_singleton_behavior.ts",
     "test_truncation.ts",
@@ -183,8 +185,6 @@
     "coverage_dir/24c10918-2b85-41c3-8cc8-c37db67f918c.json",
     "coverage_dir/06d5036b-9bcf-4030-8374-383edc64a670.json",
     "coverage_dir/ae66266d-4856-4122-b879-54a3b75f2df7.json",
-    "coverage_dir/75df9bca-8c87-44f8-a967-fa4f24fcebdc.json",
-    "tmp/complete_report.md",
     "CLAUDE.md"
   ]
 }

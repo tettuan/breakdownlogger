@@ -38,7 +38,9 @@ export class LogFilter {
       stack.includes("$deno$test$") ||
       stack.includes("TestContext") ||
       stack.includes("ext:deno_test/") || // CI環境でのテストランナー
-      stack.includes("deno:test"); // 別のテストランナーパターン
+      stack.includes("deno:test") || // 別のテストランナーパターン
+      stack.includes("test.ts") || // Deno test files in CI
+      stack.includes("test_runner"); // Generic test runner pattern
 
     // テストファイルパターンをチェック
     const hasTestPattern = stack.includes("_test.ts") ||
@@ -51,6 +53,9 @@ export class LogFilter {
       stack.includes("_test.") || // より広範なパターン
       stack.includes(".test."); // より広範なパターン
 
-    return isDenoTest || hasTestPattern;
+    // 環境変数による強制テストモード（デバッグ用）
+    const forceTestMode = Deno.env.get("FORCE_TEST_MODE") === "true";
+
+    return isDenoTest || hasTestPattern || forceTestMode;
   }
 }

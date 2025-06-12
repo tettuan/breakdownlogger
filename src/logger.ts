@@ -1,3 +1,15 @@
+/**
+ * @fileoverview Core logger implementation for BreakdownLogger.
+ *
+ * This module contains the main BreakdownLogger class that provides
+ * debug logging functionality exclusively for test environments.
+ * The logger automatically detects test contexts and applies security
+ * restrictions to prevent usage in production code.
+ *
+ * @module logger
+ * @since 1.0.0
+ */
+
 import { type LogEntry, LogLevel } from "./types.ts";
 import { EnvironmentConfig } from "./environment_config.ts";
 import { LogFormatter } from "./log_formatter.ts";
