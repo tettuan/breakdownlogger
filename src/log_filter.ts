@@ -1,0 +1,52 @@
+import type { LogLevel } from "./types.ts";
+
+export class LogFilter {
+  private isTestEnvironment: boolean;
+
+  constructor() {
+    this.isTestEnvironment = this.checkTestEnvironment();
+  }
+
+  shouldLog(level: LogLevel, currentLevel: LogLevel): boolean {
+    // テスト環境でない場合は常にfalse
+    if (!this.isTestEnvironment) {
+      return false;
+    }
+
+    // 現在のログレベル以上のものだけ出力
+    return level >= currentLevel;
+  }
+
+  shouldOutputKey(key: string, allowedKeys: string[]): boolean {
+    // KEYが指定されていない場合は全て出力
+    if (allowedKeys.length === 0) {
+      return true;
+    }
+
+    // 指定されたKEYに含まれているかチェック
+    return allowedKeys.includes(key);
+  }
+
+  private checkTestEnvironment(): boolean {
+    // Deno.testコンテキストかどうかをチェック
+    // Denoテストコンテキストでは、スタックトレースに特定のパターンが含まれる
+    const stack = new Error().stack;
+    if (!stack) return false;
+
+    // Denoのテストランナーが含まれているかチェック
+    const isDenoTest = stack.includes("ext:cli/40_test.js") ||
+      stack.includes("$deno$test$") ||
+      stack.includes("TestContext");
+
+    // テストファイルパターンをチェック
+    const hasTestPattern = stack.includes("_test.ts") ||
+      stack.includes("_test.js") ||
+      stack.includes("_test.mjs") ||
+      stack.includes("_test.jsx") ||
+      stack.includes("_test.tsx") ||
+      stack.includes(".test.ts") ||
+      stack.includes(".test.js");
+
+    return isDenoTest || hasTestPattern;
+  }
+}
