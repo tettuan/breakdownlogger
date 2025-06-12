@@ -11,6 +11,15 @@
 
 import type { LogLevel } from "./types.ts";
 
+/**
+ * Handles filtering of log messages based on various criteria.
+ *
+ * This class determines whether log messages should be output based on
+ * the current environment (test vs production), log levels, and key filtering.
+ * It provides the core security mechanism that prevents logging in production.
+ *
+ * @since 1.0.0
+ */
 export class LogFilter {
   private isTestEnvironment: boolean;
 
@@ -18,6 +27,13 @@ export class LogFilter {
     this.isTestEnvironment = this.checkTestEnvironment();
   }
 
+  /**
+   * Determines if a log message should be output based on level and environment.
+   *
+   * @param level - The log level of the message being evaluated
+   * @param currentLevel - The minimum log level threshold from configuration
+   * @returns true if the message should be logged, false otherwise
+   */
   shouldLog(level: LogLevel, currentLevel: LogLevel): boolean {
     // テストコードでない場合は常にfalse
     if (!this.isTestEnvironment) {
@@ -28,6 +44,13 @@ export class LogFilter {
     return level >= currentLevel;
   }
 
+  /**
+   * Determines if a log key should be output based on the allowed keys filter.
+   *
+   * @param key - The logger key to check
+   * @param allowedKeys - Array of keys that are allowed to output logs (from LOG_KEY env var)
+   * @returns true if the key should be output, false if filtered out
+   */
   shouldOutputKey(key: string, allowedKeys: string[]): boolean {
     // KEYが指定されていない場合は全て出力
     if (allowedKeys.length === 0) {
@@ -38,6 +61,16 @@ export class LogFilter {
     return allowedKeys.includes(key);
   }
 
+  /**
+   * Checks if the current execution context is within a test environment.
+   *
+   * Uses stack trace analysis and environment variables to determine if
+   * the logger is being called from test code. This is the core security
+   * mechanism that prevents logging in production environments.
+   *
+   * @returns true if running in a test environment, false otherwise
+   * @private
+   */
   private checkTestEnvironment(): boolean {
     // Deno.testコンテキストかどうかをチェック
     // Denoテストコンテキストでは、スタックトレースに特定のパターンが含まれる

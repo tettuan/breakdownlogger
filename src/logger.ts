@@ -53,6 +53,14 @@ export class BreakdownLogger {
     this.filter = new LogFilter();
   }
 
+  /**
+   * Internal method to handle log output with filtering and formatting.
+   *
+   * @param level - The log level for this message
+   * @param message - The message to log
+   * @param data - Optional structured data to include
+   * @private
+   */
   private log(level: LogLevel, message: string, data?: unknown): void {
     const currentLevel = this.environmentConfig.getLogLevel();
 
