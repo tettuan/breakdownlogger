@@ -7,6 +7,10 @@
 - `BreakdownLogger` クラス
 - `LogLevel` 列挙型
 
+deno.jsonのexportsフィールドも適切に設定されています：
+- `".": "./mod.ts"` - メインエントリーポイント
+- `"./logger": "./src/logger.ts"` - 直接logger.tsをインポートする場合
+
 ## 提案する最小限のexport構成
 
 ### 1. 必須export（現状維持）
