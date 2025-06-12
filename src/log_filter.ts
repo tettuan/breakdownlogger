@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Log filtering logic for BreakdownLogger.
+ *
+ * This module handles filtering of log messages based on log levels,
+ * test environment detection, and log key filtering. It ensures that
+ * logs are only output in appropriate contexts and at the correct verbosity levels.
+ *
+ * @module log_filter
+ * @since 1.0.0
+ */
+
 import type { LogLevel } from "./types.ts";
 
 export class LogFilter {

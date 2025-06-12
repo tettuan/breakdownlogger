@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Environment configuration management for BreakdownLogger.
+ *
+ * This module handles parsing and caching of environment variables that control
+ * logging behavior. It implements a singleton pattern to ensure consistent
+ * configuration across the application while providing methods to reset when needed.
+ *
+ * @module environment_config
+ * @since 1.0.0
+ */
+
 import { LogLength, LogLevel } from "./types.ts";
 
 export class EnvironmentConfig {

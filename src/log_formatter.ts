@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Log message formatting for BreakdownLogger.
+ *
+ * This module handles the formatting and presentation of log messages,
+ * including timestamp formatting, message truncation, and data serialization.
+ * It ensures consistent output format across all log levels and contexts.
+ *
+ * @module log_formatter
+ * @since 1.0.0
+ */
+
 import { type LogEntry, LogLength, LogLevel } from "./types.ts";
 
 export class LogFormatter {
