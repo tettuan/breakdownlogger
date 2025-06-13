@@ -1,49 +1,51 @@
 import { BreakdownLogger } from "../mod.ts";
 
 /**
- * 基本的な使用例
+ * Basic usage example
  *
- * このサンプルでは以下の機能をデモンストレーションします：
- * 1. デフォルトのログレベル（INFO）での動作
- * 2. 環境変数によるログレベルの設定方法の説明
- * 3. 構造化データの出力
- * 4. 異なるロガーインスタンスの使用
+ * This sample demonstrates the following features:
+ * 1. Default log level (INFO) behavior
+ * 2. How to set log level via environment variables
+ * 3. Structured data output
+ * 4. Using different logger instances
  */
 
-// デフォルトのログレベル（INFO）でロガーを初期化
+// Initialize logger with default log level (INFO)
 const logger = new BreakdownLogger();
 
-// 基本機能のデモ
-console.log("\n=== 基本機能のデモ ===");
-logger.debug("このメッセージは出力されません（DEBUG < INFO）");
-logger.info("このメッセージは出力されます");
-logger.warn("このメッセージは出力されます");
-logger.error("このメッセージは出力されます");
+// Basic functionality demo
+console.log("\n=== Basic Functionality Demo ===");
+logger.debug("This message will not be output (DEBUG < INFO)");
+logger.info("This message will be output");
+logger.warn("This message will be output");
+logger.error("This message will be output");
 
-// 構造化データの出力
-console.log("\n=== 構造化データの出力 ===");
+// Structured data output
+console.log("\n=== Structured Data Output ===");
 const userData = {
   id: 123,
-  name: "テストユーザー",
+  name: "Test User",
   preferences: {
     theme: "dark",
     notifications: true,
   },
 };
-logger.info("ユーザー情報", userData);
+logger.info("User information", userData);
 
-// 環境変数によるログレベル制御のデモ
-console.log("\n=== 環境変数によるログレベル制御 ===");
-console.log("現在のログレベル: INFO（デフォルト）");
-console.log("ログレベルを変更するには、環境変数 LOG_LEVEL を設定してください");
-console.log("例: LOG_LEVEL=debug deno run --allow-env example/basic_usage.ts");
+// Demo of log level control via environment variables
+console.log("\n=== Log Level Control via Environment Variables ===");
+console.log("Current log level: INFO (default)");
+console.log("To change log level, set the LOG_LEVEL environment variable");
+console.log(
+  "Example: LOG_LEVEL=debug deno run --allow-env example/basic_usage.ts",
+);
 
-// 異なるロガーインスタンスの作成
-console.log("\n=== 異なるロガーインスタンス ===");
+// Creating different logger instances
+console.log("\n=== Different Logger Instances ===");
 const apiLogger = new BreakdownLogger("api");
 const dbLogger = new BreakdownLogger("database");
 
-apiLogger.info("APIリクエストを受信しました", { endpoint: "/users/123" });
-dbLogger.info("データベースクエリを実行しました", {
+apiLogger.info("API request received", { endpoint: "/users/123" });
+dbLogger.info("Database query executed", {
   query: "SELECT * FROM users WHERE id = 123",
 });

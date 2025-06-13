@@ -5,7 +5,7 @@ import {
 import { BreakdownLogger } from "../mod.ts";
 import { EnvironmentConfig } from "../src/environment_config.ts";
 
-// テストユーティリティ：コンソール出力のキャプチャ
+// Test utility: Console output capture
 class ConsoleCapture {
   private originalLog: typeof console.log;
   private originalError: typeof console.error;
@@ -36,27 +36,27 @@ class ConsoleCapture {
   }
 }
 
-// グローバルなキャプチャインスタンス
+// Global capture instance
 const capture = new ConsoleCapture();
 
-// テスト完了時のクリーンアップ
+// Clean up when tests complete
 addEventListener("unload", () => {
   capture.restore();
 });
 
 Deno.test("BreakdownLogger", async (t) => {
-  // 各テスト後にログをクリア
+  // Clear logs after each test
   const cleanup = () => {
     capture.clear();
     Deno.env.delete("LOG_LEVEL");
     Deno.env.delete("LOG_LENGTH");
     Deno.env.delete("LOG_KEY");
-    // EnvironmentConfigのシングルトンをリセット
+    // Reset EnvironmentConfig singleton
     EnvironmentConfig.reset();
   };
 
   await t.step({
-    name: "基本機能: デフォルトログレベル（INFO）の初期化",
+    name: "Basic functionality: Default log level (INFO) initialization",
     fn: () => {
       cleanup();
       const logger = new BreakdownLogger("test-key");
@@ -65,7 +65,7 @@ Deno.test("BreakdownLogger", async (t) => {
       logger.info("This should be logged");
 
       assertEquals(capture.logs.length, 1);
-      // デフォルトでは30文字に切り詰められる
+      // Truncated to 30 characters by default
       assertEquals(capture.logs[0].length, 30);
       assertMatch(
         capture.logs[0],
@@ -75,11 +75,11 @@ Deno.test("BreakdownLogger", async (t) => {
   });
 
   await t.step({
-    name: "環境変数: LOG_LEVEL=debug の設定",
+    name: "Environment variable: LOG_LEVEL=debug setting",
     fn: () => {
       cleanup();
       Deno.env.set("LOG_LEVEL", "debug");
-      Deno.env.set("LOG_LENGTH", "W"); // 完全な出力を取得
+      Deno.env.set("LOG_LENGTH", "W"); // Get complete output
       const logger = new BreakdownLogger("test-key");
 
       logger.debug("Debug message");
@@ -92,7 +92,7 @@ Deno.test("BreakdownLogger", async (t) => {
   });
 
   await t.step({
-    name: "データ出力: 構造化データの正しいフォーマット",
+    name: "Data output: Correct formatting of structured data",
     fn: () => {
       cleanup();
       Deno.env.set("LOG_LEVEL", "debug");
@@ -111,11 +111,11 @@ Deno.test("BreakdownLogger", async (t) => {
   });
 
   await t.step({
-    name: "ログレベル階層: 上位レベルでの下位レベルのフィルタリング",
+    name: "Log level hierarchy: Lower level filtering at higher levels",
     fn: () => {
       cleanup();
       Deno.env.set("LOG_LEVEL", "warn");
-      Deno.env.set("LOG_LENGTH", "W"); // 完全な出力を取得
+      Deno.env.set("LOG_LENGTH", "W"); // Get complete output
       const logger = new BreakdownLogger("test-key");
 
       logger.debug("Should not log");
@@ -131,7 +131,7 @@ Deno.test("BreakdownLogger", async (t) => {
   });
 
   await t.step({
-    name: "環境変数: LOG_LENGTH=S の設定（100文字制限）",
+    name: "Environment variable: LOG_LENGTH=S setting (100 character limit)",
     fn: () => {
       cleanup();
       Deno.env.set("LOG_LENGTH", "S");
@@ -142,18 +142,18 @@ Deno.test("BreakdownLogger", async (t) => {
 
       assertEquals(capture.logs.length, 1);
       const output = capture.logs[0];
-      // タイムスタンプ + レベル + キー + メッセージで100文字以内
+      // Timestamp + level + key + message within 100 characters
       assertEquals(output.length, 100);
       assertMatch(output, /\.\.\.$/);
     },
   });
 
   await t.step({
-    name: "環境変数: LOG_KEY フィルタリング（単一キー）",
+    name: "Environment variable: LOG_KEY filtering (single key)",
     fn: () => {
       cleanup();
       Deno.env.set("LOG_KEY", "allowed-key");
-      Deno.env.set("LOG_LENGTH", "W"); // 完全な出力を取得
+      Deno.env.set("LOG_LENGTH", "W"); // Get complete output
       const logger1 = new BreakdownLogger("allowed-key");
       const logger2 = new BreakdownLogger("not-allowed");
 
@@ -166,11 +166,11 @@ Deno.test("BreakdownLogger", async (t) => {
   });
 
   await t.step({
-    name: "環境変数: LOG_KEY フィルタリング（複数キー）",
+    name: "Environment variable: LOG_KEY filtering (multiple keys)",
     fn: () => {
       cleanup();
       Deno.env.set("LOG_KEY", "key1,key2:key3/key4");
-      Deno.env.set("LOG_LENGTH", "W"); // 完全な出力を取得
+      Deno.env.set("LOG_LENGTH", "W"); // Get complete output
       const logger1 = new BreakdownLogger("key1");
       const logger2 = new BreakdownLogger("key3");
       const logger3 = new BreakdownLogger("key5");
@@ -186,10 +186,10 @@ Deno.test("BreakdownLogger", async (t) => {
   });
 
   await t.step({
-    name: "デフォルトキー: 引数なしでBreakdownLoggerを作成",
+    name: "Default key: Create BreakdownLogger without arguments",
     fn: () => {
       cleanup();
-      Deno.env.set("LOG_LENGTH", "W"); // 完全な出力を取得
+      Deno.env.set("LOG_LENGTH", "W"); // Get complete output
       const logger = new BreakdownLogger();
 
       logger.info("Message with default key");
@@ -200,7 +200,7 @@ Deno.test("BreakdownLogger", async (t) => {
   });
 
   await t.step({
-    name: "異常系: 不正な環境変数値の処理",
+    name: "Error handling: Processing invalid environment variable values",
     fn: () => {
       cleanup();
       Deno.env.set("LOG_LEVEL", "INVALID_LEVEL");
@@ -211,17 +211,17 @@ Deno.test("BreakdownLogger", async (t) => {
       logger.debug("Should not log");
 
       assertEquals(capture.logs.length, 1);
-      // デフォルト長さ（30文字）で切り詰められる
+      // Truncated at default length (30 characters)
       assertEquals(capture.logs[0].length, 30);
       assertMatch(capture.logs[0], /\.\.\.$/);
     },
   });
 
   await t.step({
-    name: "エラーレベル: console.errorへの出力",
+    name: "Error level: Output to console.error",
     fn: () => {
       cleanup();
-      Deno.env.set("LOG_LENGTH", "W"); // 完全な出力を取得
+      Deno.env.set("LOG_LENGTH", "W"); // Get complete output
       const logger = new BreakdownLogger("error-test");
 
       logger.error("This is an error", { code: "ERR001" });

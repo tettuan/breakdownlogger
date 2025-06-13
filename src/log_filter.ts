@@ -1,12 +1,11 @@
 /**
- * @fileoverview Log filtering logic for BreakdownLogger.
+ * Log filtering logic for BreakdownLogger.
  *
  * This module handles filtering of log messages based on log levels,
  * test environment detection, and log key filtering. It ensures that
  * logs are only output in appropriate contexts and at the correct verbosity levels.
  *
- * @module log_filter
- * @since 1.0.0
+ * @module
  */
 
 import type { LogLevel } from "./types.ts";
@@ -35,12 +34,12 @@ export class LogFilter {
    * @returns true if the message should be logged, false otherwise
    */
   shouldLog(level: LogLevel, currentLevel: LogLevel): boolean {
-    // テストコードでない場合は常にfalse
+    // Always false if not test code
     if (!this.isTestEnvironment) {
       return false;
     }
 
-    // 現在のログレベル以上のものだけ出力
+    // Output only logs at or above current log level
     return level >= currentLevel;
   }
 
@@ -52,12 +51,12 @@ export class LogFilter {
    * @returns true if the key should be output, false if filtered out
    */
   shouldOutputKey(key: string, allowedKeys: string[]): boolean {
-    // KEYが指定されていない場合は全て出力
+    // Output all if KEY is not specified
     if (allowedKeys.length === 0) {
       return true;
     }
 
-    // 指定されたKEYに含まれているかチェック
+    // Check if included in specified KEY
     return allowedKeys.includes(key);
   }
 
@@ -72,21 +71,21 @@ export class LogFilter {
    * @private
    */
   private checkTestEnvironment(): boolean {
-    // Deno.testコンテキストかどうかをチェック
-    // Denoテストコンテキストでは、スタックトレースに特定のパターンが含まれる
+    // Check if in Deno.test context
+    // In Deno test context, stack trace contains specific patterns
     const stack = new Error().stack;
     if (!stack) return false;
 
-    // Denoのテストランナーが含まれているかチェック
+    // Check if Deno test runner is included
     const isDenoTest = stack.includes("ext:cli/40_test.js") ||
       stack.includes("$deno$test$") ||
       stack.includes("TestContext") ||
-      stack.includes("ext:deno_test/") || // CI環境でのテストランナー
-      stack.includes("deno:test") || // 別のテストランナーパターン
+      stack.includes("ext:deno_test/") || // Test runner in CI environment
+      stack.includes("deno:test") || // Alternative test runner pattern
       stack.includes("test.ts") || // Deno test files in CI
       stack.includes("test_runner"); // Generic test runner pattern
 
-    // テストファイルパターンをチェック
+    // Check test file patterns
     const hasTestPattern = stack.includes("_test.ts") ||
       stack.includes("_test.js") ||
       stack.includes("_test.mjs") ||
@@ -94,10 +93,10 @@ export class LogFilter {
       stack.includes("_test.tsx") ||
       stack.includes(".test.ts") ||
       stack.includes(".test.js") ||
-      stack.includes("_test.") || // より広範なパターン
-      stack.includes(".test."); // より広範なパターン
+      stack.includes("_test.") || // Broader pattern
+      stack.includes(".test."); // Broader pattern
 
-    // 環境変数による強制テストモード（デバッグ用）
+    // Force test mode via environment variable (for debugging)
     const forceTestMode = Deno.env.get("FORCE_TEST_MODE") === "true";
 
     return isDenoTest || hasTestPattern || forceTestMode;

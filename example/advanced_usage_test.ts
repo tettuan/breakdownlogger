@@ -1,122 +1,124 @@
 /**
- * デモンストレーション用ファイル
- * これは実際のテストファイルではなく、BreakdownLoggerの使用例を示すためのものです。
- * BreakdownLoggerはテストファイル内でのみ動作するため、_test.tsという名前になっています。
+ * Demonstration file
+ * This is not an actual test file, but to demonstrate usage of BreakdownLogger.
+ * BreakdownLogger only works in test files, so this file is named _test.ts.
  */
 
 import { BreakdownLogger } from "../mod.ts";
 
 /**
- * 高度な使用例のデモンストレーション
+ * Advanced usage demonstration
  *
- * このファイルは必ずテストファイルとして実行してください：
+ * This file must be run as a test file:
  * deno test --allow-env example/advanced_usage_test.ts
  */
 
-// 異なるキーを持つ複数のロガーインスタンスを作成
+// Create multiple logger instances with different keys
 const authLogger = new BreakdownLogger("auth");
 const dbLogger = new BreakdownLogger("database");
 const apiLogger = new BreakdownLogger("api");
 const cacheLogger = new BreakdownLogger("cache");
-const defaultLogger = new BreakdownLogger(); // デフォルトキー "default"
+const defaultLogger = new BreakdownLogger(); // Default key "default"
 
-Deno.test("高度な機能のデモンストレーション", () => {
-  console.log("\n=== BreakdownLogger 高度な使用例 ===\n");
+Deno.test("Advanced features demonstration", () => {
+  console.log("\n=== BreakdownLogger Advanced Usage ===\n");
 
-  // 環境変数の設定を表示
-  console.log("現在の環境変数設定:");
+  // Display environment variable settings
+  console.log("Current environment variable settings:");
   console.log(
-    `LOG_LEVEL: ${Deno.env.get("LOG_LEVEL") || "未設定 (デフォルト: info)"}`,
+    `LOG_LEVEL: ${Deno.env.get("LOG_LEVEL") || "Not set (default: info)"}`,
   );
   console.log(
     `LOG_LENGTH: ${
-      Deno.env.get("LOG_LENGTH") || "未設定 (デフォルト: 30文字)"
+      Deno.env.get("LOG_LENGTH") || "Not set (default: 30 characters)"
     }`,
   );
   console.log(
-    `LOG_KEY: ${Deno.env.get("LOG_KEY") || "未設定 (全てのキーを出力)"}`,
+    `LOG_KEY: ${Deno.env.get("LOG_KEY") || "Not set (output all keys)"}`,
   );
   console.log("\n");
 
-  // 1. 異なるキーでのログ出力
-  console.log("--- 異なるキーでのログ出力 ---");
-  authLogger.info("ユーザー認証を開始しました");
-  authLogger.debug("認証トークンの検証中", {
+  // 1. Log output with different keys
+  console.log("--- Log output with different keys ---");
+  authLogger.info("User authentication started");
+  authLogger.debug("Verifying authentication token", {
     userId: 12345,
     token: "abc...xyz",
   });
 
-  dbLogger.info("データベース接続を確立しました");
-  dbLogger.debug("クエリ実行", {
+  dbLogger.info("Database connection established");
+  dbLogger.debug("Executing query", {
     query: "SELECT * FROM users WHERE id = ?",
     params: [12345],
   });
 
-  apiLogger.info("API呼び出しを受信しました");
-  apiLogger.warn("レート制限に近づいています", {
+  apiLogger.info("API call received");
+  apiLogger.warn("Approaching rate limit", {
     remaining: 10,
     resetAt: "2024-03-20T13:00:00Z",
   });
-  apiLogger.error("外部APIでエラーが発生しました", {
+  apiLogger.error("External API error occurred", {
     status: 503,
     message: "Service Unavailable",
     endpoint: "https://api.example.com/users",
   });
 
-  cacheLogger.debug("キャッシュから取得", { key: "user:12345", hit: true });
+  cacheLogger.debug("Retrieved from cache", { key: "user:12345", hit: true });
 
-  defaultLogger.info("デフォルトキーでのログメッセージ");
+  defaultLogger.info("Log message with default key");
 
-  // 2. 長いメッセージの切り詰めデモ
-  console.log("\n--- 長いメッセージの切り詰めデモ ---");
+  // 2. Long message truncation demo
+  console.log("\n--- Long message truncation demo ---");
   const longMessage =
-    "これは非常に長いメッセージです。デフォルトでは30文字で切り詰められますが、LOG_LENGTH環境変数を設定することで制御できます。";
+    "This is a very long message. By default it's truncated at 30 characters, but can be controlled by setting LOG_LENGTH environment variable.";
   const veryLongData = {
-    description: "このオブジェクトには多くのデータが含まれています",
+    description: "This object contains a lot of data",
     items: Array.from({ length: 20 }, (_, i) => ({
       id: i,
-      name: `アイテム${i}`,
+      name: `Item${i}`,
       value: Math.random() * 100,
     })),
   };
 
   authLogger.info(longMessage);
-  dbLogger.debug("大量のデータを取得しました", veryLongData);
+  dbLogger.debug("Retrieved large amount of data", veryLongData);
 
-  // 3. 異なるログレベルの出力
-  console.log("\n--- 異なるログレベルの出力 ---");
-  apiLogger.debug("詳細なデバッグ情報（LOG_LEVEL=debugの時のみ表示）");
-  apiLogger.info("一般的な情報メッセージ（デフォルトで表示）");
-  apiLogger.warn("警告メッセージ（LOG_LEVEL=warn以下で表示）");
-  apiLogger.error("エラーメッセージ（常に表示）");
+  // 3. Different log level output
+  console.log("\n--- Different log level output ---");
+  apiLogger.debug(
+    "Detailed debug information (only shown when LOG_LEVEL=debug)",
+  );
+  apiLogger.info("General information message (shown by default)");
+  apiLogger.warn("Warning message (shown when LOG_LEVEL=warn or lower)");
+  apiLogger.error("Error message (always shown)");
 
-  // 4. 実際のユースケース例
-  console.log("\n--- 実際のユースケース例 ---");
+  // 4. Actual use case example
+  console.log("\n--- Actual use case example ---");
 
-  // 関数の実行追跡
+  // Function execution tracking
   function processUser(userId: number) {
     const logger = new BreakdownLogger("user-processor");
 
-    logger.debug("processUser開始", { userId });
+    logger.debug("processUser started", { userId });
 
     try {
-      // 処理をシミュレート
-      logger.debug("ユーザーデータ取得中", { source: "database" });
+      // Simulate processing
+      logger.debug("Fetching user data", { source: "database" });
       const userData = {
         id: userId,
-        name: "テストユーザー",
+        name: "Test User",
         email: "test@example.com",
       };
 
-      logger.debug("データ検証中");
+      logger.debug("Validating data");
       if (!userData.email) {
-        logger.warn("メールアドレスが未設定です", { userId });
+        logger.warn("Email address not set", { userId });
       }
 
-      logger.debug("処理完了", { result: "success" });
+      logger.debug("Processing completed", { result: "success" });
       return userData;
     } catch (error) {
-      logger.error("処理中にエラーが発生しました", {
+      logger.error("Error occurred during processing", {
         userId,
         error: error instanceof Error ? error.message : String(error),
       });
@@ -127,21 +129,21 @@ Deno.test("高度な機能のデモンストレーション", () => {
   processUser(12345);
 });
 
-// 実行例の説明
-console.log("\n=== 実行例 ===");
-console.log("1. 全てのログを表示（デバッグレベル、全文表示）:");
+// Explanation of execution examples
+console.log("\n=== Execution Examples ===");
+console.log("1. Display all logs (debug level, full text):");
 console.log(
   "   LOG_LEVEL=debug LOG_LENGTH=W deno test --allow-env example/advanced_usage_test.ts",
 );
-console.log("\n2. 特定のキーのみ表示:");
+console.log("\n2. Display specific keys only:");
 console.log(
   "   LOG_KEY=auth,api deno test --allow-env example/advanced_usage_test.ts",
 );
-console.log("\n3. エラーのみ表示:");
+console.log("\n3. Display errors only:");
 console.log(
   "   LOG_LEVEL=error deno test --allow-env example/advanced_usage_test.ts",
 );
-console.log("\n4. 組み合わせ例:");
+console.log("\n4. Combination example:");
 console.log(
   "   LOG_LEVEL=debug LOG_LENGTH=S LOG_KEY=database,cache deno test --allow-env example/advanced_usage_test.ts",
 );

@@ -1,12 +1,11 @@
 /**
- * @fileoverview Log message formatting for BreakdownLogger.
+ * Log message formatting for BreakdownLogger.
  *
  * This module handles the formatting and presentation of log messages,
  * including timestamp formatting, message truncation, and data serialization.
  * It ensures consistent output format across all log levels and contexts.
  *
- * @module log_formatter
- * @since 1.0.0
+ * @module
  */
 
 import { type LogEntry, LogLength, LogLevel } from "./types.ts";
@@ -68,7 +67,7 @@ export class LogFormatter {
       return message;
     }
 
-    // 最後の3文字を"..."に置換
+    // Replace last 3 characters with "..."
     return message.substring(0, maxLength - 3) + "...";
   }
 
@@ -94,7 +93,7 @@ export class LogFormatter {
 
       return String(data);
     } catch (_e) {
-      // 循環参照などでJSON.stringifyが失敗した場合
+      // If JSON.stringify fails due to circular references, etc.
       return `[Object: ${String(data)}]`;
     }
   }

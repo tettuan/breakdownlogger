@@ -103,6 +103,115 @@ LOG_LENGTH=S LOG_LENGTH=L LOG_LENGTH=W LOG_LENGTH= # null, default
   - LOG_KEY=hash1234:hash2345
   - 区切り文字: ",/:" のいずれか
 
+#### LOG_KEYの詳細なユースケース
+
+##### 基本的な使い方
+
+LOG_KEYは、複数のログ出力箇所から特定の箇所のみを選択的に表示するための機能です。大規模なアプリケーションのデバッグ時に、関心のある部分のログのみを見ることができます。
+
+```typescript
+// テストコード内での使用例
+const authLogger = new BreakdownLogger("auth");
+const dbLogger = new BreakdownLogger("database");
+const apiLogger = new BreakdownLogger("api");
+const cacheLogger = new BreakdownLogger("cache");
+
+// 各ロガーで異なる処理をログ出力
+authLogger.debug("認証トークンの検証中", { userId: 12345 });
+dbLogger.debug("クエリ実行", { query: "SELECT * FROM users" });
+apiLogger.warn("レート制限に近づいています", { remaining: 10 });
+cacheLogger.debug("キャッシュから取得", { key: "user:12345" });
+```
+
+##### 環境変数での制御
+
+```bash
+# 認証関連のログのみ表示
+LOG_KEY=auth deno test
+
+# データベースとキャッシュのログのみ表示（カンマ区切り）
+LOG_KEY=database,cache deno test
+
+# 複数のキーを異なる区切り文字で指定
+LOG_KEY=auth:database:api deno test  # コロン区切り
+LOG_KEY=auth/database/cache deno test # スラッシュ区切り
+```
+
+##### 実践的なシナリオ
+
+1. **問題の切り分け**
+   ```bash
+   # APIエラーの調査時、API関連のログのみ表示
+   LOG_LEVEL=debug LOG_KEY=api deno test
+
+   # データベース接続問題の調査
+   LOG_LEVEL=debug LOG_KEY=database LOG_LENGTH=W deno test
+   ```
+
+2. **段階的なデバッグ**
+   ```bash
+   # ステップ1: エラーレベルのみ確認
+   LOG_LEVEL=error deno test
+
+   # ステップ2: 問題のあるモジュールを特定
+   LOG_LEVEL=warn deno test
+
+   # ステップ3: 特定モジュールの詳細ログ
+   LOG_LEVEL=debug LOG_KEY=auth,api deno test
+   ```
+
+3. **パフォーマンス分析**
+   ```bash
+   # キャッシュヒット率の確認
+   LOG_KEY=cache LOG_LENGTH=W deno test
+
+   # データベースクエリの分析
+   LOG_KEY=database LOG_LENGTH=L deno test
+   ```
+
+##### 命名規則のベストプラクティス
+
+- **機能別**: `auth`, `api`, `database`, `cache`
+- **レイヤー別**: `controller`, `service`, `repository`
+- **処理フロー別**: `request`, `process`, `response`
+- **一意性を保つ**: 同じキーを複数箇所で使わない
+
+##### デフォルトキーの活用
+
+```typescript
+// キーを指定しない場合、"default"キーが使用される
+const logger = new BreakdownLogger();
+logger.info("汎用的なログメッセージ");
+
+// デフォルトキーのみ表示
+LOG_KEY=default deno test
+```
+
+##### 複雑なデバッグでの活用例
+
+```typescript
+// ユーザー処理の追跡
+function processUser(userId: number) {
+  const logger = new BreakdownLogger("user-processor");
+
+  logger.debug("processUser開始", { userId });
+
+  // 認証チェック
+  const authLogger = new BreakdownLogger("user-auth");
+  authLogger.debug("認証チェック開始");
+
+  // データ取得
+  const dbLogger = new BreakdownLogger("user-db");
+  dbLogger.debug("ユーザーデータ取得", { table: "users", userId });
+
+  // 処理完了
+  logger.debug("処理完了", { status: "success" });
+}
+
+// 特定の処理フローのみ追跡
+// LOG_KEY=user-processor,user-auth,user-db deno test
+```
+
 ### 呼び出し元判定
 
 - テストコードでのみ呼び出される。

@@ -1,12 +1,11 @@
 /**
- * @fileoverview Environment configuration management for BreakdownLogger.
+ * Environment configuration management for BreakdownLogger.
  *
  * This module handles parsing and caching of environment variables that control
  * logging behavior. It implements a singleton pattern to ensure consistent
  * configuration across the application while providing methods to reset when needed.
  *
- * @module environment_config
- * @since 1.0.0
+ * @module
  */
 
 import { LogLength, LogLevel } from "./types.ts";
@@ -153,7 +152,7 @@ export class EnvironmentConfig {
     const keys = Deno.env.get("LOG_KEY");
     if (!keys) return [];
 
-    // 区切り文字: カンマ、コロン、スラッシュのいずれか
+    // Delimiter: comma, colon, or slash
     const separators = /[,:\/]/;
     return keys.split(separators).filter((key) => key.trim().length > 0);
   }
