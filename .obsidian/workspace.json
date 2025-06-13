@@ -170,6 +170,7 @@
   },
   "active": "dded59377fcd2036",
   "lastOpenFiles": [
+    "drafts/20250613-jsr.ja.md",
     "deno.lock",
     "examples/hash-integration-example.ts",
     "examples/hash-logger-test.ts",
@@ -184,7 +185,6 @@
     "test_ci_debug.ts",
     "test_singleton_behavior.ts",
     "test_truncation.ts",
-    "test_debug.ts",
     "export_proposal.md",
     "tmp/example_problems.ja.md",
     "tmp/progress.svg",
