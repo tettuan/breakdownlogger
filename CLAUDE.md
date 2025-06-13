@@ -47,8 +47,8 @@ tmux list-panes -F "#{pane_index}: #{pane_id} #{pane_current_command} #{pane_act
 
 ### 3. Claude Codeセッション起動
 
-**注意**: `cc`はClaude
-Codeのエイリアスです。事前に`alias cc="claude"`を設定するか、直接`claude`コマンドを使用してください。`alias cc="claude --dangerously-skip-permissions"`
+**注意**: `cld`はClaude
+Codeのエイリアスです。事前に`alias cld="claude"`を設定するか、直接`claude`コマンドを使用してください。`alias cld="claude --dangerously-skip-permissions"`
 とするかはユーザーにお任せます。CLAUDE.mdに記載する前にユーザーにヒアリングしてください。
 
 **%27等の番号について**: これらはtmuxが自動割り当てするpane
@@ -56,11 +56,11 @@ IDです。上記の確認コマンドで実際のIDを確認してから使用�
 
 ```
 # 全paneで並列起動（実際のpane IDに置き換えて使用）
-tmux send-keys -t %27 "cc" && sleep 0.1 && tmux send-keys -t %27 Enter & \
-tmux send-keys -t %28 "cc" && sleep 0.1 && tmux send-keys -t %28 Enter & \
-tmux send-keys -t %25 "cc" && sleep 0.1 && tmux send-keys -t %25 Enter & \
-tmux send-keys -t %29 "cc" && sleep 0.1 && tmux send-keys -t %29 Enter & \
-tmux send-keys -t %26 "cc" && sleep 0.1 && tmux send-keys -t %26 Enter & \
+tmux send-keys -t %27 "cld" && sleep 0.1 && tmux send-keys -t %27 Enter & \
+tmux send-keys -t %28 "cld" && sleep 0.1 && tmux send-keys -t %28 Enter & \
+tmux send-keys -t %25 "cld" && sleep 0.1 && tmux send-keys -t %25 Enter & \
+tmux send-keys -t %29 "cld" && sleep 0.1 && tmux send-keys -t %29 Enter & \
+tmux send-keys -t %26 "cld" && sleep 0.1 && tmux send-keys -t %26 Enter & \
 wait
 ```
 
@@ -110,7 +110,7 @@ tmux send-keys -t %22 '[pane3] エラーが発生しました：詳細内容' &&
 **実行タイミングの判断基準**:
 
 - タスク完了時（新しいタスクに集中させるため）
-- トークン使用量が高くなった時（ccusageで確認）
+- トークン使用量が高くなった時（cldusageで確認）
 - エラーが頻発している時（コンテキストをリセット）
 - 複雑な作業から単純な作業に切り替える時
 
@@ -172,7 +172,7 @@ done
 
 - 定期的な/clear実行
 - 大量トークン消費の監視
-- ccusageでの使用量確認
+- cldusageでの使用量確認
 
 ### 4. エラー対処
 
