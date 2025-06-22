@@ -13,7 +13,7 @@ import { LogLength, LogLevel } from "./types.ts";
 /**
  * Manages environment variable configuration for BreakdownLogger.
  *
- * This class handles parsing of LOG_LEVEL, LOG_LENGTH, and LOG_KEY environment 
+ * This class handles parsing of LOG_LEVEL, LOG_LENGTH, and LOG_KEY environment
  * variables with appropriate defaults and validation. Each instance reads the
  * current environment variables at creation time, ensuring immediate reflection
  * of any changes.

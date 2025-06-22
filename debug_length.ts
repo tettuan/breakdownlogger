@@ -13,7 +13,9 @@ const logger2 = new BreakdownLogger("test-key");
 
 console.log("\n=== ログレベルの確認 ===");
 console.log("デフォルトロガー:");
-logger1.debug("これはDEBUGメッセージです（LOG_LEVEL=debugでない場合は表示されないはず）");
+logger1.debug(
+  "これはDEBUGメッセージです（LOG_LEVEL=debugでない場合は表示されないはず）",
+);
 logger1.info("これはINFOメッセージです");
 
 console.log("\nキー付きロガー:");
@@ -34,7 +36,7 @@ console.log(`現在の作業ディレクトリ: ${Deno.cwd()}`);
 // テスト環境パターンのチェック
 const testPatterns = [
   "_test.ts",
-  "_test.js", 
+  "_test.js",
   ".test.ts",
   ".test.js",
   "ext:cli/40_test.js",
@@ -42,11 +44,11 @@ const testPatterns = [
   "TestContext",
   "ext:deno_test/",
   "deno:test",
-  "test_runner"
+  "test_runner",
 ];
 
 console.log("\n=== テスト環境パターンマッチング ===");
-testPatterns.forEach(pattern => {
+testPatterns.forEach((pattern) => {
   const matches = stack?.includes(pattern) || false;
   console.log(`${pattern}: ${matches ? "マッチ" : "非マッチ"}`);
 });

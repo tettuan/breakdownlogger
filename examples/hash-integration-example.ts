@@ -62,7 +62,11 @@ export class OrderProcessor {
 
       orderLogger.info("Order processed successfully", { orderId });
     } catch (error) {
-      const errorHash = generateHash("order-error", orderId, error instanceof Error ? error.message : String(error));
+      const errorHash = generateHash(
+        "order-error",
+        orderId,
+        error instanceof Error ? error.message : String(error),
+      );
       const errorLogger = new BreakdownLogger(errorHash);
 
       errorLogger.error("Order processing failed", {
@@ -286,7 +290,10 @@ Example order processing simulation:
     await processor.processOrder(orderId, items);
     console.log("Order processed successfully!");
   } catch (error) {
-    console.error("Order processing failed:", error instanceof Error ? error.message : String(error));
+    console.error(
+      "Order processing failed:",
+      error instanceof Error ? error.message : String(error),
+    );
   } finally {
     monitor.stopMonitoring(orderId);
   }

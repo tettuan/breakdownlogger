@@ -431,7 +431,10 @@ describe("Environment Setup Tests", () => {
         // Different instances but same configuration values
         assertEquals(config.getLogLevel(), firstConfig.getLogLevel());
         assertEquals(config.getLogLength(), firstConfig.getLogLength());
-        assertEquals(config.getLogKeys().length, firstConfig.getLogKeys().length);
+        assertEquals(
+          config.getLogKeys().length,
+          firstConfig.getLogKeys().length,
+        );
       });
     });
   });

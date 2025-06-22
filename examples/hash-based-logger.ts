@@ -78,7 +78,10 @@ export class DatabaseConnection {
       });
       return result;
     } catch (error) {
-      logger.error("Query failed", { sql, error: error instanceof Error ? error.message : String(error) });
+      logger.error("Query failed", {
+        sql,
+        error: error instanceof Error ? error.message : String(error),
+      });
       throw error;
     }
   }
@@ -93,7 +96,9 @@ export class DatabaseConnection {
       await new Promise((resolve) => setTimeout(resolve, 100));
       logger.info("Database connection established");
     } catch (error) {
-      logger.error("Failed to connect", { error: error instanceof Error ? error.message : String(error) });
+      logger.error("Failed to connect", {
+        error: error instanceof Error ? error.message : String(error),
+      });
       throw error;
     }
   }
