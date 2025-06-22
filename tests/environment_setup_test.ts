@@ -110,7 +110,7 @@ class MockLogger extends BreakdownLogger {
 
   getConfig(): EnvironmentConfig {
     this.configAccessed = true;
-    return EnvironmentConfig.getInstance();
+    return new EnvironmentConfig();
   }
 }
 
@@ -121,7 +121,6 @@ describe("Environment Setup Tests", () => {
   beforeEach(() => {
     envManager.save();
     envManager.clear();
-    EnvironmentConfig.reset();
     consoleCapture.clear();
     consoleCapture.start();
   });
@@ -129,13 +128,12 @@ describe("Environment Setup Tests", () => {
   afterEach(() => {
     consoleCapture.stop();
     envManager.restore();
-    EnvironmentConfig.reset();
   });
 
   describe("Environment Variable Setting", () => {
     it("should correctly set and read LOG_LEVEL environment variable", () => {
       envManager.set("LOG_LEVEL", "debug");
-      const config = EnvironmentConfig.getInstance();
+      const config = new EnvironmentConfig();
       assertEquals(config.getLogLevel(), LogLevel.DEBUG);
     });
 
@@ -149,20 +147,19 @@ describe("Environment Setup Tests", () => {
 
       testCases.forEach(({ input, expected }) => {
         envManager.set("LOG_LEVEL", input);
-        EnvironmentConfig.reset();
-        const config = EnvironmentConfig.getInstance();
+        const config = new EnvironmentConfig();
         assertEquals(config.getLogLevel(), expected);
       });
     });
 
     it("should use default LOG_LEVEL when not set", () => {
-      const config = EnvironmentConfig.getInstance();
+      const config = new EnvironmentConfig();
       assertEquals(config.getLogLevel(), LogLevel.INFO);
     });
 
     it("should handle invalid LOG_LEVEL values gracefully", () => {
       envManager.set("LOG_LEVEL", "INVALID_LEVEL");
-      const config = EnvironmentConfig.getInstance();
+      const config = new EnvironmentConfig();
       assertEquals(config.getLogLevel(), LogLevel.INFO);
     });
 
@@ -178,8 +175,7 @@ describe("Environment Setup Tests", () => {
 
       testCases.forEach(({ input, expected }) => {
         envManager.set("LOG_LENGTH", input);
-        EnvironmentConfig.reset();
-        const config = EnvironmentConfig.getInstance();
+        const config = new EnvironmentConfig();
         assertEquals(config.getLogLength(), expected);
       });
     });
@@ -198,8 +194,7 @@ describe("Environment Setup Tests", () => {
 
       testCases.forEach(({ input, expected }) => {
         envManager.set("LOG_KEY", input);
-        EnvironmentConfig.reset();
-        const config = EnvironmentConfig.getInstance();
+        const config = new EnvironmentConfig();
         assertEquals(config.getLogKeys(), expected);
       });
     });
@@ -213,20 +208,19 @@ describe("Environment Setup Tests", () => {
       assertEquals(Deno.env.get("LOG_KEY"), undefined);
 
       // Verify default configuration
-      const config = EnvironmentConfig.getInstance();
+      const config = new EnvironmentConfig();
       assertEquals(config.getLogLevel(), LogLevel.INFO);
       assertEquals(config.getLogLength(), LogLength.DEFAULT);
       assertEquals(config.getLogKeys(), []);
     });
 
-    it("should properly reset singleton instance", () => {
+    it("should reflect environment changes immediately", () => {
       envManager.set("LOG_LEVEL", "debug");
-      const config1 = EnvironmentConfig.getInstance();
+      const config1 = new EnvironmentConfig();
       assertEquals(config1.getLogLevel(), LogLevel.DEBUG);
 
-      EnvironmentConfig.reset();
       envManager.set("LOG_LEVEL", "error");
-      const config2 = EnvironmentConfig.getInstance();
+      const config2 = new EnvironmentConfig();
       assertEquals(config2.getLogLevel(), LogLevel.ERROR);
     });
 
@@ -250,12 +244,11 @@ describe("Environment Setup Tests", () => {
       logger.info("Info 1 - should log");
       assertEquals(consoleCapture.logs.length, 1);
 
-      // Change environment and reset config
+      // Change environment variables
       envManager.set("LOG_LEVEL", "debug");
       envManager.set("LOG_LENGTH", "W");
-      EnvironmentConfig.reset();
 
-      // Create new logger with new config
+      // Create new logger which will read the updated environment
       const logger2 = new BreakdownLogger("dynamic-test");
       logger2.debug("Debug 2 - should log");
       logger2.info("Info 2 - should log");
@@ -301,7 +294,6 @@ describe("Environment Setup Tests", () => {
       // Test logger with stubs
       envManager.set("LOG_LEVEL", "debug");
       envManager.set("LOG_LENGTH", "W");
-      EnvironmentConfig.reset();
 
       const logger = new BreakdownLogger("stub-test");
       logger.debug("Debug message");
@@ -331,8 +323,7 @@ describe("Environment Setup Tests", () => {
 
       Deno.env.get = (key: string) => mockEnv.get(key);
 
-      EnvironmentConfig.reset();
-      const config = EnvironmentConfig.getInstance();
+      const config = new EnvironmentConfig();
 
       assertEquals(config.getLogLevel(), LogLevel.DEBUG);
       assertEquals(config.getLogLength(), LogLength.LONG);
@@ -362,7 +353,6 @@ describe("Environment Setup Tests", () => {
           // Save current state
           this.envManager.save();
           this.envManager.clear();
-          EnvironmentConfig.reset();
 
           // Apply test configuration
           if (options.logLevel) {
@@ -380,7 +370,6 @@ describe("Environment Setup Tests", () => {
         teardown() {
           this.consoleCapture.stop();
           this.envManager.restore();
-          EnvironmentConfig.reset();
         }
 
         getOutput() {
@@ -414,8 +403,7 @@ describe("Environment Setup Tests", () => {
       envManager.set("LOG_LENGTH", "");
       envManager.set("LOG_KEY", "");
 
-      EnvironmentConfig.reset();
-      const config = EnvironmentConfig.getInstance();
+      const config = new EnvironmentConfig();
 
       assertEquals(config.getLogLevel(), LogLevel.INFO);
       assertEquals(config.getLogLength(), LogLength.DEFAULT);
@@ -424,24 +412,26 @@ describe("Environment Setup Tests", () => {
 
     it("should handle whitespace in LOG_KEY", () => {
       envManager.set("LOG_KEY", "  key1  ,  ,  key2  ,  ");
-      EnvironmentConfig.reset();
-      const config = EnvironmentConfig.getInstance();
+      const config = new EnvironmentConfig();
 
       assertEquals(config.getLogKeys(), ["  key1  ", "  key2  "]);
     });
 
-    it("should maintain thread safety for singleton", () => {
+    it("should create independent instances", () => {
       const configs: EnvironmentConfig[] = [];
 
-      // Simulate concurrent access
+      // Create multiple instances
       for (let i = 0; i < 10; i++) {
-        configs.push(EnvironmentConfig.getInstance());
+        configs.push(new EnvironmentConfig());
       }
 
-      // All should be the same instance
+      // All should be independent instances with same configuration
       const firstConfig = configs[0];
       configs.forEach((config) => {
-        assertEquals(config, firstConfig);
+        // Different instances but same configuration values
+        assertEquals(config.getLogLevel(), firstConfig.getLogLevel());
+        assertEquals(config.getLogLength(), firstConfig.getLogLength());
+        assertEquals(config.getLogKeys().length, firstConfig.getLogKeys().length);
       });
     });
   });

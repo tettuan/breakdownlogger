@@ -13,54 +13,23 @@ import { LogLength, LogLevel } from "./types.ts";
 /**
  * Manages environment variable configuration for BreakdownLogger.
  *
- * This class implements a singleton pattern to ensure consistent configuration
- * parsing and caching across the entire application. It handles parsing of
- * LOG_LEVEL, LOG_LENGTH, and LOG_KEY environment variables with appropriate
- * defaults and validation.
+ * This class handles parsing of LOG_LEVEL, LOG_LENGTH, and LOG_KEY environment 
+ * variables with appropriate defaults and validation. Each instance reads the
+ * current environment variables at creation time, ensuring immediate reflection
+ * of any changes.
  *
  * @class EnvironmentConfig
  * @since 1.0.0
  */
 export class EnvironmentConfig {
-  private static instance: EnvironmentConfig | null = null;
   private logLevel: LogLevel;
   private logLength: LogLength;
   private logKeys: string[];
 
-  private constructor() {
+  constructor() {
     this.logLevel = this.parseLogLevel();
     this.logLength = this.parseLogLength();
     this.logKeys = this.parseLogKeys();
-  }
-
-  /**
-   * Gets the singleton instance of EnvironmentConfig.
-   *
-   * Creates a new instance if one doesn't exist, otherwise returns
-   * the existing cached instance. This ensures consistent configuration
-   * across the entire application.
-   *
-   * @returns The singleton EnvironmentConfig instance
-   * @static
-   */
-  static getInstance(): EnvironmentConfig {
-    if (!this.instance) {
-      this.instance = new EnvironmentConfig();
-    }
-    return this.instance;
-  }
-
-  /**
-   * Resets the singleton instance, forcing re-parsing of environment variables.
-   *
-   * This method is primarily used in testing scenarios where environment
-   * variables may change between tests and the singleton needs to be
-   * re-initialized with new values.
-   *
-   * @static
-   */
-  static reset(): void {
-    this.instance = null;
   }
 
   /**

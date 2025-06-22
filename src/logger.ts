@@ -56,7 +56,7 @@ export class BreakdownLogger {
    */
   constructor(key: string = "default") {
     this.key = key;
-    this.environmentConfig = EnvironmentConfig.getInstance();
+    this.environmentConfig = new EnvironmentConfig();
     this.formatter = new LogFormatter();
     this.filter = new LogFilter();
   }

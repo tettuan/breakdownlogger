@@ -3,7 +3,6 @@ import {
   assertMatch,
 } from "https://deno.land/std@0.219.0/assert/mod.ts";
 import { BreakdownLogger } from "../mod.ts";
-import { EnvironmentConfig } from "../src/environment_config.ts";
 
 // Test utility: Console output capture
 class ConsoleCapture {
@@ -51,8 +50,6 @@ Deno.test("BreakdownLogger", async (t) => {
     Deno.env.delete("LOG_LEVEL");
     Deno.env.delete("LOG_LENGTH");
     Deno.env.delete("LOG_KEY");
-    // Reset EnvironmentConfig singleton
-    EnvironmentConfig.reset();
   };
 
   await t.step({

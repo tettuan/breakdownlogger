@@ -1,5 +1,4 @@
 import { BreakdownLogger } from "../mod.ts";
-import { EnvironmentConfig } from "../src/environment_config.ts";
 
 // Example demonstrating various error object output patterns
 
@@ -14,7 +13,6 @@ Deno.test("Error object output patterns", () => {
     Deno.env.set("LOG_KEY", "ErrorExample");
 
     // Reset the singleton to pick up the environment changes
-    EnvironmentConfig.reset();
 
     const logger = new BreakdownLogger("ErrorExample");
 
@@ -142,6 +140,5 @@ Deno.test("Error object output patterns", () => {
       Deno.env.delete("LOG_KEY");
     }
     // Reset the singleton after restoring environment
-    EnvironmentConfig.reset();
   }
 });

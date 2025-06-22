@@ -1,6 +1,5 @@
 import { BreakdownLogger } from "../mod.ts";
 import { assertEquals } from "jsr:@std/assert@^1.0.0";
-import { EnvironmentConfig } from "../src/environment_config.ts";
 
 // This test verifies that loggers are disabled in non-test files
 // when LOG_LEVEL is not set or when LOG_KEY doesn't match
@@ -50,7 +49,6 @@ Deno.test("Logger should be disabled in non-test files by default", () => {
       Deno.env.set("LOG_KEY", originalLogKey);
     }
     // Reset the singleton after restoring environment
-    EnvironmentConfig.reset();
   }
 });
 
@@ -62,7 +60,6 @@ Deno.test("Logger works in test files with default INFO level", () => {
     Deno.env.delete("LOG_LEVEL");
 
     // Reset the singleton to pick up the environment change
-    EnvironmentConfig.reset();
 
     const logger = new BreakdownLogger("TestModule");
 
@@ -92,7 +89,6 @@ Deno.test("Logger works in test files with default INFO level", () => {
       Deno.env.delete("LOG_LEVEL");
     }
     // Reset the singleton after restoring environment
-    EnvironmentConfig.reset();
   }
 });
 
