@@ -1,6 +1,6 @@
 {
   "name": "@tettuan/breakdownlogger",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "exports": {
     ".": "./mod.ts",
     "./logger": "./src/logger.ts"
