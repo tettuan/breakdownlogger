@@ -36,11 +36,15 @@ echo "Checking GitHub tags..."
 git fetch --tags
 all_tags=$(git tag -l "v*" | sort -V)
 
-# Remove tags newer than latest version
+# Get all published versions from JSR
+echo "Fetching all published versions from JSR..."
+jsr_versions=$(curl -s https://jsr.io/@tettuan/breakdownlogger/versions | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | sort -u)
+
+# Remove GitHub tags that are not published on JSR
 for tag in $all_tags; do
     tag_version=${tag#v}
-    if [ "$(printf '%s\n%s\n' "$tag_version" "$latest_jsr_version" | sort -V | tail -n 1)" = "$tag_version" ]; then
-        echo "Removing tag $tag (newer than version $latest_jsr_version)"
+    if ! echo "$jsr_versions" | grep -q "^$tag_version$"; then
+        echo "Removing tag $tag (version $tag_version not found on JSR)"
         git tag -d "$tag"
         git push origin ":refs/tags/$tag"
     fi
