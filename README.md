@@ -22,7 +22,7 @@ files.
 ## Installation
 
 ```typescript
-import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@0.1.0";
+import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@1.0.4";
 ```
 
 ## Usage
@@ -56,7 +56,7 @@ import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@0.1.0";
 ### Basic Usage
 
 ```typescript
-import { BreakdownLogger } from "jsr:@tettuan/breakdownlogger@0.1.0";
+import { BreakdownLogger } from "jsr:@tettuan/breakdownlogger@1.0.4";
 
 // Create logger with a unique key for filtering
 const logger = new BreakdownLogger("auth-module");
@@ -257,7 +257,7 @@ LOG_LEVEL=debug LOG_LENGTH=L LOG_KEY=api,cache deno test
 #### Complex Debugging Example
 
 ```typescript
-import { BreakdownLogger } from "jsr:@tettuan/breakdownlogger@0.1.0";
+import { BreakdownLogger } from "jsr:@tettuan/breakdownlogger@1.0.4";
 
 Deno.test("User processing test", async () => {
   const mainLogger = new BreakdownLogger("user-processor");
