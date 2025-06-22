@@ -1,5 +1,17 @@
 import { BreakdownLogger } from "../mod.ts";
-import { createHash } from "https://deno.land/std@0.218.0/crypto/mod.ts";
+
+/**
+ * Simple hash function for demonstration purposes
+ */
+function simpleHash(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash).toString(16).substring(0, 8);
+}
 
 /**
  * Real-world example: E-commerce order processing system with hash-based logging
@@ -7,9 +19,7 @@ import { createHash } from "https://deno.land/std@0.218.0/crypto/mod.ts";
 
 // Utility function to generate consistent hashes
 function generateHash(...parts: string[]): string {
-  const hash = createHash("md5");
-  hash.update(parts.join(":"));
-  return hash.toString().substring(0, 8);
+  return simpleHash(parts.join(":"));
 }
 
 // Order processing system with hash-based debugging
@@ -52,13 +62,13 @@ export class OrderProcessor {
 
       orderLogger.info("Order processed successfully", { orderId });
     } catch (error) {
-      const errorHash = generateHash("order-error", orderId, error.message);
+      const errorHash = generateHash("order-error", orderId, error instanceof Error ? error.message : String(error));
       const errorLogger = new BreakdownLogger(errorHash);
 
       errorLogger.error("Order processing failed", {
         orderId,
-        error: error.message,
-        stack: error.stack,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
         debugHint: `Run with LOG_KEY=${orderHash},${errorHash} for full trace`,
       });
 
@@ -150,7 +160,7 @@ export class OrderProcessor {
 
       failureLogger.error("Payment failed", {
         orderId,
-        error: error.message,
+        error: error instanceof Error ? error.message : String(error),
         debugCommand:
           `LOG_KEY=${paymentHash},${failureHash} LOG_LENGTH=W deno test`,
       });
@@ -181,7 +191,7 @@ export class OrderProcessor {
 
   private getInventoryLevel(_productId: string): Promise<number> {
     // Simulate inventory lookup
-    return Math.floor(Math.random() * 100);
+    return Promise.resolve(Math.floor(Math.random() * 100));
   }
 }
 
@@ -276,7 +286,7 @@ Example order processing simulation:
     await processor.processOrder(orderId, items);
     console.log("Order processed successfully!");
   } catch (error) {
-    console.error("Order processing failed:", error.message);
+    console.error("Order processing failed:", error instanceof Error ? error.message : String(error));
   } finally {
     monitor.stopMonitoring(orderId);
   }

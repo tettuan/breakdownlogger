@@ -1,16 +1,24 @@
 import { BreakdownLogger } from "../mod.ts";
-import { createHash } from "https://deno.land/std@0.218.0/crypto/mod.ts";
+
+/**
+ * Simple hash function for demonstration purposes
+ */
+function simpleHash(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash).toString(16).substring(0, 8);
+}
 
 /**
  * Generate a hash-based key from file path and function name
  */
 function generateLogKey(filePath: string, functionName: string): string {
   const combined = `${filePath}:${functionName}`;
-  const hash = createHash("md5");
-  hash.update(combined);
-  const fullHash = hash.toString();
-  // Use first 8 characters for readability
-  return fullHash.substring(0, 8);
+  return simpleHash(combined);
 }
 
 /**
@@ -18,10 +26,7 @@ function generateLogKey(filePath: string, functionName: string): string {
  */
 function generateComplexLogKey(...parts: string[]): string {
   const combined = parts.join(":");
-  const hash = createHash("md5");
-  hash.update(combined);
-  const fullHash = hash.toString();
-  return fullHash.substring(0, 8);
+  return simpleHash(combined);
 }
 
 // Example 1: Simple hash-based logger for a specific function
@@ -73,7 +78,7 @@ export class DatabaseConnection {
       });
       return result;
     } catch (error) {
-      logger.error("Query failed", { sql, error: error.message });
+      logger.error("Query failed", { sql, error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   }
@@ -88,7 +93,7 @@ export class DatabaseConnection {
       await new Promise((resolve) => setTimeout(resolve, 100));
       logger.info("Database connection established");
     } catch (error) {
-      logger.error("Failed to connect", { error: error.message });
+      logger.error("Failed to connect", { error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   }
