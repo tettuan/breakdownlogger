@@ -111,15 +111,15 @@ export class LogFormatter {
   getMaxLength(logLength: LogLength): number {
     switch (logLength) {
       case LogLength.DEFAULT:
-        return 30;
+        return 80;
       case LogLength.SHORT:
-        return 100;
+        return 160;
       case LogLength.LONG:
-        return 200;
+        return 300;
       case LogLength.WHOLE:
         return -1;
       default:
-        return 30;
+        return 80;
     }
   }
 }

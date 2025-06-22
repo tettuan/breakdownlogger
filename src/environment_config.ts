@@ -119,7 +119,7 @@ export class EnvironmentConfig {
    * Parses the LOG_LENGTH environment variable into a LogLength enum value.
    *
    * Supports case-insensitive parsing of "S" (short), "L" (long), and "W" (whole).
-   * Defaults to DEFAULT (30 characters) if the environment variable is not set or invalid.
+   * Defaults to DEFAULT (80 characters) if the environment variable is not set or invalid.
    *
    * @returns The parsed LogLength value
    * @private

@@ -24,7 +24,8 @@
     "fmt": "deno fmt",
     "lint": "deno lint",
     "check": "deno check **/*.ts",
-    "publish": "deno publish"
+    "publish": "deno publish",
+    "ci": "bash scripts/local_ci.sh"
   },
   "publish": {
     "include": [

@@ -168,13 +168,13 @@ LOG_LEVEL=debug deno test --allow-env example/security_demo_test.ts
 ログメッセージの長さを環境変数で制御できます：
 
 ```bash
-# デフォルト（30文字）で実行
+# デフォルト（80文字）で実行
 deno test --allow-env example/test_environment.ts
 
-# Short（100文字）で実行
+# Short（160文字）で実行
 LOG_LENGTH=S deno test --allow-env example/test_environment.ts
 
-# Long（200文字）で実行
+# Long（300文字）で実行
 LOG_LENGTH=L deno test --allow-env example/test_environment.ts
 
 # Whole（全文表示）で実行
@@ -234,7 +234,7 @@ namedLogger.info("名前付きログ"); // [myapp] が表示される
 # DEBUGレベル、全文表示、特定キーのみ
 LOG_LEVEL=debug LOG_LENGTH=W LOG_KEY=auth,database deno test --allow-env your_test.ts
 
-# WARNレベル以上、100文字制限、apiキーのみ
+# WARNレベル以上、160文字制限、apiキーのみ
 LOG_LEVEL=warn LOG_LENGTH=S LOG_KEY=api deno test --allow-env your_test.ts
 ```
 
@@ -252,7 +252,7 @@ LOG_LEVEL=warn LOG_LENGTH=S LOG_KEY=api deno test --allow-env your_test.ts
    - `LOG_KEY`: キーによるフィルタリング（カンマ、コロン、スラッシュ区切り）
 
 3. **メッセージの切り詰め**
-   - デフォルトでは30文字で切り詰められ、末尾に`...`が付きます
+   - デフォルトでは80文字で切り詰められ、末尾に`...`が付きます
    - 重要な情報はメッセージの先頭に配置することを推奨します
 
 4. **パーミッション**

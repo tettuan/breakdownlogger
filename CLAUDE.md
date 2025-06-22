@@ -47,9 +47,8 @@ tmux list-panes -F "#{pane_index}: #{pane_id} #{pane_current_command} #{pane_act
 
 ### 3. Claude Codeセッション起動
 
-**注意**: `cld`はClaude
-Codeのエイリアスです。事前に`alias cld="claude"`を設定するか、直接`claude`コマンドを使用してください。`alias cld="claude --dangerously-skip-permissions"`
-とするかはユーザーにお任せます。CLAUDE.mdに記載する前にユーザーにヒアリングしてください。
+**注意**: `cld`はClaude Codeのエイリアスです。事前に
+`alias cld="claude --dangerously-skip-permissions"` を設定してください。
 
 **%27等の番号について**: これらはtmuxが自動割り当てするpane
 IDです。上記の確認コマンドで実際のIDを確認してから使用してください。

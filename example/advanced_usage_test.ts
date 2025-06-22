@@ -30,7 +30,7 @@ Deno.test("Advanced features demonstration", () => {
   );
   console.log(
     `LOG_LENGTH: ${
-      Deno.env.get("LOG_LENGTH") || "Not set (default: 30 characters)"
+      Deno.env.get("LOG_LENGTH") || "Not set (default: 80 characters)"
     }`,
   );
   console.log(
@@ -70,7 +70,7 @@ Deno.test("Advanced features demonstration", () => {
   // 2. Long message truncation demo
   console.log("\n--- Long message truncation demo ---");
   const longMessage =
-    "This is a very long message. By default it's truncated at 30 characters, but can be controlled by setting LOG_LENGTH environment variable.";
+    "This is a very long message. By default it's truncated at 80 characters, but can be controlled by setting LOG_LENGTH environment variable.";
   const veryLongData = {
     description: "This object contains a lot of data",
     items: Array.from({ length: 20 }, (_, i) => ({

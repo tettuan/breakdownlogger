@@ -36,9 +36,9 @@ classDiagram
 
     class LogLength {
         <<enumeration>>
-        DEFAULT = 30
-        SHORT = 100
-        LONG = 200
+        DEFAULT = 80
+        SHORT = 160
+        LONG = 300
         WHOLE = -1
     }
 
@@ -169,9 +169,9 @@ flowchart TD
     F -->|Yes| E
     
     E --> G{LOG_LENGTH<br/>取得}
-    G -->|Default| H[30文字に切り詰め]
-    G -->|S| I[100文字に切り詰め]
-    G -->|L| J[200文字に切り詰め]
+    G -->|Default| H[80文字に切り詰め]
+    G -->|S| I[160文字に切り詰め]
+    G -->|L| J[300文字に切り詰め]
     G -->|W| K[全文表示]
     
     H --> OUTPUT[フォーマット&出力]
@@ -195,10 +195,10 @@ flowchart LR
     
     subgraph LOG_LENGTH
         LL["環境変数値"] --> LLP{値の解析}
-        LLP -->|"S"| SHORT[100文字]
-        LLP -->|"L"| LONG[200文字]
+        LLP -->|"S"| SHORT[160文字]
+        LLP -->|"L"| LONG[300文字]
         LLP -->|"W"| WHOLE[全文]
-        LLP -->|未設定| DEFAULT[30文字]
+        LLP -->|未設定| DEFAULT[80文字]
     end
     
     subgraph LOG_KEY
@@ -226,7 +226,7 @@ flowchart LR
 [timestamp] [LEVEL] [key] message
 
 // 実例
-[2024-03-10T12:00:00.000Z] [DEBUG] [hash1234] デバッグメッセージ（最大30文字まで...
+[2024-03-10T12:00:00.000Z] [DEBUG] [hash1234] デバッグメッセージ（最大80文字まで...
 
 // dataがある場合
 [2024-03-10T12:00:00.000Z] [DEBUG] [hash1234] デバッグメッセージ

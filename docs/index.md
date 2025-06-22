@@ -25,10 +25,10 @@ When calling, since LOG_LEVEL alone may provide too much information, the
 following features help control output:
 
 - Information volume control
-  - Default: Truncates each log message to 30 characters
+  - Default: Truncates each log message to 80 characters
   - With length specification:
-    - Short: 100 characters
-    - Long: 200 characters
+    - Short: 160 characters
+    - Long: 300 characters
     - Whole: All content
 - Output location KEY for specifying error locations
   - Assign unique KEYs to log output locations
@@ -60,9 +60,9 @@ Examples:
 
 #### Log Output Length
 
-- Default: 30 characters
-- Short: 100 characters
-- Long: 200 characters
+- Default: 80 characters
+- Short: 160 characters
+- Long: 300 characters
 - Whole: All content
 
 #### Output Items
@@ -143,13 +143,13 @@ logger.debug("Database query result", {
 ##### Environment Variable Control
 
 ```bash
-# Default: 30 characters per log
+# Default: 80 characters per log
 deno test
 
-# Short: 100 characters - good for overview
+# Short: 160 characters - good for overview
 LOG_LENGTH=S deno test
 
-# Long: 200 characters - more detail for specific issues
+# Long: 300 characters - more detail for specific issues
 LOG_LENGTH=L deno test
 
 # Whole: Complete output - full debugging information
@@ -182,7 +182,7 @@ LOG_LENGTH=W deno test
    # Use long length for specific test files
    LOG_LEVEL=debug LOG_LENGTH=L deno test tests/auth_test.ts
 
-   # Output example (200 chars):
+   # Output example (300 chars):
    # [DEBUG] [auth] Validating JWT token { header: { alg: "HS256", typ: "JWT" }, payload: { userId: 12345, exp: 1234567890, iat: 1234567800 }, signature: "abc123...", validationResult: "success" }
    ```
 
@@ -255,26 +255,26 @@ LOG_LEVEL=debug LOG_LENGTH=L LOG_KEY=api,cache deno test
 
 ##### Performance Considerations
 
-- Default (30 chars): Minimal output, fastest processing
-- Short (100 chars): Good balance for most debugging
-- Long (200 chars): Suitable for complex data structures
+- Default (80 chars): Minimal output, fastest processing
+- Short (160 chars): Good balance for most debugging
+- Long (300 chars): Suitable for complex data structures
 - Whole: Use sparingly, can generate very large outputs
 
 ##### Common Use Cases by Length
 
-**Default (30 chars)**
+**Default (80 chars)**
 
 - CI/CD pipeline logs
 - Quick smoke tests
 - High-frequency logging points
 
-**Short (100 chars)**
+**Short (160 chars)**
 
 - General debugging sessions
 - Development testing
 - Error investigation
 
-**Long (200 chars)**
+**Long (300 chars)**
 
 - API request/response debugging
 - Complex state transitions

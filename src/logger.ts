@@ -39,7 +39,7 @@ import { LogFilter } from "./log_filter.ts";
  * This logger only works in test files (*_test.ts, *.test.ts) for security reasons.
  * Configure behavior using environment variables:
  * - LOG_LEVEL: Set minimum log level (debug, info, warn, error)
- * - LOG_LENGTH: Control message length (S=100, L=200, W=whole, default=30)
+ * - LOG_LENGTH: Control message length (S=160, L=300, W=whole, default=80)
  * - LOG_KEY: Filter by logger keys (comma/colon/slash separated)
  */
 export class BreakdownLogger {

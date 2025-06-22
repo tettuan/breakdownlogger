@@ -141,3 +141,7 @@ tmp/*
 .cursor/*
 .agent/
 .agent/*
+
+# Obsidian
+.obsidian/
+.obsidian/*

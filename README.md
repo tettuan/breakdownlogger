@@ -108,9 +108,9 @@ Controls how log messages are truncated for better readability. This is
 essential for balancing between having enough information for debugging and
 keeping the overall output readable.
 
-- **Default** (unset): Truncates at 30 characters
-- **S** (SHORT): Truncates at 100 characters
-- **L** (LONG): Truncates at 200 characters
+- **Default** (unset): Truncates at 80 characters
+- **S** (SHORT): Truncates at 160 characters
+- **L** (LONG): Truncates at 300 characters
 - **W** (WHOLE): No truncation - displays complete messages
 
 ```bash
@@ -139,11 +139,11 @@ LOG_LEVEL=debug LOG_LENGTH=W LOG_KEY=database deno test tests/db_test.ts
 
 **Common Use Cases by Length:**
 
-- **Default (30 chars)**: CI/CD pipeline logs, quick smoke tests, high-frequency
+- **Default (80 chars)**: CI/CD pipeline logs, quick smoke tests, high-frequency
   logging points
-- **Short (100 chars)**: General debugging sessions, development testing, error
+- **Short (160 chars)**: General debugging sessions, development testing, error
   investigation
-- **Long (200 chars)**: API request/response debugging, complex state
+- **Long (300 chars)**: API request/response debugging, complex state
   transitions, configuration troubleshooting
 - **Whole (all content)**: Database query analysis, full request payload
   inspection, complete error stack traces

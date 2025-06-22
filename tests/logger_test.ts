@@ -65,11 +65,11 @@ Deno.test("BreakdownLogger", async (t) => {
       logger.info("This should be logged");
 
       assertEquals(capture.logs.length, 1);
-      // Truncated to 30 characters by default
-      assertEquals(capture.logs[0].length, 30);
+      // This message is shorter than 80 characters, so no truncation occurs
+      assertEquals(capture.logs[0].length, 66);
       assertMatch(
         capture.logs[0],
-        /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\]\s\.\.\.$/,
+        /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] \[INFO\] \[test-key\] This should be logged$/,
       );
     },
   });
@@ -131,7 +131,7 @@ Deno.test("BreakdownLogger", async (t) => {
   });
 
   await t.step({
-    name: "Environment variable: LOG_LENGTH=S setting (100 character limit)",
+    name: "Environment variable: LOG_LENGTH=S setting (160 character limit)",
     fn: () => {
       cleanup();
       Deno.env.set("LOG_LENGTH", "S");
@@ -142,8 +142,8 @@ Deno.test("BreakdownLogger", async (t) => {
 
       assertEquals(capture.logs.length, 1);
       const output = capture.logs[0];
-      // Timestamp + level + key + message within 100 characters
-      assertEquals(output.length, 100);
+      // Timestamp + level + key + message within 160 characters
+      assertEquals(output.length, 160);
       assertMatch(output, /\.\.\.$/);
     },
   });
@@ -211,9 +211,12 @@ Deno.test("BreakdownLogger", async (t) => {
       logger.debug("Should not log");
 
       assertEquals(capture.logs.length, 1);
-      // Truncated at default length (30 characters)
-      assertEquals(capture.logs[0].length, 30);
-      assertMatch(capture.logs[0], /\.\.\.$/);
+      // This message is shorter than 80 characters, so no truncation occurs
+      assertEquals(capture.logs[0].length, 77);
+      assertMatch(
+        capture.logs[0],
+        /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] \[INFO\] \[test-key\] Should log with default settings$/,
+      );
     },
   });
 
