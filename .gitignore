@@ -145,3 +145,7 @@ tmp/*
 # Obsidian
 .obsidian/
 .obsidian/*
+
+.vscode/
+.vscode/*
+.vscode/**/*
