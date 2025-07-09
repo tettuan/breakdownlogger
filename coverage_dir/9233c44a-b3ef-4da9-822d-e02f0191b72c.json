@@ -1,0 +1,49 @@
+{
+  "scriptId": "334",
+  "url": "file:///Users/tettuan/github/breakdownlogger/examples/error_object_output_example_test.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 4115, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        { "startOffset": 149, "endOffset": 4112, "count": 1 },
+        { "startOffset": 3806, "endOffset": 3864, "count": 0 },
+        { "startOffset": 3952, "endOffset": 4006, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 1192, "endOffset": 1214, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "CustomError",
+      "ranges": [{ "startOffset": 1222, "endOffset": 1392, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "failingAsyncOperation",
+      "ranges": [{ "startOffset": 2337, "endOffset": 2414, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 2450, "endOffset": 2515, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "deepFunction",
+      "ranges": [
+        { "startOffset": 2602, "endOffset": 2748, "count": 6 },
+        { "startOffset": 2634, "endOffset": 2676, "count": 5 },
+        { "startOffset": 2676, "endOffset": 2742, "count": 1 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

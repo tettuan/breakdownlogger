@@ -1,0 +1,106 @@
+{
+  "scriptId": "334",
+  "url": "file:///Users/tettuan/github/breakdownlogger/tests/logger_test.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 6662, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 199, "endOffset": 245, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ConsoleCapture",
+      "ranges": [{ "startOffset": 249, "endOffset": 527, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ConsoleCapture.console.log",
+      "ranges": [{ "startOffset": 400, "endOffset": 449, "count": 11 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "ConsoleCapture.console.error",
+      "ranges": [{ "startOffset": 471, "endOffset": 522, "count": 2 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "restore",
+      "ranges": [{ "startOffset": 530, "endOffset": 621, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "clear",
+      "ranges": [{ "startOffset": 624, "endOffset": 679, "count": 10 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 806, "endOffset": 834, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 866, "endOffset": 6659, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "cleanup",
+      "ranges": [{ "startOffset": 929, "endOffset": 1060, "count": 10 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 1161, "endOffset": 1575, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 1666, "endOffset": 2122, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 2218, "endOffset": 2755, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 2860, "endOffset": 3428, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 3538, "endOffset": 3959, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 4057, "endOffset": 4525, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 4626, "endOffset": 5189, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 5288, "endOffset": 5590, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 5698, "endOffset": 6218, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "fn",
+      "ranges": [{ "startOffset": 6300, "endOffset": 6651, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

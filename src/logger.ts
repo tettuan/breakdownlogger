@@ -43,9 +43,16 @@ import { LogFilter } from "./log_filter.ts";
  * - LOG_KEY: Filter by logger keys (comma/colon/slash separated)
  */
 export class BreakdownLogger {
+  /** The unique identifier for this logger instance, used for filtering logs. */
   private readonly key: string;
+
+  /** Environment configuration manager for reading LOG_LEVEL, LOG_LENGTH, and LOG_KEY settings. */
   private readonly environmentConfig: EnvironmentConfig;
+
+  /** Log message formatter for creating consistent output with timestamps and data serialization. */
   private readonly formatter: LogFormatter;
+
+  /** Log filter for determining whether messages should be output based on level and environment. */
   private readonly filter: LogFilter;
 
   /**

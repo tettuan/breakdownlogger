@@ -1,0 +1,62 @@
+{
+  "scriptId": "336",
+  "url": "file:///Users/tettuan/github/breakdownlogger/src/log_filter.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 3397, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 647, "endOffset": 664, "count": 4 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "LogFilter",
+      "ranges": [{ "startOffset": 668, "endOffset": 744, "count": 4 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "shouldLog",
+      "ranges": [
+        { "startOffset": 1055, "endOffset": 1277, "count": 6 },
+        { "startOffset": 1158, "endOffset": 1185, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "shouldOutputKey",
+      "ranges": [
+        { "startOffset": 1582, "endOffset": 1804, "count": 5 },
+        { "startOffset": 1694, "endOffset": 1720, "count": 1 },
+        { "startOffset": 1720, "endOffset": 1803, "count": 4 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "checkTestEnvironment",
+      "ranges": [
+        { "startOffset": 2197, "endOffset": 3394, "count": 4 },
+        { "startOffset": 2380, "endOffset": 2393, "count": 0 },
+        { "startOffset": 2499, "endOffset": 2531, "count": 0 },
+        { "startOffset": 2532, "endOffset": 2564, "count": 0 },
+        { "startOffset": 2565, "endOffset": 2600, "count": 0 },
+        { "startOffset": 2601, "endOffset": 2668, "count": 0 },
+        { "startOffset": 2669, "endOffset": 2736, "count": 0 },
+        { "startOffset": 2737, "endOffset": 2798, "count": 0 },
+        { "startOffset": 2917, "endOffset": 2946, "count": 0 },
+        { "startOffset": 2947, "endOffset": 2977, "count": 0 },
+        { "startOffset": 2978, "endOffset": 3008, "count": 0 },
+        { "startOffset": 3009, "endOffset": 3039, "count": 0 },
+        { "startOffset": 3040, "endOffset": 3069, "count": 0 },
+        { "startOffset": 3070, "endOffset": 3099, "count": 0 },
+        { "startOffset": 3100, "endOffset": 3127, "count": 0 },
+        { "startOffset": 3128, "endOffset": 3178, "count": 0 },
+        { "startOffset": 3355, "endOffset": 3372, "count": 0 },
+        { "startOffset": 3373, "endOffset": 3389, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

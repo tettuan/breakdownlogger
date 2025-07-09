@@ -26,12 +26,42 @@ export enum LogLevel {
 }
 
 /**
- * Log length options
+ * Log message length configuration options for controlling output verbosity.
+ *
+ * These options control how log messages are truncated or displayed in their
+ * entirety. Used with the LOG_LENGTH environment variable to customize the
+ * maximum length of formatted log messages.
+ *
+ * @example Environment Usage
+ * ```bash
+ * # Use short messages (160 characters)
+ * export LOG_LENGTH=S
+ *
+ * # Use long messages (300 characters)
+ * export LOG_LENGTH=L
+ *
+ * # Show whole messages (no truncation)
+ * export LOG_LENGTH=W
+ *
+ * # Use default length (80 characters)
+ * export LOG_LENGTH=DEFAULT  # or omit the variable
+ * ```
+ *
+ * @enum {string}
+ * @readonly
+ * @since 1.0.0
  */
 export enum LogLength {
+  /** Default message length (80 characters). Used when LOG_LENGTH is not set. */
   DEFAULT = "DEFAULT",
+
+  /** Short message length (160 characters). Set LOG_LENGTH=S to use. */
   SHORT = "SHORT",
+
+  /** Long message length (300 characters). Set LOG_LENGTH=L to use. */
   LONG = "LONG",
+
+  /** No message truncation (unlimited length). Set LOG_LENGTH=W to use. */
   WHOLE = "WHOLE",
 }
 

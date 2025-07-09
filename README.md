@@ -1,7 +1,11 @@
 # BreakdownLogger
 
+[![JSR](https://jsr.io/badges/@tettuan/breakdownlogger)](https://jsr.io/@tettuan/breakdownlogger)
+[![JSR Score](https://jsr.io/badges/@tettuan/breakdownlogger/score)](https://jsr.io/@tettuan/breakdownlogger)
+
 A debugging logger library built with Deno and published to JSR. It is designed
-to be used within applications and does not run standalone.
+to be used within test environments and provides structured logging with
+configurable levels and filtering.
 
 ## Overview
 
@@ -12,17 +16,27 @@ files.
 
 ## Features
 
-- Hierarchical log levels (DEBUG, INFO, WARN, ERROR)
-- Environment variable configuration for flexible control
-- Message truncation control (LOG_LENGTH)
-- Output location filtering (LOG_KEY)
-- Test environment optimization
-- Zero external dependencies
+- 🎯 **Test-only execution**: Works exclusively in test environments for
+  security
+- 📊 **Hierarchical log levels**: DEBUG, INFO, WARN, ERROR with proper filtering
+- ⚙️ **Environment variable configuration**: Zero-code setup via env vars
+- ✂️ **Message truncation control**: Configurable output length (LOG_LENGTH)
+- 🔍 **Key-based filtering**: Filter logs by component/module (LOG_KEY)
+- 🚀 **Zero external dependencies**: Pure Deno implementation
+- 📝 **Structured data support**: JSON serialization of complex objects
 
 ## Installation
 
+### From JSR (Recommended)
+
 ```typescript
-import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@1.0.4";
+import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger";
+```
+
+### With specific version
+
+```typescript
+import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@^1.0.8";
 ```
 
 ## Usage
@@ -193,7 +207,7 @@ const apiLogger = new BreakdownLogger("api");
 const cacheLogger = new BreakdownLogger("cache");
 
 // Log different processes
-authorLogger.debug("Validating auth token", { userId: 12345 });
+authLogger.debug("Validating auth token", { userId: 12345 });
 dbLogger.debug("Executing query", { query: "SELECT * FROM users" });
 apiLogger.warn("Approaching rate limit", { remaining: 10 });
 cacheLogger.debug("Retrieved from cache", { key: "user:12345" });

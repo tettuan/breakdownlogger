@@ -1,0 +1,11 @@
+{
+  "scriptId": "337",
+  "url": "file:///Users/tettuan/github/breakdownlogger/mod.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 6286, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

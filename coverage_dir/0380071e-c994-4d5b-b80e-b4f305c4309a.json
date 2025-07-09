@@ -1,0 +1,59 @@
+{
+  "scriptId": "334",
+  "url": "file:///Users/tettuan/github/breakdownlogger/examples/non_test_file_disable_test.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 3691, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        { "startOffset": 293, "endOffset": 1697, "count": 1 },
+        { "startOffset": 1487, "endOffset": 1545, "count": 0 },
+        { "startOffset": 1584, "endOffset": 1638, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "console.log",
+      "ranges": [{ "startOffset": 793, "endOffset": 844, "count": 2 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "console.error",
+      "ranges": [{ "startOffset": 866, "endOffset": 919, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        { "startOffset": 1764, "endOffset": 2812, "count": 1 },
+        { "startOffset": 2646, "endOffset": 2704, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "console.log",
+      "ranges": [{ "startOffset": 2172, "endOffset": 2223, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [
+        { "startOffset": 2863, "endOffset": 3688, "count": 1 },
+        { "startOffset": 3624, "endOffset": 3682, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "isTestFile",
+      "ranges": [
+        { "startOffset": 3385, "endOffset": 3465, "count": 2 },
+        { "startOffset": 3432, "endOffset": 3458, "count": 1 }
+      ],
+      "isBlockCoverage": true
+    }
+  ]
+}

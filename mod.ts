@@ -133,3 +133,96 @@ export { BreakdownLogger } from "./src/logger.ts";
  * @readonly
  */
 export { LogLevel } from "./src/types.ts";
+
+/**
+ * Message length configuration options for controlling log output verbosity.
+ *
+ * The LogLength enum provides predefined options for controlling how long
+ * log messages can be before they are truncated. This works in conjunction
+ * with the LOG_LENGTH environment variable to customize output formatting.
+ *
+ * ## Available Options:
+ * - **DEFAULT (80 chars)**: Standard length for most use cases
+ * - **SHORT (160 chars)**: Longer messages for more detail
+ * - **LONG (300 chars)**: Extended messages for comprehensive logging
+ * - **WHOLE (unlimited)**: No truncation for complete message output
+ *
+ * ## Environment Variable Usage:
+ * Set `LOG_LENGTH` to control message length:
+ * - `LOG_LENGTH=S` → SHORT (160 characters)
+ * - `LOG_LENGTH=L` → LONG (300 characters)
+ * - `LOG_LENGTH=W` → WHOLE (no truncation)
+ * - Omit or set `LOG_LENGTH=DEFAULT` → DEFAULT (80 characters)
+ *
+ * @example Length Configuration Examples
+ * ```bash
+ * # Standard length (80 characters)
+ * deno test --allow-env
+ *
+ * # Short messages (160 characters)
+ * LOG_LENGTH=S deno test --allow-env
+ *
+ * # Long messages (300 characters)
+ * LOG_LENGTH=L deno test --allow-env
+ *
+ * # Complete messages (no truncation)
+ * LOG_LENGTH=W deno test --allow-env
+ * ```
+ *
+ * @example Programmatic Usage
+ * ```ts
+ * import { LogLength } from "@tettuan/breakdownlogger";
+ *
+ * // LogLength enum values
+ * console.log(LogLength.DEFAULT);  // "DEFAULT"
+ * console.log(LogLength.SHORT);    // "SHORT"
+ * console.log(LogLength.LONG);     // "LONG"
+ * console.log(LogLength.WHOLE);    // "WHOLE"
+ * ```
+ *
+ * @enum {string}
+ * @readonly
+ * @since 1.0.0
+ */
+export { LogLength } from "./src/types.ts";
+
+/**
+ * Interface defining the structure of a complete log entry.
+ *
+ * LogEntry represents a single log message with all its associated metadata
+ * including timestamp, severity level, logger key, message content, and
+ * optional structured data. This interface is used internally by the
+ * formatter and can be useful for understanding the log data structure.
+ *
+ * ## Properties:
+ * - **timestamp**: Exact time when the log was created (Date object)
+ * - **level**: Severity level (DEBUG, INFO, WARN, ERROR)
+ * - **key**: Logger identifier for filtering and organization
+ * - **message**: Human-readable log message text
+ * - **data**: Optional structured data (objects, arrays, primitives)
+ *
+ * @example Log Entry Structure
+ * ```ts
+ * import { LogEntry, LogLevel } from "@tettuan/breakdownlogger";
+ *
+ * // Example of what a log entry looks like internally
+ * const entry: LogEntry = {
+ *   timestamp: new Date(),
+ *   level: LogLevel.INFO,
+ *   key: "auth-service",
+ *   message: "User authentication successful",
+ *   data: { userId: 123, method: "OAuth2" }
+ * };
+ * ```
+ *
+ * @example Formatted Output
+ * ```
+ * [INFO] [auth-service] User authentication successful
+ * Data: {"userId":123,"method":"OAuth2"}
+ * Timestamp: 2023-12-01T10:30:45.123Z
+ * ```
+ *
+ * @interface LogEntry
+ * @since 1.0.0
+ */
+export type { LogEntry } from "./src/types.ts";

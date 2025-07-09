@@ -1,0 +1,54 @@
+{
+  "scriptId": "368",
+  "url": "file:///Users/tettuan/github/breakdownlogger/src/logger.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 4447, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 1652, "endOffset": 1997, "count": 6 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "BreakdownLogger",
+      "ranges": [{ "startOffset": 2199, "endOffset": 2382, "count": 6 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "log",
+      "ranges": [
+        { "startOffset": 2634, "endOffset": 3395, "count": 11 },
+        { "startOffset": 2778, "endOffset": 2799, "count": 2 },
+        { "startOffset": 2799, "endOffset": 2922, "count": 9 },
+        { "startOffset": 2922, "endOffset": 2943, "count": 0 },
+        { "startOffset": 2943, "endOffset": 3295, "count": 9 },
+        { "startOffset": 3295, "endOffset": 3341, "count": 1 },
+        { "startOffset": 3341, "endOffset": 3391, "count": 8 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "debug",
+      "ranges": [{ "startOffset": 3569, "endOffset": 3640, "count": 5 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "info",
+      "ranges": [{ "startOffset": 3830, "endOffset": 3899, "count": 3 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "warn",
+      "ranges": [{ "startOffset": 4078, "endOffset": 4147, "count": 2 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "error",
+      "ranges": [{ "startOffset": 4373, "endOffset": 4444, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

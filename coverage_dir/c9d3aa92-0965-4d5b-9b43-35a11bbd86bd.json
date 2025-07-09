@@ -1,0 +1,21 @@
+{
+  "scriptId": "365",
+  "url": "file:///Users/tettuan/github/breakdownlogger/src/types.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 2023, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 380, "endOffset": 818, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 1549, "endOffset": 2017, "count": 1 }],
+      "isBlockCoverage": true
+    }
+  ]
+}

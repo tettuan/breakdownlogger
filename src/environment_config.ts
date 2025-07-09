@@ -69,7 +69,7 @@ export class EnvironmentConfig {
    * @private
    */
   private parseLogLevel(): LogLevel {
-    const level = Deno.env.get("LOG_LEVEL")?.toLowerCase();
+    const level = Deno.env.get("LOG_LEVEL")?.trim().toLowerCase();
     switch (level) {
       case "debug":
         return LogLevel.DEBUG;
@@ -94,7 +94,7 @@ export class EnvironmentConfig {
    * @private
    */
   private parseLogLength(): LogLength {
-    const length = Deno.env.get("LOG_LENGTH")?.toUpperCase();
+    const length = Deno.env.get("LOG_LENGTH")?.trim().toUpperCase();
     switch (length) {
       case "S":
         return LogLength.SHORT;

@@ -5,14 +5,16 @@
     ".": "./mod.ts",
     "./logger": "./src/logger.ts"
   },
-  "description": "A debug logging library for Deno applications",
+  "description": "A debug logging library for Deno applications, designed for use in test environments with configurable levels and filtering",
   "repository": "https://github.com/tettuan/breakdownlogger",
   "keywords": [
     "deno",
     "logging",
     "debug",
     "test",
-    "development"
+    "development",
+    "typescript",
+    "jsr"
   ],
   "author": "tettuan",
   "license": "MIT",
@@ -21,17 +23,32 @@
   },
   "tasks": {
     "test": "deno test --allow-env",
-    "fmt": "deno fmt",
-    "lint": "deno lint",
-    "check": "deno check **/*.ts",
-    "publish": "deno publish",
-    "ci": "bash scripts/local_ci.sh"
+    "publish:jsr": "bash scripts/publish_jsr.sh",
+    "publish:dry": "deno publish --dry-run --allow-dirty",
+    "ci": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci",
+    "ci:dirty": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci --allow-dirty",
+    "docs": "deno doc --html --name=\"BreakdownLogger\" mod.ts",
+    "docs:json": "deno doc --json mod.ts"
   },
   "publish": {
     "include": [
       "mod.ts",
       "src/**/*.ts",
-      "README.md"
+      "README.md",
+      "LICENSE"
+    ],
+    "exclude": [
+      "coverage_dir/",
+      "tmp/",
+      "drafts/",
+      "scripts/",
+      "examples/",
+      "tests/",
+      "**/*_test.ts",
+      "**/*.test.ts",
+      "debug_*.ts",
+      "*.md",
+      "!README.md"
     ]
   }
 }

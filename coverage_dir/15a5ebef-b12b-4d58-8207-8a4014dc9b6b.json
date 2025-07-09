@@ -1,0 +1,72 @@
+{
+  "scriptId": "338",
+  "url": "file:///Users/tettuan/github/breakdownlogger/src/environment_config.ts",
+  "functions": [
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 0, "endOffset": 3533, "count": 1 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "<instance_members_initializer>",
+      "ranges": [{ "startOffset": 798, "endOffset": 830, "count": 6 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "EnvironmentConfig",
+      "ranges": [{ "startOffset": 834, "endOffset": 978, "count": 6 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getLogLevel",
+      "ranges": [{ "startOffset": 1137, "endOffset": 1182, "count": 19 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getLogLength",
+      "ranges": [{ "startOffset": 1352, "endOffset": 1399, "count": 10 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "getLogKeys",
+      "ranges": [{ "startOffset": 1564, "endOffset": 1607, "count": 10 }],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "parseLogLevel",
+      "ranges": [
+        { "startOffset": 1918, "endOffset": 2276, "count": 6 },
+        { "startOffset": 1979, "endOffset": 1985, "count": 0 },
+        { "startOffset": 2028, "endOffset": 2072, "count": 0 },
+        { "startOffset": 2079, "endOffset": 2121, "count": 0 },
+        { "startOffset": 2128, "endOffset": 2170, "count": 0 },
+        { "startOffset": 2177, "endOffset": 2221, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "parseLogLength",
+      "ranges": [
+        { "startOffset": 2607, "endOffset": 2916, "count": 6 },
+        { "startOffset": 2671, "endOffset": 2677, "count": 0 },
+        { "startOffset": 2721, "endOffset": 2762, "count": 0 },
+        { "startOffset": 2769, "endOffset": 2809, "count": 0 },
+        { "startOffset": 2816, "endOffset": 2857, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "parseLogKeys",
+      "ranges": [
+        { "startOffset": 3296, "endOffset": 3530, "count": 6 },
+        { "startOffset": 3380, "endOffset": 3529, "count": 0 }
+      ],
+      "isBlockCoverage": true
+    },
+    {
+      "functionName": "",
+      "ranges": [{ "startOffset": 3496, "endOffset": 3524, "count": 0 }],
+      "isBlockCoverage": false
+    }
+  ]
+}
