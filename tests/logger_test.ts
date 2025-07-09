@@ -62,11 +62,11 @@ Deno.test("BreakdownLogger", async (t) => {
       logger.info("This should be logged");
 
       assertEquals(capture.logs.length, 1);
-      // This message is shorter than 80 characters, so no truncation occurs
-      assertEquals(capture.logs[0].length, 66);
+      // This message with new format (no timestamp at start)
+      assertEquals(capture.logs[0].length, 39);
       assertMatch(
         capture.logs[0],
-        /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] \[INFO\] \[test-key\] This should be logged$/,
+        /^\[INFO\] \[test-key\] This should be logged$/,
       );
     },
   });
@@ -208,11 +208,11 @@ Deno.test("BreakdownLogger", async (t) => {
       logger.debug("Should not log");
 
       assertEquals(capture.logs.length, 1);
-      // This message is shorter than 80 characters, so no truncation occurs
-      assertEquals(capture.logs[0].length, 77);
+      // This message with new format (no timestamp at start)
+      assertEquals(capture.logs[0].length, 50);
       assertMatch(
         capture.logs[0],
-        /\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\] \[INFO\] \[test-key\] Should log with default settings$/,
+        /^\[INFO\] \[test-key\] Should log with default settings$/,
       );
     },
   });

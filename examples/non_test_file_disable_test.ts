@@ -76,11 +76,11 @@ Deno.test("Logger works in test files with default INFO level", () => {
 
     // Since we're in a test file, logs should be produced
     assertEquals(logs.length, 1, "Expected exactly one log in test file");
-    // With default 30 char truncation, only timestamp fits, so check for ISO date pattern
+    // With new format, log should start with log level, not timestamp
     assertEquals(
-      /^\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z\]/.test(logs[0]),
+      /^\[INFO\]/.test(logs[0]),
       true,
-      "Log should start with timestamp",
+      "Log should start with log level",
     );
   } finally {
     if (originalLogLevel !== undefined) {

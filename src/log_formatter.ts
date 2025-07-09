@@ -37,12 +37,11 @@ export class LogFormatter {
     const formattedTimestamp = timestamp.toISOString();
     const levelStr = LogLevel[level];
 
-    let baseMessage =
-      `[${formattedTimestamp}] [${levelStr}] [${key}] ${message}`;
+    let baseMessage = `[${levelStr}] [${key}] ${message}`;
 
     if (data !== undefined) {
       const dataStr = this.formatData(data);
-      baseMessage += `\nData: ${dataStr}`;
+      baseMessage += `\nData: ${dataStr}\nTimestamp: ${formattedTimestamp}`;
     }
 
     return this.truncateMessage(baseMessage, maxLength);
