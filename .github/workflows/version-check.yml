@@ -16,9 +16,9 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
         with:
-          deno-version: v2.4.0
+          deno-version: "v2.x"
 
       - name: Clear cache and regenerate lockfile
         run: |
