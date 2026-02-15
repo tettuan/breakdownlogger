@@ -25,12 +25,12 @@
   },
   "tasks": {
     "test": "deno test --allow-env",
-    "publish:jsr": "bash scripts/publish_jsr.sh",
     "publish:dry": "deno publish --dry-run --allow-dirty",
     "ci": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci",
     "ci:dirty": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci --allow-dirty",
     "docs": "deno doc --html --name=\"BreakdownLogger\" mod.ts",
-    "docs:json": "deno doc --json mod.ts"
+    "docs:json": "deno doc --json mod.ts",
+    "bump-version": "deno run --allow-read --allow-write --allow-run scripts/bump_version.ts"
   },
   "lint": {
     "rules": {
