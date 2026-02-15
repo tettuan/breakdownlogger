@@ -24,9 +24,9 @@
     "std/": "https://deno.land/std@0.220.1/"
   },
   "tasks": {
-    "test": "deno test --allow-env",
+    "test": "deno test --allow-env --allow-read --allow-write",
     "publish:dry": "deno publish --dry-run --allow-dirty",
-    "ci": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci",
+    "ci": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci && deno run --allow-read --allow-run scripts/version_check.ts",
     "ci:dirty": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci --allow-dirty",
     "docs": "deno doc --html --name=\"BreakdownLogger\" mod.ts",
     "docs:json": "deno doc --json mod.ts",
