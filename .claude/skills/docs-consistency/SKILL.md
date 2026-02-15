@@ -24,7 +24,7 @@ Compare intent + implementation memos against current docs. Build a diff table:
 |------|----------------------|-------------|-----|
 | Install command | `dx jsr:...` | Documented | None |
 | 3 output modes | preserve/flatten/single | Missing | Add |
-| Default output dir | ./climpt-docs | Missing | Add |
+| Default output dir | ./breakdownlogger-docs | Missing | Add |
 
 ## Phase 4: Fix Docs
 

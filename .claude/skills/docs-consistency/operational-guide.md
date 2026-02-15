@@ -44,7 +44,7 @@ JSR-based local installation of versioned documentation.
 3. Download each markdown file → save locally
 
 ## Defaults
-- output: "./climpt-docs"
+- output: "./breakdownlogger-docs"
 - mode: "preserve"
 
 ## Edge cases

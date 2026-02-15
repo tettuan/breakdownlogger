@@ -23,7 +23,7 @@ deno task bump-version
 
 # 2. 確認
 grep '"version"' deno.json
-grep 'CLIMPT_VERSION' src/version.ts
+grep 'BREAKDOWN_LOGGER_VERSION' src/version.ts
 
 # 3. ローカルCI
 deno task ci
@@ -121,7 +121,7 @@ wc -c docs/*.md docs/guides/en/*.md docs/guides/ja/*.md
 | ファイル | 用途 |
 |---------|------|
 | `deno.json` | JSR パッケージバージョン（`"version": "x.y.z"`） |
-| `src/version.ts` | CLI バージョン定数（`CLIMPT_VERSION = "x.y.z"`） |
+| `src/version.ts` | CLI バージョン定数（`BREAKDOWN_LOGGER_VERSION = "x.y.z"`） |
 
 **重要**: 両ファイルのバージョンは必ず一致させること。CIで自動チェックされる。
 
@@ -142,7 +142,7 @@ wc -c docs/*.md docs/guides/en/*.md docs/guides/ja/*.md
 # "version": "1.9.13" → "version": "1.9.14"
 
 # src/version.ts
-# export const CLIMPT_VERSION = "1.9.13"; → "1.9.14";
+# export const BREAKDOWN_LOGGER_VERSION = "1.9.13"; → "1.9.14";
 ```
 
 ### 3. 確認コマンド
@@ -150,7 +150,7 @@ wc -c docs/*.md docs/guides/en/*.md docs/guides/ja/*.md
 ```bash
 # バージョン一致確認
 grep '"version"' deno.json | head -1
-grep 'CLIMPT_VERSION' src/version.ts | grep export
+grep 'BREAKDOWN_LOGGER_VERSION' src/version.ts | grep export
 ```
 
 ## リリースフロー
@@ -215,7 +215,7 @@ deno task bump-version x.y.z
 
 # 確認
 grep '"version"' deno.json
-grep 'export const CLIMPT_VERSION' src/version.ts
+grep 'export const BREAKDOWN_LOGGER_VERSION' src/version.ts
 ```
 
 #### ステップ 2: ローカルCI確認
@@ -335,7 +335,7 @@ git push origin --delete release/x.y.z
 ```
 release/1.9.15 ブランチでは:
 - deno.json の version が "1.9.15" であること
-- src/version.ts の CLIMPT_VERSION が "1.9.15" であること
+- src/version.ts の BREAKDOWN_LOGGER_VERSION が "1.9.15" であること
 ```
 
 ### チェックを通すための確認コマンド
@@ -348,7 +348,7 @@ git branch --show-current | sed 's|release/||'
 grep '"version"' deno.json | head -1 | sed 's/.*"\([0-9.]*\)".*/\1/'
 
 # version.ts のバージョン
-grep 'export const CLIMPT_VERSION' src/version.ts | sed 's/.*"\([0-9.]*\)".*/\1/'
+grep 'export const BREAKDOWN_LOGGER_VERSION' src/version.ts | sed 's/.*"\([0-9.]*\)".*/\1/'
 
 # 3つが全て一致することを確認
 ```
@@ -358,7 +358,7 @@ grep 'export const CLIMPT_VERSION' src/version.ts | sed 's/.*"\([0-9.]*\)".*/\1/
 ```bash
 # release/1.9.15 でバージョンが 1.9.14 のままだった場合
 # 1. deno.json を編集: "version": "1.9.15"
-# 2. version.ts を編集: CLIMPT_VERSION = "1.9.15"
+# 2. version.ts を編集: BREAKDOWN_LOGGER_VERSION = "1.9.15"
 # 3. コミット & push
 git add deno.json src/version.ts
 git commit -m "fix: correct version to 1.9.15"
@@ -370,7 +370,7 @@ git push origin release/1.9.15
 ```
 バージョンアップ:
   1. deno.json の version を更新
-  2. src/version.ts の CLIMPT_VERSION を更新
+  2. src/version.ts の BREAKDOWN_LOGGER_VERSION を更新
   3. deno task ci  ← ローカルCIを通す（重要）
   4. git commit -m "chore: bump version to x.y.z"
 
@@ -420,7 +420,7 @@ gh run view <run-id> --log | grep -i "skip"
 ```bash
 # 確認
 grep '"version"' deno.json
-grep 'export const CLIMPT_VERSION' src/version.ts
+grep 'export const BREAKDOWN_LOGGER_VERSION' src/version.ts
 git branch --show-current
 
 # 対処: 全て同じバージョンに統一

@@ -58,12 +58,12 @@ Bash({
 })
 ```
 
-### Claude Agent SDK (climpt-agent)
+### Claude Agent SDK (breakdownlogger-agent)
 
 ```typescript
 // Required for API calls to api.anthropic.com
 Bash({
-  command: "echo '...' | deno run climpt-agent.ts",
+  command: "echo '...' | deno run breakdownlogger-agent.ts",
   dangerouslyDisableSandbox: true,
 })
 ```

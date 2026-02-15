@@ -81,7 +81,7 @@ Document all variables used in prompts:
 
 ```bash
 # Find variables in templates
-grep -roh "{[a-z_]*}" .agent/climpt/prompts/ | sort -u
+grep -roh "{[a-z_]*}" .agent/breakdownlogger/prompts/ | sort -u
 ```
 
 Match against `docs/guides/` documentation.
