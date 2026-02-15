@@ -4,171 +4,77 @@ description: Use when implementing features, adding code, or placing BreakdownLo
 allowed-tools: Read, Grep, Glob, Bash
 ---
 
-# Implement Logger: Strategic Placement Guide
+# Implement Logger
 
-## Why This Skill Exists
+KEY命名とロガー配置はデバッグ精度を決める設計判断なので、命名重複・配置ミス・本番混入を事前に防ぐ。
 
-Logger placement is a design decision, not an afterthought. A poorly named KEY
-makes debugging impossible later. A logger in the wrong place produces noise
-instead of signal. This skill prevents those mistakes upfront.
+## 1. KEY Discovery
 
-## 1. KEY Discovery: Find Before You Create
-
-**Why**: Duplicate KEYs destroy filtering. `LOG_KEY=util` showing 5 unrelated
-modules defeats the purpose.
-
-**What to do**: Before creating any new logger, search the codebase for existing
-KEYs.
+重複KEYはフィルタリングを破壊するので、新規作成前に既存KEYを検索する。
 
 ```bash
 grep -rn 'new BreakdownLogger(' --include='*.ts' | grep -oP '"[^"]*"' | sort -u
 ```
 
-**Decision table**:
+| 状況 | アクション |
+|:--|:--|
+| 既存KEYがモジュールをカバー | 再利用する |
+| 既存KEYが広すぎる | より具体的なsub-keyを作成する |
+| 該当KEYなし | 命名ルールに従い新規作成する |
+| 一時的な調査 | `fix-<issue>` prefixで作成し、調査後削除する |
 
-| Situation                        | Action                              |
-| -------------------------------- | ----------------------------------- |
-| Existing KEY covers your module  | Reuse it                            |
-| Existing KEY is too broad        | Create a more specific sub-key      |
-| No KEY exists for this area      | Create one following naming rules   |
-| Temporary investigation          | Use `fix-<issue>` prefix, delete later |
+## 2. KEY Naming
 
-## 2. KEY Naming Rules
+KEYは `LOG_KEY=...` で毎回タイプするフィルタハンドルなので、プロジェクトで1方式を選び一貫させる。
 
-**Why naming matters**: KEY is your filter handle at runtime. You will type it in
-`LOG_KEY=...` every time you debug. Bad names cost time repeatedly.
+| 方式 | 用途 | 例 |
+|:--|:--|:--|
+| By feature | ユーザー向け機能のデバッグ | `auth`, `payment`, `notification` |
+| By layer | データフロー・アーキテクチャ問題 | `controller`, `service`, `repository` |
+| By flow | 横断的ビジネスプロセス | `order-auth`, `order-stock` |
 
-### The Three Schemes (pick ONE per project)
+制約: lowercase kebab-case、汎用名(`util`,`helper`)禁止、論理単位ごとにユニーク、名前空間にはprefix(`auth-token`)、一時キーは `fix-<id>`。
 
-| Scheme     | When                              | Example KEYs                       |
-| ---------- | --------------------------------- | ---------------------------------- |
-| By feature | User-facing feature debugging     | `auth`, `payment`, `notification`  |
-| By layer   | Data flow / architecture issues   | `controller`, `service`, `repository` |
-| By flow    | Cross-cutting business processes  | `order-auth`, `order-stock`        |
+## 3. Placement
 
-### Naming Constraints
+データは境界で変換・転送されるので、ロガーは4つの境界点（引数受信後・値返却前・外部呼出前後・エラーハンドラ内）に置く。
 
-| Rule                    | Why                                           |
-| ----------------------- | --------------------------------------------- |
-| Lowercase kebab-case    | Consistent, easy to type in shell             |
-| No generic names        | `util`, `helper`, `misc` are unfiltereable    |
-| Unique per logical unit | Same KEY in unrelated modules = noise          |
-| Prefix for namespacing  | `auth-token`, `auth-session` over `token`, `session` |
-| Temp keys: `fix-<id>`   | Signals "delete me when done"                 |
-
-## 3. Where to Place Loggers
-
-**Why placement matters**: Loggers at random spots produce random output. Loggers
-at boundaries produce diagnostic answers.
-
-### The Four Boundary Points
-
-1. **After receiving arguments** — confirms what arrived, not what was sent
-2. **Before returning values** — captures final answer before scope exit
-3. **Before/after external calls** — brackets the dependency boundary
-4. **Inside error handlers** — captures context at failure moment
-
-**Why these four**: Data transforms or transfers at boundaries. If input looks
-right but output looks wrong, you've isolated the problem to that boundary.
-
-### Anti-patterns
-
-| Bad                                    | Why                                   |
-| -------------------------------------- | ------------------------------------- |
-| Logger inside tight loops              | Floods output, hides signal           |
-| Logger after every line                | Not debugging, just narrating         |
-| Logger without `data` param            | Message alone rarely reveals root cause |
-| Logger with circular-ref objects       | Falls back to useless `[Object]`      |
+| アンチパターン | 理由 |
+|:--|:--|
+| タイトループ内 | 出力洪水でシグナルが埋没する |
+| 全行の後 | デバッグではなくナレーションになる |
+| `data`パラム無し | メッセージだけでは根本原因が見えない |
+| 循環参照オブジェクト | `[Object]` にフォールバックする |
 
 ## 4. Writing Style
 
-**Why front-loading matters**: `LOG_LENGTH` truncates from the end. Critical info
-must come first.
+`LOG_LENGTH` は末尾から切り詰めるので、重要情報を先頭40字に置く。メッセージ=何が起きたか、data=証拠。
 
 ```typescript
-// Good: action + result in first 40 chars
 logger.debug("Timeout: DB conn exceeded 30s", { host });
-
-// Bad: key detail buried past truncation point
-logger.debug("Attempting to establish a database connection which timed out");
 ```
 
-**Rule**: Message = what happened. Data = the evidence.
+## 5. Validation
 
-```typescript
-logger.debug("Query failed", {
-  query: sql,
-  params: values,
-  error: err.message,
-  duration: elapsed,
-});
-```
-
-## 5. Validation: Beyond Tests
-
-**Why**: BreakdownLogger is test-only by design. Production imports are bugs.
-
-### Automated validation
+BreakdownLoggerはテスト専用なので、非テストファイルのimportを `validate` で検出する。Pre-commitフック・CI・コードレビュー時に実行する。
 
 ```bash
 deno run --allow-read jsr:@tettuan/breakdownlogger/validate [target-dir]
 ```
 
-**What it does**: Scans for `@tettuan/breakdownlogger` imports in non-test files.
-Exit 1 = violations found.
+## 6. Docs
 
-**When to run**:
+実戦パターン（関数トレース・マルチモジュール分離・動的KEY）は `docs/usage.md` §4,§5,§6,§9 にある。外部プロジェクトには `deno run -A jsr:@tettuan/breakdownlogger/docs [target-dir]` でエクスポートする。
 
-| Timing          | Why                                         |
-| --------------- | ------------------------------------------- |
-| Pre-commit hook | Catch production imports before they land   |
-| CI pipeline     | Gate merges that introduce violations       |
-| Code review     | Reviewer can run to verify PR compliance    |
-
-### Manual grep check
-
-```bash
-grep -rn '@tettuan/breakdownlogger' --include='*.ts' | grep -v '_test\.\|\.test\.'
-```
-
-Any matches = production usage violation.
-
-## 6. Docs: Getting Examples
-
-**Why**: The usage guide contains battle-tested patterns (function tracing,
-multi-module isolation, dynamic keys) that prevent reinventing patterns.
-
-### Export docs to your project
-
-```bash
-deno run -A jsr:@tettuan/breakdownlogger/docs [target-dir]
-```
-
-Copies `usage.md` and `usage.ja.md` to your target directory. Default:
-`tests/docs/breakdownlogger/`.
-
-### Key sections in usage.md
-
-| Section                       | What you'll find                        |
-| ----------------------------- | --------------------------------------- |
-| §4 Strategic Debugging        | Broad → Narrow → Deep workflow          |
-| §5 Writing Rules              | Placement patterns with code            |
-| §6 Operational Rules          | KEY naming strategy, team conventions   |
-| §9 Practical Examples         | Function tracing, multi-module, dynamic |
-
-### In this project
-
-Read `docs/usage.md` directly for the full strategic guide.
-
-## Checklist (Before You Commit)
+## Checklist
 
 ```
-- [ ] Searched existing KEYs — no duplicates introduced
-- [ ] KEY follows project's naming scheme (feature/layer/flow)
-- [ ] Loggers placed at boundaries, not randomly
-- [ ] Messages front-load critical info
-- [ ] Data params used for structured evidence
-- [ ] No circular references in data objects
-- [ ] validate_cli confirms no production usage
-- [ ] Temporary `fix-*` loggers removed if investigation complete
+- [ ] 既存KEY検索済み — 重複なし
+- [ ] プロジェクトの命名方式(feature/layer/flow)に準拠
+- [ ] 境界点にロガー配置
+- [ ] メッセージは重要情報を先頭に
+- [ ] dataパラムで構造化された証拠を渡す
+- [ ] 循環参照オブジェクトなし
+- [ ] validate_cliで本番使用なし確認済み
+- [ ] 調査完了した `fix-*` ロガーは削除済み
 ```
