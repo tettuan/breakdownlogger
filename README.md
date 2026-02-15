@@ -72,9 +72,9 @@ deno run -A jsr:@tettuan/breakdownlogger/docs ./my-docs/
 The exported skills teach Claude Code how to use BreakdownLogger effectively in
 your project:
 
-| Skill | Purpose |
-| --- | --- |
-| `breakdownlogger-implement-logger` | Guides KEY naming conventions, logger placement at boundary points, and production usage validation |
+| Skill                               | Purpose                                                                                                                        |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `breakdownlogger-implement-logger`  | Guides KEY naming conventions, logger placement at boundary points, and production usage validation                            |
 | `breakdownlogger-debug-with-logger` | Guides the 3-phase debugging workflow (error-only -> key-filtered -> full dump) using `LOG_LEVEL`, `LOG_KEY`, and `LOG_LENGTH` |
 
 After running the docs command, these skills are automatically available as
