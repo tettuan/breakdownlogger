@@ -1,7 +1,4 @@
-import {
-  assertEquals,
-  assertStringIncludes,
-} from "https://deno.land/std@0.219.0/assert/mod.ts";
+import { assertEquals, assertStringIncludes } from "@std/assert";
 import { BreakdownLogger } from "../mod.ts";
 
 /**

@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.219.0/assert/mod.ts";
+import { assertEquals } from "@std/assert";
 import { EnvironmentConfig } from "../src/environment_config.ts";
 import { LogLength, LogLevel } from "../src/types.ts";
 
