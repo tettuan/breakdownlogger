@@ -4,43 +4,15 @@ import {
 } from "https://deno.land/std@0.219.0/assert/mod.ts";
 import { BreakdownLogger } from "../mod.ts";
 
-// Test utility: Console output capture
-class ConsoleCapture {
-  private originalLog: typeof console.log;
-  private originalError: typeof console.error;
-  public logs: string[];
-  public errors: string[];
-
-  constructor() {
-    this.originalLog = console.log;
-    this.originalError = console.error;
-    this.logs = [];
-    this.errors = [];
-    console.log = (message: string) => {
-      this.logs.push(message);
-    };
-    console.error = (message: string) => {
-      this.errors.push(message);
-    };
-  }
-
-  restore() {
-    console.log = this.originalLog;
-    console.error = this.originalError;
-  }
-
-  clear() {
-    this.logs = [];
-    this.errors = [];
-  }
-}
+import { ConsoleCapture } from "./test_utils.ts";
 
 // Global capture instance
 const capture = new ConsoleCapture();
+capture.start();
 
 // Clean up when tests complete
 addEventListener("unload", () => {
-  capture.restore();
+  capture.stop();
 });
 
 Deno.test("BreakdownLogger", async (t) => {

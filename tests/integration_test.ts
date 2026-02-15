@@ -9,53 +9,10 @@ import { BreakdownLogger } from "../mod.ts";
  * These tests verify the complete functionality from end to end
  */
 
-// Test utility: Enhanced console capture
-class IntegrationConsoleCapture {
-  private originalLog: typeof console.log;
-  private originalError: typeof console.error;
-  private originalWarn: typeof console.warn;
-  private originalDebug: typeof console.debug;
-
-  public logs: string[] = [];
-  public errors: string[] = [];
-  public warns: string[] = [];
-  public debugs: string[] = [];
-
-  constructor() {
-    this.originalLog = console.log;
-    this.originalError = console.error;
-    this.originalWarn = console.warn;
-    this.originalDebug = console.debug;
-  }
-
-  start() {
-    console.log = (message: string) => this.logs.push(message);
-    console.error = (message: string) => this.errors.push(message);
-    console.warn = (message: string) => this.warns.push(message);
-    console.debug = (message: string) => this.debugs.push(message);
-  }
-
-  stop() {
-    console.log = this.originalLog;
-    console.error = this.originalError;
-    console.warn = this.originalWarn;
-    console.debug = this.originalDebug;
-  }
-
-  clear() {
-    this.logs = [];
-    this.errors = [];
-    this.warns = [];
-    this.debugs = [];
-  }
-
-  getAllOutput(): string[] {
-    return [...this.logs, ...this.errors, ...this.warns, ...this.debugs];
-  }
-}
+import { ConsoleCapture } from "./test_utils.ts";
 
 Deno.test("BreakdownLogger - Integration Tests", async (t) => {
-  const capture = new IntegrationConsoleCapture();
+  const capture = new ConsoleCapture();
 
   // Store original environment values
   const originalLogLevel = Deno.env.get("LOG_LEVEL");

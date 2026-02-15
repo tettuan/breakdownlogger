@@ -1,6 +1,7 @@
 # BreakdownLogger 開発設計書
 
-> **関連ドキュメント**: [仕様書 (en)](index.md) | [仕様書 (ja)](index.ja.md) | [用語集](glossary.ja.md)
+> **関連ドキュメント**: [仕様書 (en)](index.md) | [仕様書 (ja)](index.ja.md) |
+> [用語集](glossary.ja.md)
 
 ## 1. 概要設計
 
@@ -30,21 +31,22 @@ BreakdownLoggerは、テストコードのデバッグを支援するための�
 classDiagram
     class LogLevel {
         <<enumeration>>
-        DEBUG
-        INFO
-        WARN
-        ERROR
+        DEBUG = 0
+        INFO = 1
+        WARN = 2
+        ERROR = 3
     }
 
     class LogLength {
         <<enumeration>>
-        DEFAULT = 80
-        SHORT = 160
-        LONG = 300
-        WHOLE = -1
+        DEFAULT
+        SHORT
+        LONG
+        WHOLE
     }
 
     class LogEntry {
+        <<interface>>
         +timestamp: Date
         +level: LogLevel
         +key: string
@@ -54,33 +56,55 @@ classDiagram
 
     class BreakdownLogger {
         -key: string
-        -isTestEnvironment: boolean
+        -environmentConfig: EnvironmentConfig
+        -formatter: LogFormatter
+        -filter: LogFilter
         +constructor(key: string)
         +debug(message: string, data?: unknown): void
         +info(message: string, data?: unknown): void
         +warn(message: string, data?: unknown): void
         +error(message: string, data?: unknown): void
         -log(level: LogLevel, message: string, data?: unknown): void
-        -shouldLog(level: LogLevel): boolean
-        -shouldOutputKey(): boolean
-        -getMaxLength(): number
-        -truncateMessage(message: string): string
-        -formatLogEntry(entry: LogEntry): string
-        -checkTestEnvironment(): boolean
     }
 
     class EnvironmentConfig {
-        <<static>>
+        -logLevel: LogLevel
+        -logLength: LogLength
+        -logKeys: string[]
+        +constructor()
         +getLogLevel(): LogLevel
         +getLogLength(): LogLength
         +getLogKeys(): string[]
+        -parseLogLevel(): LogLevel
+        -parseLogLength(): LogLength
+        -parseLogKeys(): string[]
+    }
+
+    class LogFilter {
+        -isTestEnvironment: boolean
+        +constructor()
+        +shouldLog(level: LogLevel, currentLevel: LogLevel): boolean
+        +shouldOutputKey(key: string, allowedKeys: string[]): boolean
+        -checkTestEnvironment(): boolean
+    }
+
+    class LogFormatter {
+        +formatLogEntry(entry: LogEntry, maxLength: number): string
+        +getMaxLength(logLength: LogLength): number
+        -truncateMessage(message: string, maxLength: number): string
+        -formatData(data: unknown): string
     }
 
     LogEntry -- LogLevel
-    BreakdownLogger -- LogLevel
-    BreakdownLogger -- LogLength
-    BreakdownLogger -- LogEntry
-    BreakdownLogger -- EnvironmentConfig
+    BreakdownLogger *-- EnvironmentConfig : has
+    BreakdownLogger *-- LogFilter : has
+    BreakdownLogger *-- LogFormatter : has
+    BreakdownLogger ..> LogEntry : creates
+    BreakdownLogger ..> LogLevel : uses
+    EnvironmentConfig ..> LogLevel : uses
+    EnvironmentConfig ..> LogLength : uses
+    LogFormatter ..> LogEntry : uses
+    LogFormatter ..> LogLength : uses
 ```
 
 ### 1.3 アーキテクチャ概要
@@ -124,31 +148,41 @@ flowchart TB
 sequenceDiagram
     participant Test as テストコード
     participant Logger as BreakdownLogger
-    participant Env as 環境変数
+    participant EnvConfig as EnvironmentConfig
+    participant Filter as LogFilter
+    participant Formatter as LogFormatter
     participant Console as 標準出力
 
     Test->>Logger: new BreakdownLogger('hash1234')
     activate Logger
-    Logger->>Logger: checkTestEnvironment()
-    Note right of Logger: 呼び出し元がテストかチェック
+    Logger->>EnvConfig: new EnvironmentConfig()
+    Note right of EnvConfig: 環境変数を読み込みキャッシュ
+    Logger->>Filter: new LogFilter()
+    Filter->>Filter: checkTestEnvironment()
+    Note right of Filter: 呼び出し元がテストかチェック
+    Logger->>Formatter: new LogFormatter()
     deactivate Logger
-    
+
     Test->>Logger: debug("デバッグメッセージ", data)
     activate Logger
-    Logger->>Env: getLogLevel()
-    Env-->>Logger: "debug"
-    Logger->>Logger: shouldLog(LogLevel.DEBUG)
-    
-    Logger->>Env: getLogKeys()
-    Env-->>Logger: ["hash1234", "hash2345"]
-    Logger->>Logger: shouldOutputKey()
-    Note right of Logger: key='hash1234'は含まれる
-    
-    Logger->>Env: getLogLength()
-    Env-->>Logger: "S" (Short)
-    Logger->>Logger: truncateMessage(message, 100)
-    
-    Logger->>Logger: formatLogEntry()
+    Logger->>EnvConfig: getLogLevel()
+    EnvConfig-->>Logger: LogLevel.DEBUG
+    Logger->>Filter: shouldLog(LogLevel.DEBUG, currentLevel)
+    Filter-->>Logger: true
+
+    Logger->>EnvConfig: getLogKeys()
+    EnvConfig-->>Logger: ["hash1234", "hash2345"]
+    Logger->>Filter: shouldOutputKey('hash1234', allowedKeys)
+    Filter-->>Logger: true
+    Note right of Filter: key='hash1234'は含まれる
+
+    Logger->>EnvConfig: getLogLength()
+    EnvConfig-->>Logger: LogLength.SHORT
+    Logger->>Formatter: getMaxLength(LogLength.SHORT)
+    Formatter-->>Logger: 160
+    Logger->>Formatter: formatLogEntry(entry, 160)
+    Formatter-->>Logger: フォーマット済み文字列
+
     Logger->>Console: console.log()
     deactivate Logger
 ```
@@ -301,11 +335,25 @@ graph TD
 breakdownlogger/
 ├── mod.ts              # エントリーポイント
 ├── src/
+│   ├── constants.ts    # 定数定義
+│   ├── environment_config.ts  # 環境変数設定管理
+│   ├── log_filter.ts   # ログフィルタリング
+│   ├── log_formatter.ts # ログフォーマット
 │   ├── logger.ts       # BreakdownLoggerクラス
 │   └── types.ts        # 型定義
 ├── tests/
-│   └── logger_test.ts  # テストコード
-└── deno.json          # Deno設定
+│   ├── test_utils.ts   # テストユーティリティ
+│   ├── logger_test.ts  # 基本テスト
+│   ├── log_filter_test.ts      # フィルターテスト
+│   ├── log_formatter_test.ts   # フォーマッターテスト
+│   ├── environment_setup_test.ts       # 環境設定テスト
+│   ├── environment_config_advanced_test.ts  # 環境設定詳細テスト
+│   ├── integration_test.ts     # 統合テスト
+│   ├── edge_cases_test.ts      # エッジケーステスト
+│   ├── real_world_scenarios_test.ts    # 実使用シナリオテスト
+│   ├── performance_test.ts     # パフォーマンステスト
+│   └── formatter_coverage_test.ts      # フォーマッターカバレッジテスト
+└── deno.json           # Deno設定
 ```
 
 ### 3.2 エクスポート設計
@@ -313,8 +361,9 @@ breakdownlogger/
 ```typescript
 // mod.ts
 export { BreakdownLogger } from "./src/logger.ts";
-export type { LogLevel } from "./src/types.ts";
-// 最小限のエクスポートのみ
+export { LogLevel } from "./src/types.ts";
+export { LogLength } from "./src/types.ts";
+export type { LogEntry } from "./src/types.ts";
 ```
 
 ### 3.3 使用例
@@ -367,7 +416,7 @@ Deno.test("設定の読み込みテスト", () => {
    - 巨大なオブジェクトは文字列化前に切り詰め
 
 2. **実行速度**
-   - 環境変数は初回読み込み時にキャッシュ
+   - 環境変数はインスタンス生成時に読み込み、インスタンス内でキャッシュ
    - 出力判定は早期リターンで最適化
 
 ## 5. 制約事項
