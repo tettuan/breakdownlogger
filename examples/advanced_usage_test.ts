@@ -96,7 +96,9 @@ Deno.test("Advanced features demonstration", () => {
   console.log("\n--- Actual use case example ---");
 
   // Function execution tracking
-  function processUser(userId: number) {
+  function processUser(
+    userId: number,
+  ): { id: number; name: string; email: string } {
     const logger = new BreakdownLogger("user-processor");
 
     logger.debug("processUser started", { userId });

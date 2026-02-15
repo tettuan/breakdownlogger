@@ -1,6 +1,7 @@
 # 用語集 (Glossary)
 
-> **関連ドキュメント**: [仕様書 (en)](index.md) | [仕様書 (ja)](index.ja.md) | [開発ガイド](development.ja.md)
+> **関連ドキュメント**: [仕様書 (en)](index.md) | [仕様書 (ja)](index.ja.md) |
+> [開発ガイド](development.ja.md)
 
 BreakdownLoggerに関連する重要な用語とその定義をまとめた用語集です。
 
@@ -164,7 +165,8 @@ WARN）とエラー出力（ERROR）を使い分ける。
 ### Timestamp
 
 **タイムスタンプ**\
-ログ出力時刻を示すISO 8601形式の文字列。dataがある場合のみ、ログエントリの末尾に付与される。
+ログ出力時刻を示すISO
+8601形式の文字列。dataがある場合のみ、ログエントリの末尾に付与される。
 
 ### TypeScript
 

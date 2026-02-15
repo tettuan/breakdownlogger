@@ -39,7 +39,10 @@ export class UserService {
     this.logger = new BreakdownLogger(logKey); // e.g., "a3f4b2c1"
   }
 
-  createUser(email: string, name: string) {
+  createUser(
+    email: string,
+    name: string,
+  ): { userId: number; email: string; name: string } {
     this.logger.debug("Creating new user", { email, name });
 
     // Simulate user creation
@@ -65,7 +68,7 @@ export class DatabaseConnection {
     return new BreakdownLogger(methodKey);
   }
 
-  query(sql: string, params: unknown[]) {
+  query(sql: string, params: unknown[]): { rows: never[]; rowCount: number } {
     const logger = this.getMethodLogger("query");
 
     logger.debug("Executing query", { sql, params });
@@ -86,7 +89,7 @@ export class DatabaseConnection {
     }
   }
 
-  async connect() {
+  async connect(): Promise<void> {
     const logger = this.getMethodLogger("connect");
 
     logger.info("Attempting to connect to database");
@@ -126,14 +129,14 @@ export class LoggerFactory {
       this.loggerCache.set(logKey, new BreakdownLogger(logKey));
     }
 
-    return this.loggerCache.get(logKey)!;
+    return this.loggerCache.get(logKey) as BreakdownLogger;
   }
 
   /**
    * Get logger with auto-generated key from stack trace
    */
   static getAutoLogger(): BreakdownLogger {
-    const stack = new Error().stack!;
+    const stack = new Error().stack ?? "";
     const lines = stack.split("\n");
     // Extract caller information from stack trace
     const callerLine = lines[2]; // Skip Error and getAutoLogger lines
@@ -172,10 +175,10 @@ export class RequestHandler {
       const hashKey = generateComplexLogKey(this.requestId, operation);
       this.loggers.set(key, new BreakdownLogger(hashKey));
     }
-    return this.loggers.get(key)!;
+    return this.loggers.get(key) as BreakdownLogger;
   }
 
-  handleRequest(request: Request) {
+  handleRequest(request: Request): void {
     const logger = this.getLogger("handleRequest");
 
     logger.info("Processing request", {

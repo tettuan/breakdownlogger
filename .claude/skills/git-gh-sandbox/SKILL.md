@@ -9,6 +9,7 @@ allowed-tools: [Bash, Read, Edit, Grep, Glob]
 ## Overview
 
 Claude Code sandbox restricts network access by default. This skill documents:
+
 1. Which commands need sandbox bypass
 2. Current allowlist configuration
 3. Troubleshooting connection errors
@@ -17,12 +18,12 @@ Claude Code sandbox restricts network access by default. This skill documents:
 
 Current allowlist in `.claude/settings.json`:
 
-| Domain | Purpose |
-|--------|---------|
-| jsr.io, *.jsr.io | JSR package registry |
+| Domain                 | Purpose               |
+| ---------------------- | --------------------- |
+| jsr.io, *.jsr.io       | JSR package registry  |
 | deno.land, *.deno.land | Deno standard library |
-| github.com | Git remote operations |
-| api.github.com | GitHub CLI (gh) |
+| github.com             | Git remote operations |
+| api.github.com         | GitHub CLI (gh)       |
 
 ## Commands Requiring Sandbox Bypass
 
@@ -35,7 +36,7 @@ Even with allowlist, some commands may need `dangerouslyDisableSandbox: true`:
 Bash({
   command: "git push -u origin branch-name",
   dangerouslyDisableSandbox: true,
-})
+});
 ```
 
 ### GitHub CLI
@@ -45,7 +46,7 @@ Bash({
 Bash({
   command: "gh pr create --base develop --head feature-branch",
   dangerouslyDisableSandbox: true,
-})
+});
 ```
 
 ### Deno with External Packages
@@ -55,7 +56,7 @@ Bash({
 Bash({
   command: "deno task ci",
   dangerouslyDisableSandbox: true,
-})
+});
 ```
 
 ### Claude Agent SDK (breakdownlogger-agent)
@@ -65,7 +66,7 @@ Bash({
 Bash({
   command: "echo '...' | deno run breakdownlogger-agent.ts",
   dangerouslyDisableSandbox: true,
-})
+});
 ```
 
 ## Commands NOT Requiring Bypass
@@ -87,8 +88,8 @@ fatal: unable to access 'https://github.com/...':
 Could not resolve host: github.com
 ```
 
-**Cause**: Sandbox blocking network access
-**Solution**: Add `dangerouslyDisableSandbox: true`
+**Cause**: Sandbox blocking network access **Solution**: Add
+`dangerouslyDisableSandbox: true`
 
 ### JSR Package Load Failed
 
@@ -97,14 +98,15 @@ error: JSR package manifest for '@std/path' failed to load.
 Import 'https://jsr.io/@std/path/meta.json' failed.
 ```
 
-**Cause**: Sandbox blocking JSR access
-**Solutions**:
+**Cause**: Sandbox blocking JSR access **Solutions**:
+
 1. Verify jsr.io in allowedDomains (should already be there)
 2. Use `dangerouslyDisableSandbox: true` if still failing
 
 ### Transient Network Errors
 
 Connection may fail intermittently due to:
+
 - Network latency
 - DNS resolution delays
 - Rate limiting
@@ -114,9 +116,10 @@ Connection may fail intermittently due to:
 ```typescript
 // Retry pattern for network commands
 Bash({
-  command: "git push origin branch-name || sleep 2 && git push origin branch-name",
+  command:
+    "git push origin branch-name || sleep 2 && git push origin branch-name",
   dangerouslyDisableSandbox: true,
-})
+});
 ```
 
 ## Adding New Domains
@@ -140,14 +143,14 @@ To allow new external domains, edit `.claude/settings.json`:
 
 ## Quick Reference
 
-| Situation | Action |
-|-----------|--------|
+| Situation                 | Action                            |
+| ------------------------- | --------------------------------- |
 | git push/pull/fetch/clone | `dangerouslyDisableSandbox: true` |
-| gh (any command) | `dangerouslyDisableSandbox: true` |
+| gh (any command)          | `dangerouslyDisableSandbox: true` |
 | deno task ci (fresh deps) | `dangerouslyDisableSandbox: true` |
-| deno task ci (cached) | Sandbox OK |
-| Claude API calls | `dangerouslyDisableSandbox: true` |
-| Connection error | Retry with sandbox bypass |
+| deno task ci (cached)     | Sandbox OK                        |
+| Claude API calls          | `dangerouslyDisableSandbox: true` |
+| Connection error          | Retry with sandbox bypass         |
 
 ## Related Skills
 

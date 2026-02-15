@@ -1,6 +1,7 @@
 # Library Overview
 
-> **Related Documents**: [日本語版](index.ja.md) | [Development Guide (ja)](development.ja.md) | [Glossary (ja)](glossary.ja.md)
+> **Related Documents**: [日本語版](index.ja.md) |
+> [Development Guide (ja)](development.ja.md) | [Glossary (ja)](glossary.ja.md)
 
 A debugging logger library built with Deno and published to JSR. It is designed
 to be used within applications and does not run standalone.

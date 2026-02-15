@@ -8,7 +8,8 @@ allowed-tools: [Bash, Read, Edit, Grep, Glob, Task]
 
 ## 責務
 
-CI 実行方法と事前検証を管理する（`deno task ci` の使い方、パイプラインステージ）。
+CI 実行方法と事前検証を管理する（`deno task ci`
+の使い方、パイプラインステージ）。
 
 - CI エラーの対処方法は `/ci-troubleshooting` skill を参照
 - リリースフロー全体は `/release-procedure` skill を参照
@@ -28,8 +29,8 @@ Run CI locally to verify code quality before pushing.
 Task({
   subagent_type: "Bash",
   prompt: "Run deno task ci and report results",
-  description: "Run local CI"
-})
+  description: "Run local CI",
+});
 ```
 
 ### Direct Execution (Watch for Sandbox)
@@ -40,7 +41,7 @@ When JSR/Deno packages need to be fetched:
 Bash({
   command: "deno task ci",
   dangerouslyDisableSandbox: true,
-})
+});
 ```
 
 ## CI Pipeline Stages
@@ -68,17 +69,17 @@ Or with sandbox bypass:
 Bash({
   command: "deno task ci && git push origin branch-name",
   dangerouslyDisableSandbox: true,
-})
+});
 ```
 
 ## Error Handling
 
-| Error Type | Skill Reference |
-|------------|-----------------|
+| Error Type            | Skill Reference       |
+| --------------------- | --------------------- |
 | JSR connection failed | `/ci-troubleshooting` |
-| Lint errors | `/ci-troubleshooting` |
-| Test failures | `/ci-troubleshooting` |
-| Network blocked | `/git-gh-sandbox` |
+| Lint errors           | `/ci-troubleshooting` |
+| Test failures         | `/ci-troubleshooting` |
+| Network blocked       | `/git-gh-sandbox`     |
 
 ## Quick Commands
 

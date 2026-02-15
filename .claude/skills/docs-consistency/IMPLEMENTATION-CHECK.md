@@ -16,11 +16,11 @@ grep -oE -- "--[a-z-]+" README.md | sort -u
 
 ### Help Text Sources
 
-| Source | Purpose |
-|--------|---------|
+| Source            | Purpose              |
+| ----------------- | -------------------- |
 | `src/cli/args.ts` | Argument definitions |
-| `src/cli/help.ts` | Help text templates |
-| `mod.ts --help` | Runtime output |
+| `src/cli/help.ts` | Help text templates  |
+| `mod.ts --help`   | Runtime output       |
 
 ### Verification Script
 
@@ -44,11 +44,11 @@ grep -oE '\`[a-zA-Z]+\`' agents/README.md | tr -d '`' | sort -u
 
 ### Verification Points
 
-| File | Docs Location | Check |
-|------|---------------|-------|
-| `agent.schema.json` | agents/README.md | Property names match |
-| `steps_registry.schema.json` | agents/docs/builder/ | Step types match |
-| Completion types | README § Completion Types | All types documented |
+| File                         | Docs Location             | Check                |
+| ---------------------------- | ------------------------- | -------------------- |
+| `agent.schema.json`          | agents/README.md          | Property names match |
+| `steps_registry.schema.json` | agents/docs/builder/      | Step types match     |
+| Completion types             | README § Completion Types | All types documented |
 
 ---
 
@@ -66,10 +66,10 @@ grep -E "^(###|import|await)" docs/internal/docs-distribution-design.md
 
 ### CLI Commands
 
-| Command | Source | Docs |
-|---------|--------|------|
+| Command   | Source            | Docs                   |
+| --------- | ----------------- | ---------------------- |
 | `install` | `src/docs/cli.ts` | README § Documentation |
-| `list` | `src/docs/cli.ts` | README § Documentation |
+| `list`    | `src/docs/cli.ts` | README § Documentation |
 
 ---
 
@@ -120,6 +120,7 @@ diff /tmp/claude/ja-files.txt /tmp/claude/en-files.txt
 ### Content Verification
 
 For each guide pair:
+
 - Same code blocks
 - Same heading count
 - Same link targets

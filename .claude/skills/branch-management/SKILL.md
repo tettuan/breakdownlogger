@@ -10,7 +10,8 @@ allowed-tools: [Bash, Read, Grep, Glob]
 
 ブランチ戦略・命名規則・PR作成ルールを管理する。
 
-- リリースフロー全体（version bump → tag → merge）は `/release-procedure` skill を参照
+- リリースフロー全体（version bump → tag → merge）は `/release-procedure` skill
+  を参照
 - CI 実行方法・エラー対処は `/local-ci` skill を参照
 
 ## トリガー条件
@@ -77,12 +78,12 @@ flowchart TD
 
 ## ルール一覧
 
-| 操作 | 許可 | 禁止 |
-|------|------|------|
-| main への変更 | develop からの PR マージのみ | 直接 push、他ブランチからのマージ |
-| develop への変更 | release/* からの PR マージのみ | 直接 push |
-| release/* の作成 | develop から派生 | main や作業ブランチから派生 |
-| 作業ブランチの作成 | release/* から派生 | main や develop から直接派生 |
+| 操作               | 許可                           | 禁止                              |
+| ------------------ | ------------------------------ | --------------------------------- |
+| main への変更      | develop からの PR マージのみ   | 直接 push、他ブランチからのマージ |
+| develop への変更   | release/* からの PR マージのみ | 直接 push                         |
+| release/* の作成   | develop から派生               | main や作業ブランチから派生       |
+| 作業ブランチの作成 | release/* から派生             | main や develop から直接派生      |
 
 ## 実施手順
 
@@ -108,11 +109,11 @@ git checkout -b feature/my-feature release/x.y.z
 
 #### PR を作成する場合
 
-| 現在のブランチ | PR先 | コマンド例 |
-|---------------|------|-----------|
-| feature/*, fix/*, refactor/*, docs/* | release/* | `gh pr create --base release/x.y.z` |
-| release/* | develop | `gh pr create --base develop` |
-| develop | main | `gh pr create --base main` |
+| 現在のブランチ                       | PR先      | コマンド例                          |
+| ------------------------------------ | --------- | ----------------------------------- |
+| feature/_, fix/_, refactor/_, docs/_ | release/* | `gh pr create --base release/x.y.z` |
+| release/*                            | develop   | `gh pr create --base develop`       |
+| develop                              | main      | `gh pr create --base main`          |
 
 #### PR をマージする場合
 
@@ -161,11 +162,11 @@ gh pr merge <PR番号> --rebase
 
 ##### 4. マージ方法の選択基準
 
-| マージ方法 | 使用場面 | コマンド |
-|-----------|---------|---------|
-| Squash | 作業ブランチ → release（複数コミットを1つに） | `gh pr merge --squash` |
-| Merge | release → develop（履歴保持） | `gh pr merge --merge` |
-| Merge | develop → main（履歴保持） | `gh pr merge --merge` |
+| マージ方法 | 使用場面                                      | コマンド               |
+| ---------- | --------------------------------------------- | ---------------------- |
+| Squash     | 作業ブランチ → release（複数コミットを1つに） | `gh pr merge --squash` |
+| Merge      | release → develop（履歴保持）                 | `gh pr merge --merge`  |
+| Merge      | develop → main（履歴保持）                    | `gh pr merge --merge`  |
 
 ##### 5. マージ後の確認
 
@@ -187,19 +188,20 @@ git pull origin develop
 
 ### 3. リリースフロー
 
-リリース手順（version bump → PR → merge → vtag）の詳細は `/release-procedure` skill を参照。
+リリース手順（version bump → PR → merge → vtag）の詳細は `/release-procedure`
+skill を参照。
 
 ## 警告パターン
 
 以下の操作を検知した場合は警告:
 
-| 操作 | 警告メッセージ |
-|------|---------------|
-| `git push origin main` | main への直接 push は禁止です。develop からの PR を作成してください。 |
-| `git push origin develop` | develop への直接 push は禁止です。release/* からの PR を作成してください。 |
-| `git checkout -b feature/* develop` | 作業ブランチは release/* から派生してください。 |
-| `git checkout -b refactor/* develop` | 作業ブランチは release/* から派生してください。 |
-| `git merge main` | main からのマージは想定外です。派生元を確認してください。 |
+| 操作                                 | 警告メッセージ                                                             |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| `git push origin main`               | main への直接 push は禁止です。develop からの PR を作成してください。      |
+| `git push origin develop`            | develop への直接 push は禁止です。release/* からの PR を作成してください。 |
+| `git checkout -b feature/* develop`  | 作業ブランチは release/* から派生してください。                            |
+| `git checkout -b refactor/* develop` | 作業ブランチは release/* から派生してください。                            |
+| `git merge main`                     | main からのマージは想定外です。派生元を確認してください。                  |
 
 ## クイックリファレンス
 

@@ -33,7 +33,7 @@ export class OrderProcessor {
     );
   }
 
-  async processOrder(orderId: string, items: OrderItem[]) {
+  async processOrder(orderId: string, items: OrderItem[]): Promise<void> {
     // Create order-specific hash for tracking
     const orderHash = generateHash("order", orderId, Date.now().toString());
     const orderLogger = new BreakdownLogger(orderHash);
@@ -84,7 +84,7 @@ export class OrderProcessor {
     orderId: string,
     items: OrderItem[],
     parentHash: string,
-  ) {
+  ): void {
     // Create sub-process hash linked to parent
     const validationHash = generateHash(parentHash, "validation");
     const logger = new BreakdownLogger(validationHash);
@@ -101,7 +101,10 @@ export class OrderProcessor {
     logger.debug("Order validation passed");
   }
 
-  private async checkInventory(items: OrderItem[], parentHash: string) {
+  private async checkInventory(
+    items: OrderItem[],
+    parentHash: string,
+  ): Promise<void> {
     const inventoryHash = generateHash(parentHash, "inventory");
     const logger = new BreakdownLogger(inventoryHash);
 
@@ -111,6 +114,7 @@ export class OrderProcessor {
 
     // Simulate inventory check with potential failures
     for (const item of items) {
+      // deno-lint-ignore no-await-in-loop
       const available = await this.getInventoryLevel(item.productId);
 
       if (available < item.quantity) {
@@ -138,7 +142,7 @@ export class OrderProcessor {
     orderId: string,
     items: OrderItem[],
     parentHash: string,
-  ) {
+  ): Promise<{ transactionId: string; amount: number }> {
     const paymentHash = generateHash(parentHash, "payment");
     const logger = new BreakdownLogger(paymentHash);
 
@@ -178,7 +182,7 @@ export class OrderProcessor {
     _items: OrderItem[],
     payment: PaymentResult,
     parentHash: string,
-  ) {
+  ): void {
     const shipmentHash = generateHash(parentHash, "shipment");
     const logger = new BreakdownLogger(shipmentHash);
 
@@ -214,14 +218,14 @@ export class OrderMonitor {
     return monitorHash;
   }
 
-  logEvent(orderId: string, event: string, data?: unknown) {
+  logEvent(orderId: string, event: string, data?: unknown): void {
     const logger = this.monitors.get(orderId);
     if (logger) {
       logger.debug(event, data);
     }
   }
 
-  stopMonitoring(orderId: string) {
+  stopMonitoring(orderId: string): void {
     const logger = this.monitors.get(orderId);
     if (logger) {
       logger.info("Monitoring stopped", { orderId });
@@ -243,14 +247,14 @@ interface PaymentResult {
 }
 
 // Example usage and debugging guide
-if (import.meta.main) {
+async function main(): Promise<void> {
   console.log(`
 === Hash-based Order Processing Debug Guide ===
 
 1. Track specific order:
    # First, run normally to get the order hash
    LOG_LEVEL=debug deno run examples/hash-integration-example.ts
-   
+
    # Then use the hash to track that specific order
    LOG_KEY=<order-hash> LOG_LENGTH=L deno test
 
@@ -297,4 +301,8 @@ Example order processing simulation:
   } finally {
     monitor.stopMonitoring(orderId);
   }
+}
+
+if (import.meta.main) {
+  main();
 }

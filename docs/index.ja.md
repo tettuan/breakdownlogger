@@ -1,6 +1,7 @@
 # ライブラリ概要
 
-> **関連ドキュメント**: [English Version](index.md) | [開発ガイド](development.ja.md) | [用語集](glossary.ja.md)
+> **関連ドキュメント**: [English Version](index.md) |
+> [開発ガイド](development.ja.md) | [用語集](glossary.ja.md)
 
 Denoで構築され、JSRへ公開されるデバッグ用ログ出力のライブラリである。
 単体では動作せず、アプリケーションから呼ばれて利用される。
@@ -72,8 +73,10 @@ DebugLoggerは、アプリケーションの設定やパス解決のデバッグ
    - タイムスタンプ（データがある場合のみ、末尾に出力）
 
 出力フォーマット:
+
 - 基本: `[LEVEL] [key] message`
-- data付き: `[LEVEL] [key] message\nData: {...}\nTimestamp: 2024-03-10T12:00:00.000Z`
+- data付き:
+  `[LEVEL] [key] message\nData: {...}\nTimestamp: 2024-03-10T12:00:00.000Z`
 
 ### 実行時
 

@@ -1,4 +1,3 @@
-import { assert } from "https://deno.land/std@0.219.0/assert/mod.ts";
 import { BreakdownLogger } from "../mod.ts";
 
 /**
@@ -34,8 +33,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         message: "Pool approaching capacity",
       });
 
-      // Should complete without errors
-      assert(true, "Database logging completed successfully");
+      // Completes without errors
     });
 
     await t.step("should handle database errors", () => {
@@ -55,7 +53,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         errorCode: "42601",
       });
 
-      assert(true, "Database error logging completed successfully");
+      // Completes without errors
     });
   });
 
@@ -93,7 +91,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         bodySize: 156,
       });
 
-      assert(true, "API logging completed successfully");
+      // Completes without errors
     });
 
     await t.step("should log rate limiting scenarios", () => {
@@ -117,7 +115,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         action: "blocked",
       });
 
-      assert(true, "Rate limiting logging completed successfully");
+      // Completes without errors
     });
   });
 
@@ -151,7 +149,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         action: "account_locked",
       });
 
-      assert(true, "Authentication logging completed successfully");
+      // Completes without errors
     });
 
     await t.step("should log permission checks", () => {
@@ -172,7 +170,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         result: "denied",
       });
 
-      assert(true, "Permission logging completed successfully");
+      // Completes without errors
     });
   });
 
@@ -223,7 +221,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         estimatedShipDate: "2023-12-02",
       });
 
-      assert(true, "Business workflow logging completed successfully");
+      // Completes without errors
     });
   });
 
@@ -255,7 +253,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         recoveryMethod: "circuit_breaker_reset",
       });
 
-      assert(true, "Service recovery logging completed successfully");
+      // Completes without errors
     });
   });
 
@@ -290,7 +288,7 @@ Deno.test("BreakdownLogger - Real-world Scenarios", async (t) => {
         errorRate: 0.02,
       });
 
-      assert(true, "Metrics logging completed successfully");
+      // Completes without errors
     });
   });
 });
