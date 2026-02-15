@@ -11,7 +11,7 @@
  * @module
  */
 
-import { walk } from "jsr:@std/fs@1/walk";
+import { walk } from "@std/fs/walk";
 import { TEST_FILE_PATTERNS } from "./constants.ts";
 
 /** A single violation: a non-test file importing @tettuan/breakdownlogger. */

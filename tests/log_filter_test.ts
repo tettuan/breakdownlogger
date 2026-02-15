@@ -1,7 +1,4 @@
-import {
-  assert,
-  assertFalse,
-} from "https://deno.land/std@0.219.0/assert/mod.ts";
+import { assert, assertFalse } from "@std/assert";
 import { LogFilter } from "../src/log_filter.ts";
 import { LogLevel } from "../src/types.ts";
 

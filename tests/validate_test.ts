@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.219.0/assert/mod.ts";
+import { assertEquals } from "@std/assert";
 import { validateNoProductionUsage } from "../src/validate_cli.ts";
 
 Deno.test("validateNoProductionUsage", async (t) => {
