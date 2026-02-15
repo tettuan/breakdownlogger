@@ -1,5 +1,7 @@
 # Library Overview
 
+> **Related Documents**: [日本語版](index.ja.md) | [Development Guide (ja)](development.ja.md) | [Glossary (ja)](glossary.ja.md)
+
 A debugging logger library built with Deno and published to JSR. It is designed
 to be used within applications and does not run standalone.
 
@@ -68,11 +70,11 @@ Examples:
 #### Output Items
 
 1. Log output items
-   - Timestamp
    - Log level
    - Output location KEY
    - Message content
    - Object dump (when necessary)
+   - Timestamp (appended at the end only when data is present)
 
 ### Runtime
 
@@ -657,6 +659,14 @@ function processUser(userId: number) {
 ## Distribution Method
 
 - Built for publication to JSR
+
+### Sub-path Import
+
+You can also import the logger directly:
+
+```typescript
+import { BreakdownLogger } from "@tettuan/breakdownlogger/logger";
+```
 
 ### Other
 

@@ -1,5 +1,7 @@
 # BreakdownLogger 開発設計書
 
+> **関連ドキュメント**: [仕様書 (en)](index.md) | [仕様書 (ja)](index.ja.md) | [用語集](glossary.ja.md)
+
 ## 1. 概要設計
 
 ### 1.1 システム構成
@@ -223,14 +225,15 @@ flowchart LR
 
 ```typescript
 // 基本フォーマット
-[timestamp] [LEVEL] [key] message
+[LEVEL] [key] message
 
 // 実例
-[2024-03-10T12:00:00.000Z] [DEBUG] [hash1234] デバッグメッセージ（最大80文字まで...
+[DEBUG] [hash1234] デバッグメッセージ（最大80文字まで...
 
 // dataがある場合
-[2024-03-10T12:00:00.000Z] [DEBUG] [hash1234] デバッグメッセージ
+[DEBUG] [hash1234] デバッグメッセージ
 Data: { "optional": "データ" }
+Timestamp: 2024-03-10T12:00:00.000Z
 ```
 
 #### テストコードの判定ロジック
