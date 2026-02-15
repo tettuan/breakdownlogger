@@ -15,7 +15,7 @@ allowed-tools: [Bash, Read, Edit, Grep, Glob]
 
 ## リリースブランチ作成時のチェックリスト
 
-__release/_ ブランチを作成したら、必ず以下を実行:_*
+`release/*` ブランチを作成したら、必ず以下を実行:
 
 ```bash
 # 1. バージョン自動更新（ブランチ名から検出）
@@ -34,59 +34,21 @@ git commit -m "chore: bump version to x.y.z"
 git push -u origin release/x.y.z
 ```
 
-## ドキュメント更新（リリース前必須）
-
-**重要**: リリース前に以下の2つのスキルを使用してドキュメントを更新すること。
-
-### 1. CHANGELOG 更新
-
-`/update-changelog` スキルを使用:
-
-- 変更内容を [Unreleased] セクションに記載
-- 検索可能なキーワードを含める（コマンド名、オプション名、設定名）
-- リリース時に [x.y.z] - YYYY-MM-DD へ移動
-
-### 2. ドキュメント更新
+## ドキュメント更新（リリース前）
 
 `/update-docs` スキルを使用:
 
-- 変更の種類に応じて適切な場所を更新
 - CLI オプション変更 → `--help` 必須、README 推奨
 - 新機能 → README に簡潔な説明とサンプル
 - 設定変更 → スキーマ説明、README/docs
 
-### 3. docs/manifest.json 更新
-
-リリース前に `docs/manifest.json` を最新状態に更新する:
-
-- `version` フィールドをリリースバージョンに更新
-- エントリの追加・削除: `docs/` 配下のファイル増減を反映
-- `bytes` フィールド: 各ファイルの実サイズと一致させる
-- `lang` フィールド: en/ja ガイドには必ず指定
-
-```bash
-# 確認: manifest のエントリと実ファイルの突き合わせ
-ls docs/*.md docs/guides/en/*.md docs/guides/ja/*.md
-# manifest に無いファイル、または manifest にあるが存在しないファイルがないか確認
-
-# bytes 確認
-wc -c docs/*.md docs/guides/en/*.md docs/guides/ja/*.md
-```
-
 ### チェックリスト
 
 ```
-□ CHANGELOG.md に変更を記載（/update-changelog）
 □ 必要なドキュメントを更新（/update-docs）
   □ CLI変更 → --help 出力確認
-  □ 新機能 → README.md / README.ja.md
-  □ Agent変更 → agents/README.md
+  □ 新機能 → README.md
   □ 設定変更 → スキーマ説明
-□ docs/manifest.json を更新
-  □ version をリリースバージョンに更新
-  □ ファイル追加・削除を反映
-  □ bytes を実サイズに更新
-□ examples/ E2E 検証を実行（CI通過後、PR作成前）
 ```
 
 **重要**: `deno task bump-version` は release/*
@@ -95,8 +57,8 @@ wc -c docs/*.md docs/guides/en/*.md docs/guides/ja/*.md
 
 ## 重要: 連続マージの禁止事項
 
-__release/_ → develop → main
-への連続マージは、必ずユーザーの明示的な指示を受けてから実行すること。_*
+`release/*` → develop → main
+への連続マージは、必ずユーザーの明示的な指示を受けてから実行すること。
 
 禁止事項:
 
@@ -124,12 +86,24 @@ __release/_ → develop → main
 
 このプロジェクトでは以下の2ファイルでバージョンを管理:
 
-| ファイル         | 用途                                                       |
-| ---------------- | ---------------------------------------------------------- |
-| `deno.json`      | JSR パッケージバージョン（`"version": "x.y.z"`）           |
-| `src/version.ts` | CLI バージョン定数（`BREAKDOWN_LOGGER_VERSION = "x.y.z"`） |
+| ファイル         | 用途                                                   |
+| ---------------- | ------------------------------------------------------ |
+| `deno.json`      | JSR パッケージバージョン（`"version": "x.y.z"`）       |
+| `src/version.ts` | バージョン定数（`BREAKDOWN_LOGGER_VERSION = "x.y.z"`） |
 
 **重要**: 両ファイルのバージョンは必ず一致させること。CIで自動チェックされる。
+
+### bump-version スクリプト
+
+`scripts/bump_version.ts` が両ファイルを同時に更新する:
+
+```bash
+# release/* ブランチ名から自動検出
+deno task bump-version
+
+# 明示的にバージョン指定
+deno task bump-version 1.2.3
+```
 
 ## バージョンアップ手順
 
@@ -144,11 +118,12 @@ __release/_ → develop → main
 ### 2. ファイル更新
 
 ```bash
-# deno.json
-# "version": "1.9.13" → "version": "1.9.14"
+# 自動更新（推奨）
+deno task bump-version
 
-# src/version.ts
-# export const BREAKDOWN_LOGGER_VERSION = "1.9.13"; → "1.9.14";
+# 手動更新の場合は2ファイルとも変更すること
+# deno.json: "version": "x.y.z"
+# src/version.ts: export const BREAKDOWN_LOGGER_VERSION = "x.y.z";
 ```
 
 ### 3. 確認コマンド
@@ -171,7 +146,7 @@ sequenceDiagram
     participant T as vtag
 
     Note over R: 1. バージョンアップ
-    R->>R: deno.json, version.ts 更新
+    R->>R: deno task bump-version
     Note over R: 2. ローカルCI確認
     R->>R: deno task ci
     R->>R: 3. git commit & push
@@ -224,29 +199,37 @@ grep '"version"' deno.json
 grep 'export const BREAKDOWN_LOGGER_VERSION' src/version.ts
 ```
 
-#### ステップ 2: ローカルCI確認
+#### ステップ 2: ローカルCI確認（GitHub CI 事前再現）
 
 **重要**: プッシュ前に必ずローカルでCIを通すこと。実行方法の詳細は `/local-ci`
 skill を参照。
 
+`deno task ci` だけではなく、GitHub CI との差分を事前に潰す。
+
 ```bash
+# 1. ローカルCI（基本）
 deno task ci
+
+# 2. GitHub CI 再現チェック（ローカルCIに含まれない項目）
+#    a. markdown を含む全ファイルの fmt チェック
+deno fmt --check
+#    b. GitHub CI と同じ権限フラグでテスト
+deno test --allow-env --allow-read --allow-write
+#    c. version-check: deno.json >= 最新タグ であること
+git fetch --tags
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+CURRENT="v$(grep '"version"' deno.json | head -1 | sed 's/.*"\([0-9.]*\)".*/\1/')"
+echo "deno.json=$CURRENT, latest_tag=$LATEST_TAG"
 ```
 
-#### ステップ 2.5: Examples E2E 検証
+**よくある見落とし（v1.1.0 リリースでの教訓）**:
 
-**重要**: CI通過後、PR作成前に `examples/` スクリプトで E2E 検証を行うこと。
-
-```bash
-chmod +x examples/**/*.sh examples/*.sh
-./examples/01_setup/01_install.sh
-./examples/02_cli_basic/01_echo_test.sh
-# ... 各カテゴリを実行
-./examples/07_clean.sh
-```
-
-対象: `01_setup` ～ `06_registry` の各カテゴリ。詳細は
-[`examples/README.md`](../../examples/README.md) を参照。
+| 見落とし                             | 原因                                        | 事前チェック                |
+| ------------------------------------ | ------------------------------------------- | --------------------------- |
+| markdown の fmt 差分                 | `deno task ci` が md を含まない場合がある   | `deno fmt --check`          |
+| テスト権限不足                       | ローカルは `--allow-all` だが CI は制限付き | CI と同じフラグでテスト実行 |
+| version-check fail                   | deno.json バージョン < 最新タグ             | タグと deno.json の比較     |
+| publish.yml と test.yml のフラグ乖離 | workflow 修正が片方だけで漏れる             | 両 yml の test フラグを目視 |
 
 #### ステップ 3: コミット & プッシュ
 
@@ -339,13 +322,11 @@ git push origin --delete release/x.y.z
 | deno.json と version.ts の一致 | 全ブランチ     | `Version mismatch: deno.json=X, version.ts=Y`    |
 | ブランチ名とバージョンの一致   | release/* のみ | `Branch version mismatch: branch=X, deno.json=Y` |
 
-### release/* ブランチでの追加チェック
+`.github/workflows/version-check.yml` で追加チェック:
 
-```
-release/1.9.15 ブランチでは:
-- deno.json の version が "1.9.15" であること
-- src/version.ts の BREAKDOWN_LOGGER_VERSION が "1.9.15" であること
-```
+| チェック項目               | 失敗時のエラー                                          |
+| -------------------------- | ------------------------------------------------------- |
+| deno.json >= 最新 git タグ | `deno.json version ($CURRENT) is older than latest tag` |
 
 ### チェックを通すための確認コマンド
 
@@ -365,33 +346,30 @@ grep 'export const BREAKDOWN_LOGGER_VERSION' src/version.ts | sed 's/.*"\([0-9.]
 ### チェック失敗時の対処
 
 ```bash
-# release/1.9.15 でバージョンが 1.9.14 のままだった場合
-# 1. deno.json を編集: "version": "1.9.15"
-# 2. version.ts を編集: BREAKDOWN_LOGGER_VERSION = "1.9.15"
-# 3. コミット & push
+# バージョン不一致の場合: bump-version で一括修正
+deno task bump-version
+
+# または手動修正
 git add deno.json src/version.ts
-git commit -m "fix: correct version to 1.9.15"
-git push origin release/1.9.15
+git commit -m "fix: correct version to x.y.z"
+git push origin release/x.y.z
 ```
 
 ## クイックリファレンス
 
 ```
 バージョンアップ:
-  1. deno.json の version を更新
-  2. src/version.ts の BREAKDOWN_LOGGER_VERSION を更新
-  3. deno task ci  ← ローカルCIを通す（重要）
-  4. git commit -m "chore: bump version to x.y.z"
+  1. deno task bump-version  ← deno.json + src/version.ts を一括更新
+  2. deno task ci  ← ローカルCIを通す（重要）
+  3. git commit -m "chore: bump version to x.y.z"
 
-ドキュメント更新（リリース前必須）:
-  1. /update-changelog → CHANGELOG.md に変更を記載
-  2. /update-docs → README, --help 等を必要に応じて更新
-  3. docs/manifest.json → version, entries, bytes を最新化
+ドキュメント更新（リリース前）:
+  /update-docs → README 等を必要に応じて更新
 
-E2E 検証（CI通過後、PR作成前）:
-  chmod +x examples/**/*.sh examples/*.sh
-  ./examples/01_setup/01_install.sh ～ ./examples/06_registry/
-  ./examples/07_clean.sh
+GitHub CI 事前再現（push前に必ず実施）:
+  1. deno fmt --check                    ← md 含む全ファイル
+  2. deno test --allow-env --allow-read --allow-write  ← CI と同じフラグ
+  3. version-check: deno.json >= 最新タグ確認
 
 リリースフロー:
   1. release/* → develop PR作成
@@ -411,6 +389,39 @@ E2E 検証（CI通過後、PR作成前）:
 
 ## トラブルシューティング
 
+### GitHub CI fail 時の事前防止と対処
+
+#### 事前防止（ステップ 2 で実施）
+
+GitHub CI 固有の失敗パターンはローカルで事前に再現・防止できる。 ステップ 2
+の「GitHub CI 再現チェック」を必ず実施すること。
+
+#### それでも fail した場合の対処
+
+```bash
+# 1. どのジョブが fail か確認
+gh pr checks <PR番号>
+
+# 2. 失敗ログを確認
+gh run view <run-id> --log-failed
+
+# 3. release/* ブランチで修正 & push（PR の CI が自動再実行される）
+git add <修正ファイル>
+git commit -m "fix: <CI失敗の原因を簡潔に>"
+git push origin release/x.y.z
+```
+
+#### workflow ファイル修正時の注意
+
+**publish.yml と test.yml のフラグは必ず同期する**。片方だけ修正すると vtag push
+時に publish.yml 側で fail する（v1.1.0 での実例）。
+
+```bash
+# 確認: 両ファイルの test コマンドを比較
+grep -n 'deno test' .github/workflows/test.yml .github/workflows/publish.yml
+# 両方とも --allow-env --allow-read --allow-write であること
+```
+
 ### JSR publish がスキップされた
 
 原因: deno.json のバージョンが既存と同じ
@@ -427,12 +438,13 @@ gh run view <run-id> --log | grep -i "skip"
 原因: deno.json と version.ts の不一致、またはブランチ名との不一致
 
 ```bash
+# 一括修正
+deno task bump-version
+
 # 確認
 grep '"version"' deno.json
 grep 'export const BREAKDOWN_LOGGER_VERSION' src/version.ts
 git branch --show-current
-
-# 対処: 全て同じバージョンに統一
 ```
 
 ### vtag が古いコミットを指している

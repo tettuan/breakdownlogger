@@ -1,6 +1,6 @@
 {
   "name": "@tettuan/breakdownlogger",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "exports": {
     ".": "./mod.ts",
     "./logger": "./src/logger.ts",
@@ -24,13 +24,13 @@
     "std/": "https://deno.land/std@0.220.1/"
   },
   "tasks": {
-    "test": "deno test --allow-env",
-    "publish:jsr": "bash scripts/publish_jsr.sh",
+    "test": "deno test --allow-env --allow-read --allow-write",
     "publish:dry": "deno publish --dry-run --allow-dirty",
-    "ci": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci",
+    "ci": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci && deno run --allow-read --allow-run .claude/skills/release-procedure/scripts/version_check.ts",
     "ci:dirty": "deno run --allow-read --allow-write --allow-run --allow-env jsr:@aidevtool/ci --allow-dirty",
     "docs": "deno doc --html --name=\"BreakdownLogger\" mod.ts",
-    "docs:json": "deno doc --json mod.ts"
+    "docs:json": "deno doc --json mod.ts",
+    "bump-version": "deno run --allow-read --allow-write --allow-run scripts/bump_version.ts"
   },
   "lint": {
     "rules": {
