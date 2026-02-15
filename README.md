@@ -39,6 +39,25 @@ import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger";
 import { BreakdownLogger, LogLevel } from "jsr:@tettuan/breakdownlogger@^1.0.8";
 ```
 
+## Documentation
+
+Detailed user guides are available and can be saved to your project:
+
+```bash
+deno run -A jsr:@tettuan/breakdownlogger/docs
+```
+
+This saves the following guides to `tests/docs/breakdownlogger/`:
+
+- `usage.md` -- English user guide
+- `usage.ja.md` -- Japanese user guide
+
+To specify a custom directory:
+
+```bash
+deno run -A jsr:@tettuan/breakdownlogger/docs ./my-docs/
+```
+
 ## Usage
 
 ### Important Guidelines

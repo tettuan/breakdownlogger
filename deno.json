@@ -3,7 +3,8 @@
   "version": "1.1.0",
   "exports": {
     ".": "./mod.ts",
-    "./logger": "./src/logger.ts"
+    "./logger": "./src/logger.ts",
+    "./docs": "./src/docs_cli.ts"
   },
   "description": "A debug logging library for Deno applications, designed for use in test environments with configurable levels and filtering",
   "repository": "https://github.com/tettuan/breakdownlogger",
@@ -30,12 +31,47 @@
     "docs": "deno doc --html --name=\"BreakdownLogger\" mod.ts",
     "docs:json": "deno doc --json mod.ts"
   },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"],
+      "include": [
+        "ban-untagged-todo",
+        "camelcase",
+        "default-param-last",
+        "eqeqeq",
+        "explicit-function-return-type",
+        "explicit-module-boundary-types",
+        "guard-for-in",
+        "no-await-in-loop",
+        "no-boolean-literal-for-arguments",
+        "no-const-assign",
+        "no-eval",
+        "no-implicit-declare-namespace-export",
+        "no-inferrable-types",
+        "no-non-null-asserted-optional-chain",
+        "no-non-null-assertion",
+        "no-self-compare",
+        "no-slow-types",
+        "no-sparse-arrays",
+        "no-sync-fn-in-async-fn",
+        "no-throw-literal",
+        "no-top-level-await",
+        "no-undef",
+        "no-useless-rename",
+        "single-var-declarator",
+        "triple-slash-reference",
+        "verbatim-module-syntax"
+      ]
+    }
+  },
   "publish": {
     "include": [
       "mod.ts",
       "src/**/*.ts",
       "README.md",
-      "LICENSE"
+      "LICENSE",
+      "docs/usage.md",
+      "docs/usage.ja.md"
     ],
     "exclude": [
       "coverage_dir/",
