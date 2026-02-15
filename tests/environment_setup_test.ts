@@ -1,4 +1,5 @@
 import {
+  assert,
   assertEquals,
   assertExists,
 } from "https://deno.land/std@0.219.0/assert/mod.ts";
@@ -12,89 +13,10 @@ import { BreakdownLogger } from "../mod.ts";
 import { EnvironmentConfig } from "../src/environment_config.ts";
 import { LogLength, LogLevel } from "../src/types.ts";
 
-/**
- * Test utilities for capturing console output
- */
-class TestConsoleCapture {
-  private originalLog: typeof console.log;
-  private originalError: typeof console.error;
-  private originalWarn: typeof console.warn;
-  private originalDebug: typeof console.debug;
-
-  public logs: string[] = [];
-  public errors: string[] = [];
-  public warns: string[] = [];
-  public debugs: string[] = [];
-
-  constructor() {
-    this.originalLog = console.log;
-    this.originalError = console.error;
-    this.originalWarn = console.warn;
-    this.originalDebug = console.debug;
-  }
-
-  start() {
-    console.log = (message: string) => this.logs.push(message);
-    console.error = (message: string) => this.errors.push(message);
-    console.warn = (message: string) => this.warns.push(message);
-    console.debug = (message: string) => this.debugs.push(message);
-  }
-
-  stop() {
-    console.log = this.originalLog;
-    console.error = this.originalError;
-    console.warn = this.originalWarn;
-    console.debug = this.originalDebug;
-  }
-
-  clear() {
-    this.logs = [];
-    this.errors = [];
-    this.warns = [];
-    this.debugs = [];
-  }
-
-  getAllOutput(): string[] {
-    return [...this.logs, ...this.errors, ...this.warns, ...this.debugs];
-  }
-}
-
-/**
- * Environment variable manager for testing
- */
-class TestEnvironmentManager {
-  private savedEnv: Map<string, string | undefined> = new Map();
-  private envVars: string[] = ["LOG_LEVEL", "LOG_LENGTH", "LOG_KEY"];
-
-  save() {
-    this.envVars.forEach((key) => {
-      this.savedEnv.set(key, Deno.env.get(key));
-    });
-  }
-
-  restore() {
-    this.savedEnv.forEach((value, key) => {
-      if (value === undefined) {
-        Deno.env.delete(key);
-      } else {
-        Deno.env.set(key, value);
-      }
-    });
-    this.savedEnv.clear();
-  }
-
-  set(key: string, value: string) {
-    Deno.env.set(key, value);
-  }
-
-  delete(key: string) {
-    Deno.env.delete(key);
-  }
-
-  clear() {
-    this.envVars.forEach((key) => Deno.env.delete(key));
-  }
-}
+import {
+  ConsoleCapture as TestConsoleCapture,
+  TestEnvironmentManager,
+} from "./test_utils.ts";
 
 /**
  * Mock logger for testing logger initialization
@@ -263,11 +185,11 @@ describe("Environment Setup Tests", () => {
       const mockLogger = new MockLogger("mock-test");
 
       assertExists(mockLogger);
-      assertEquals(mockLogger.initCalled, true);
+      assert(mockLogger.initCalled);
 
       // Access config through mock
       const config = mockLogger.getConfig();
-      assertEquals(mockLogger.configAccessed, true);
+      assert(mockLogger.configAccessed);
       assertExists(config);
     });
 
@@ -349,7 +271,7 @@ describe("Environment Setup Tests", () => {
           logLevel?: string;
           logLength?: string;
           logKeys?: string;
-        }) {
+        }): void {
           // Save current state
           this.envManager.save();
           this.envManager.clear();
@@ -367,12 +289,12 @@ describe("Environment Setup Tests", () => {
           this.consoleCapture.start();
         }
 
-        teardown() {
+        teardown(): void {
           this.consoleCapture.stop();
           this.envManager.restore();
         }
 
-        getOutput() {
+        getOutput(): string[] {
           return this.consoleCapture.getAllOutput();
         }
       }

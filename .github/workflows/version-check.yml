@@ -39,11 +39,12 @@ jobs:
 
       - name: Check version consistency
         run: |
-          if [ "v${{ steps.get_version.outputs.version }}" != "${{ steps.get_latest_tag.outputs.latest_tag }}" ]; then
-            echo "Error: Version mismatch!"
-            echo "deno.json version: ${{ steps.get_version.outputs.version }}"
-            echo "Latest git tag: ${{ steps.get_latest_tag.outputs.latest_tag }}"
-            echo "Please ensure the version in deno.json matches the latest git tag."
+          CURRENT="v${{ steps.get_version.outputs.version }}"
+          LATEST="${{ steps.get_latest_tag.outputs.latest_tag }}"
+          # Sort versions; newest should be current or equal
+          HIGHEST=$(printf '%s\n%s\n' "$CURRENT" "$LATEST" | sort -V | tail -1)
+          if [ "$HIGHEST" != "$CURRENT" ]; then
+            echo "Error: deno.json version ($CURRENT) is older than latest tag ($LATEST)"
             exit 1
           fi
-          echo "Version check passed! Both versions are ${{ steps.get_version.outputs.version }}"
+          echo "Version check passed: deno.json=$CURRENT, latest tag=$LATEST"

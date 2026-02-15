@@ -149,3 +149,22 @@ tmp/*
 .vscode/
 .vscode/*
 .vscode/**/*
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Deno
+deno.lock
+
+# Deno coverage
+coverage_dir/
+
+# CI local
+.ci-local/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~

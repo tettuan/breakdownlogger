@@ -9,35 +9,10 @@ import { BreakdownLogger } from "../mod.ts";
  * Edge cases and error handling tests for BreakdownLogger
  */
 
-class EdgeCaseConsoleCapture {
-  private originalLog: typeof console.log;
-  private originalError: typeof console.error;
-  public logs: string[] = [];
-  public errors: string[] = [];
-
-  constructor() {
-    this.originalLog = console.log;
-    this.originalError = console.error;
-  }
-
-  start() {
-    console.log = (message: string) => this.logs.push(message);
-    console.error = (message: string) => this.errors.push(message);
-  }
-
-  stop() {
-    console.log = this.originalLog;
-    console.error = this.originalError;
-  }
-
-  clear() {
-    this.logs = [];
-    this.errors = [];
-  }
-}
+import { ConsoleCapture } from "./test_utils.ts";
 
 Deno.test("BreakdownLogger - Edge Cases and Error Handling", async (t) => {
-  const capture = new EdgeCaseConsoleCapture();
+  const capture = new ConsoleCapture();
 
   // Store original environment values
   const originalEnv = {
@@ -151,8 +126,10 @@ Deno.test("BreakdownLogger - Edge Cases and Error Handling", async (t) => {
         // Test various primitive types
         logger.info("Undefined data", undefined);
         logger.info("Null data", null);
-        logger.info("Boolean true", true);
-        logger.info("Boolean false", false);
+        const boolTrue: unknown = true;
+        const boolFalse: unknown = false;
+        logger.info("Boolean true", boolTrue);
+        logger.info("Boolean false", boolFalse);
         logger.info("Number zero", 0);
         logger.info("Number negative", -123.456);
         logger.info("Number infinity", Infinity);

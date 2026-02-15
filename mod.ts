@@ -182,7 +182,7 @@ export { LogLevel } from "./src/types.ts";
  *
  * @enum {string}
  * @readonly
- * @since 1.0.0
+ * @since 1.1.0
  */
 export { LogLength } from "./src/types.ts";
 
@@ -223,6 +223,6 @@ export { LogLength } from "./src/types.ts";
  * ```
  *
  * @interface LogEntry
- * @since 1.0.0
+ * @since 1.1.0
  */
 export type { LogEntry } from "./src/types.ts";

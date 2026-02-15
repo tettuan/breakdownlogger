@@ -94,8 +94,7 @@ Deno.test("BreakdownLogger - Performance Tests", async (t) => {
         }
       }
 
-      // Test should complete without memory errors
-      assert(true, "Memory test completed successfully");
+      // Test completes without memory errors
     });
 
     await t.step(
@@ -162,8 +161,7 @@ Deno.test("BreakdownLogger - Performance Tests", async (t) => {
         });
       }
 
-      // Should complete without errors
-      assert(true, "Stress test completed successfully");
+      // Completes without errors
     });
   });
 });
