@@ -9,6 +9,13 @@
  */
 
 import { type LogEntry, LogLength, LogLevel } from "./types.ts";
+import {
+  JSON_INDENT,
+  MAX_LENGTHS,
+  NO_TRUNCATION,
+  TRUNCATION_SUFFIX,
+  TRUNCATION_SUFFIX_LENGTH,
+} from "./constants.ts";
 
 /**
  * Handles formatting and presentation of log messages for BreakdownLogger.
@@ -60,14 +67,15 @@ export class LogFormatter {
    * @private
    */
   private truncateMessage(message: string, maxLength: number): string {
-    if (maxLength === -1) return message; // WHOLE
+    if (maxLength === NO_TRUNCATION) return message; // WHOLE
 
     if (message.length <= maxLength) {
       return message;
     }
 
-    // Replace last 3 characters with "..."
-    return message.substring(0, maxLength - 3) + "...";
+    // Replace last characters with truncation suffix
+    return message.substring(0, maxLength - TRUNCATION_SUFFIX_LENGTH) +
+      TRUNCATION_SUFFIX;
   }
 
   /**
@@ -87,7 +95,7 @@ export class LogFormatter {
       if (data === undefined) return "undefined";
 
       if (typeof data === "object") {
-        return JSON.stringify(data, null, 2);
+        return JSON.stringify(data, null, JSON_INDENT);
       }
 
       return String(data);
@@ -110,15 +118,15 @@ export class LogFormatter {
   getMaxLength(logLength: LogLength): number {
     switch (logLength) {
       case LogLength.DEFAULT:
-        return 80;
+        return MAX_LENGTHS.DEFAULT;
       case LogLength.SHORT:
-        return 160;
+        return MAX_LENGTHS.SHORT;
       case LogLength.LONG:
-        return 300;
+        return MAX_LENGTHS.LONG;
       case LogLength.WHOLE:
-        return -1;
+        return NO_TRUNCATION;
       default:
-        return 80;
+        return MAX_LENGTHS.DEFAULT;
     }
   }
 }

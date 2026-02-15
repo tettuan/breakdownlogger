@@ -4,13 +4,14 @@
 
 ## 他のスキルとの関係
 
-| Skill | Purpose | When |
-|-------|---------|------|
-| `docs-consistency` | 検証・確認 | リリース前、定期確認 |
-| `update-docs` | 文書作成・更新 | 機能追加・変更時 |
-| `update-changelog` | CHANGELOG更新 | 機能完了時 |
+| Skill              | Purpose        | When                 |
+| ------------------ | -------------- | -------------------- |
+| `docs-consistency` | 検証・確認     | リリース前、定期確認 |
+| `update-docs`      | 文書作成・更新 | 機能追加・変更時     |
+| `update-changelog` | CHANGELOG更新  | 機能完了時           |
 
 **フロー:**
+
 ```
 機能実装 → update-docs → docs-consistency → release-procedure
 ```

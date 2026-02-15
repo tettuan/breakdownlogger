@@ -32,21 +32,21 @@ Import 'https://jsr.io/@std/path/meta.json' failed.
 Bash({
   command: "deno task ci",
   dangerouslyDisableSandbox: true,
-})
+});
 ```
 
 ## Lint Errors
 
 ### Common Rules and Fixes
 
-| Rule | Error | Fix |
-|------|-------|-----|
-| `no-console` | console.log in non-CLI code | Add `// deno-lint-ignore no-console` |
-| `prefer-ascii` | Japanese in comments | Change to English |
-| `no-await-in-loop` | await in for loop | Add ignore or refactor to Promise.all |
-| `eqeqeq` | `!=` instead of `!==` | Use strict equality |
-| `explicit-function-return-type` | Missing return type | Add `: ReturnType` |
-| `ban-unused-ignore` | Unused lint ignore | Remove or adjust ignore list |
+| Rule                            | Error                       | Fix                                   |
+| ------------------------------- | --------------------------- | ------------------------------------- |
+| `no-console`                    | console.log in non-CLI code | Add `// deno-lint-ignore no-console`  |
+| `prefer-ascii`                  | Japanese in comments        | Change to English                     |
+| `no-await-in-loop`              | await in for loop           | Add ignore or refactor to Promise.all |
+| `eqeqeq`                        | `!=` instead of `!==`       | Use strict equality                   |
+| `explicit-function-return-type` | Missing return type         | Add `: ReturnType`                    |
+| `ban-unused-ignore`             | Unused lint ignore          | Remove or adjust ignore list          |
 
 ### File-Level Lint Ignore
 
@@ -69,6 +69,7 @@ console.log("Debug output");
 ### prefer-ascii (Japanese Text)
 
 Replace Japanese with English in:
+
 - Code comments
 - Doc references (e.g., `#command-schema` not `#command-スキーマ`)
 - Error messages in library code
@@ -82,14 +83,17 @@ Exception: Japanese OK in test fixtures or user-facing CLI output.
 Example: ID uniqueness test failing due to timestamp collision
 
 **Problem**: Parallel execution with small delays
+
 ```typescript
 // Bad: 2ms may not be enough for millisecond-precision timestamps
-const promises = Array.from({ length: 10 }, (_, i) =>
-  new Promise((r) => setTimeout(() => r(generateId()), i * 2))
+const promises = Array.from(
+  { length: 10 },
+  (_, i) => new Promise((r) => setTimeout(() => r(generateId()), i * 2)),
 );
 ```
 
 **Solution**: Sequential execution with adequate delay
+
 ```typescript
 // Good: Sequential with 5ms delay
 for (let i = 0; i < 10; i++) {
@@ -101,6 +105,7 @@ for (let i = 0; i < 10; i++) {
 ### Type Errors in Tests
 
 Check for:
+
 - Missing type assertions (`as Type`)
 - Incorrect mock implementations
 - Outdated test fixtures after interface changes

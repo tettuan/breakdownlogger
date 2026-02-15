@@ -87,7 +87,12 @@ async function checkDiff(fromVersion: string): Promise<void> {
   console.log(`\n## Diff-Based Check (since ${fromVersion})\n`);
 
   // Get changed files
-  const diffOutput = await runCommand(["git", "diff", "--name-only", `${fromVersion}..HEAD`]);
+  const diffOutput = await runCommand([
+    "git",
+    "diff",
+    "--name-only",
+    `${fromVersion}..HEAD`,
+  ]);
   const changedFiles = diffOutput.trim().split("\n").filter(Boolean);
 
   if (changedFiles.length === 0) {
@@ -105,7 +110,8 @@ async function checkDiff(fromVersion: string): Promise<void> {
   report({
     name: "Change Distribution",
     passed: true,
-    message: `src: ${srcChanges.length}, docs: ${docsChanges.length}, agents: ${agentChanges.length}`,
+    message:
+      `src: ${srcChanges.length}, docs: ${docsChanges.length}, agents: ${agentChanges.length}`,
   });
 
   // Find docs that need verification
@@ -173,21 +179,28 @@ async function checkSemantic(): Promise<void> {
   // 1. Design → Implementation: Check exports match design
   console.log("### Design → Implementation\n");
 
-  const docsDesign = await readFile("docs/internal/docs-distribution-design.md");
+  const docsDesign = await readFile(
+    "docs/internal/docs-distribution-design.md",
+  );
   const docsMod = await readFile("src/docs/mod.ts");
 
   // Check if design mentions install/list and they're implemented
   const designFunctions = ["install", "list"];
-  const implementedFunctions = docsMod.match(/export\s+(?:async\s+)?function\s+(\w+)/g) || [];
+  const implementedFunctions =
+    docsMod.match(/export\s+(?:async\s+)?function\s+(\w+)/g) || [];
 
   const missingImpl = designFunctions.filter(
-    (f) => docsDesign.includes(f) && !implementedFunctions.some((impl) => impl.includes(f))
+    (f) =>
+      docsDesign.includes(f) &&
+      !implementedFunctions.some((impl) => impl.includes(f)),
   );
 
   report({
     name: "Design→Impl: docs module",
     passed: missingImpl.length === 0,
-    message: missingImpl.length === 0 ? "All design functions implemented" : `Missing: ${missingImpl.join(", ")}`,
+    message: missingImpl.length === 0
+      ? "All design functions implemented"
+      : `Missing: ${missingImpl.join(", ")}`,
   });
 
   // 2. Implementation → Docs: Check exports are documented
@@ -205,20 +218,24 @@ async function checkSemantic(): Promise<void> {
 
   // Check if key exports are mentioned in README
   const keyExports = ["searchCommands", "describeCommand"];
-  const undocumented = keyExports.filter((e) => exportedSymbols.includes(e) && !readme.includes(e));
+  const undocumented = keyExports.filter((e) =>
+    exportedSymbols.includes(e) && !readme.includes(e)
+  );
 
   report({
     name: "Impl→Docs: exports documented",
     passed: undocumented.length === 0,
-    message:
-      undocumented.length === 0 ? "Key exports documented" : `Undocumented exports: ${undocumented.join(", ")}`,
+    message: undocumented.length === 0
+      ? "Key exports documented"
+      : `Undocumented exports: ${undocumented.join(", ")}`,
   });
 
   // 3. Check default values consistency
   console.log("\n### Default Values\n");
 
   const typesFile = await readFile("src/docs/types.ts");
-  const defaultsInCode = typesFile.match(/(\w+)\s*[?]?:\s*\w+\s*=\s*["']?(\w+)["']?/g) || [];
+  const defaultsInCode =
+    typesFile.match(/(\w+)\s*[?]?:\s*\w+\s*=\s*["']?(\w+)["']?/g) || [];
 
   report({
     name: "Default Values",
@@ -248,21 +265,33 @@ async function checkCli(): Promise<void> {
   console.log("\n## CLI Documentation Check\n");
 
   const readme = await readFile("README.md");
-  const docOptions = new Set(readme.match(/`--[a-z-]+`/g)?.map((o) => o.replace(/`/g, "")) || []);
-  const requiredOptions = ["--from", "--destination", "--edition", "--adaptation"];
+  const docOptions = new Set(
+    readme.match(/`--[a-z-]+`/g)?.map((o) => o.replace(/`/g, "")) || [],
+  );
+  const requiredOptions = [
+    "--from",
+    "--destination",
+    "--edition",
+    "--adaptation",
+  ];
   const missing = requiredOptions.filter((opt) => !docOptions.has(opt));
 
   report({
     name: "CLI Required Options",
     passed: missing.length === 0,
-    message: missing.length === 0 ? "All required options documented" : `Missing: ${missing.join(", ")}`,
+    message: missing.length === 0
+      ? "All required options documented"
+      : `Missing: ${missing.join(", ")}`,
   });
 
-  const hasHelpSection = readme.includes("Key Options") || readme.includes("| Option |");
+  const hasHelpSection = readme.includes("Key Options") ||
+    readme.includes("| Option |");
   report({
     name: "CLI Options Table",
     passed: hasHelpSection,
-    message: hasHelpSection ? "Options table found" : "Options table missing in README",
+    message: hasHelpSection
+      ? "Options table found"
+      : "Options table missing in README",
   });
 }
 
@@ -273,7 +302,11 @@ async function checkReadmeSync(): Promise<void> {
   const ja = await readFile("README.ja.md");
 
   if (!ja) {
-    report({ name: "README.ja.md Exists", passed: false, message: "README.ja.md not found" });
+    report({
+      name: "README.ja.md Exists",
+      passed: false,
+      message: "README.ja.md not found",
+    });
     return;
   }
 
@@ -304,7 +337,8 @@ async function checkManifest(): Promise<void> {
     report({
       name: "Manifest Exists",
       passed: false,
-      message: "docs/manifest.json not found - run: deno task generate-docs-manifest",
+      message:
+        "docs/manifest.json not found - run: deno task generate-docs-manifest",
     });
     return;
   }
@@ -319,7 +353,11 @@ async function checkManifest(): Promise<void> {
   });
 
   const entryCount = manifest.entries?.length || 0;
-  report({ name: "Entry Count", passed: entryCount > 0, message: `${entryCount} entries` });
+  report({
+    name: "Entry Count",
+    passed: entryCount > 0,
+    message: `${entryCount} entries`,
+  });
 }
 
 async function checkAgents(): Promise<void> {
@@ -331,14 +369,21 @@ async function checkAgents(): Promise<void> {
     return;
   }
 
-  const completionTypes = ["externalState", "iterationBudget", "keywordSignal", "stepMachine"];
+  const completionTypes = [
+    "externalState",
+    "iterationBudget",
+    "keywordSignal",
+    "stepMachine",
+  ];
   const docTypes = completionTypes.filter((t) => agentsReadme.includes(t));
 
   report({
     name: "Completion Types",
     passed: docTypes.length === completionTypes.length,
     message: `${docTypes.length}/${completionTypes.length} documented`,
-    details: completionTypes.filter((t) => !docTypes.includes(t)).map((t) => `Missing: ${t}`),
+    details: completionTypes.filter((t) => !docTypes.includes(t)).map((t) =>
+      `Missing: ${t}`
+    ),
   });
 }
 
@@ -352,7 +397,11 @@ async function checkGuideDocs(): Promise<void> {
       if (entry.isFile && entry.name.endsWith(".md")) enFiles.push(entry.name);
     }
   } catch {
-    report({ name: "Guides Dir", passed: false, message: "docs/guides/en not found" });
+    report({
+      name: "Guides Dir",
+      passed: false,
+      message: "docs/guides/en not found",
+    });
     return;
   }
 
@@ -383,7 +432,8 @@ async function checkEnglishRequired(): Promise<void> {
     report({
       name: "Naming Convention",
       passed: false,
-      message: `${jaInEnFiles.length} .md files have JA titles (rename to .ja.md or translate)`,
+      message:
+        `${jaInEnFiles.length} .md files have JA titles (rename to .ja.md or translate)`,
       details: jaInEnFiles.slice(0, 10),
     });
   } else {
@@ -463,7 +513,9 @@ async function main(): Promise<void> {
       break;
     default:
       console.log(`Unknown target: ${target}`);
-      console.log("Valid targets: all, diff, semantic, cli, readme, manifest, agents");
+      console.log(
+        "Valid targets: all, diff, semantic, cli, readme, manifest, agents",
+      );
       Deno.exit(1);
   }
 

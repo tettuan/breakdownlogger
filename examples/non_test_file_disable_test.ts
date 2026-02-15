@@ -1,5 +1,5 @@
 import { BreakdownLogger } from "../mod.ts";
-import { assertEquals } from "jsr:@std/assert@^1.0.0";
+import { assert, assertEquals } from "jsr:@std/assert@^1.0.0";
 
 // This test verifies that loggers are disabled in non-test files
 // when LOG_LEVEL is not set or when LOG_KEY doesn't match
@@ -77,9 +77,8 @@ Deno.test("Logger works in test files with default INFO level", () => {
     // Since we're in a test file, logs should be produced
     assertEquals(logs.length, 1, "Expected exactly one log in test file");
     // With new format, log should start with log level, not timestamp
-    assertEquals(
+    assert(
       /^\[INFO\]/.test(logs[0]),
-      true,
       "Log should start with log level",
     );
   } finally {
@@ -110,8 +109,8 @@ Deno.test("Non-test file detection simulation", () => {
       return path.includes("_test.") || path.includes(".test.");
     };
 
-    assertEquals(isTestFile(nonTestFilePath), false);
-    assertEquals(isTestFile(testFilePath), true);
+    assert(!isTestFile(nonTestFilePath));
+    assert(isTestFile(testFilePath));
   } finally {
     if (originalLogLevel !== undefined) {
       Deno.env.set("LOG_LEVEL", originalLogLevel);

@@ -9,6 +9,11 @@
  */
 
 import type { LogLevel } from "./types.ts";
+import {
+  DENO_TEST_PATTERNS,
+  FORCE_TEST_MODE_ENV,
+  TEST_FILE_PATTERNS,
+} from "./constants.ts";
 
 /**
  * Handles filtering of log messages based on various criteria.
@@ -77,27 +82,13 @@ export class LogFilter {
     if (!stack) return false;
 
     // Check if Deno test runner is included
-    const isDenoTest = stack.includes("ext:cli/40_test.js") ||
-      stack.includes("$deno$test$") ||
-      stack.includes("TestContext") ||
-      stack.includes("ext:deno_test/") || // Test runner in CI environment
-      stack.includes("deno:test") || // Alternative test runner pattern
-      stack.includes("test.ts") || // Deno test files in CI
-      stack.includes("test_runner"); // Generic test runner pattern
+    const isDenoTest = DENO_TEST_PATTERNS.some((p) => stack.includes(p));
 
     // Check test file patterns
-    const hasTestPattern = stack.includes("_test.ts") ||
-      stack.includes("_test.js") ||
-      stack.includes("_test.mjs") ||
-      stack.includes("_test.jsx") ||
-      stack.includes("_test.tsx") ||
-      stack.includes(".test.ts") ||
-      stack.includes(".test.js") ||
-      stack.includes("_test.") || // Broader pattern
-      stack.includes(".test."); // Broader pattern
+    const hasTestPattern = TEST_FILE_PATTERNS.some((p) => stack.includes(p));
 
     // Force test mode via environment variable (for debugging)
-    const forceTestMode = Deno.env.get("FORCE_TEST_MODE") === "true";
+    const forceTestMode = Deno.env.get(FORCE_TEST_MODE_ENV) === "true";
 
     return isDenoTest || hasTestPattern || forceTestMode;
   }

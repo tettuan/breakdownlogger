@@ -15,7 +15,7 @@ allowed-tools: [Bash, Read, Edit, Grep, Glob]
 
 ## リリースブランチ作成時のチェックリスト
 
-**release/* ブランチを作成したら、必ず以下を実行:**
+__release/_ ブランチを作成したら、必ず以下を実行:_*
 
 ```bash
 # 1. バージョン自動更新（ブランチ名から検出）
@@ -41,6 +41,7 @@ git push -u origin release/x.y.z
 ### 1. CHANGELOG 更新
 
 `/update-changelog` スキルを使用:
+
 - 変更内容を [Unreleased] セクションに記載
 - 検索可能なキーワードを含める（コマンド名、オプション名、設定名）
 - リリース時に [x.y.z] - YYYY-MM-DD へ移動
@@ -48,6 +49,7 @@ git push -u origin release/x.y.z
 ### 2. ドキュメント更新
 
 `/update-docs` スキルを使用:
+
 - 変更の種類に応じて適切な場所を更新
 - CLI オプション変更 → `--help` 必須、README 推奨
 - 新機能 → README に簡潔な説明とサンプル
@@ -87,19 +89,23 @@ wc -c docs/*.md docs/guides/en/*.md docs/guides/ja/*.md
 □ examples/ E2E 検証を実行（CI通過後、PR作成前）
 ```
 
-**重要**: `deno task bump-version` は release/* ブランチ名からバージョンを自動検出する。
-手動指定も可能: `deno task bump-version 1.10.2`
+**重要**: `deno task bump-version` は release/*
+ブランチ名からバージョンを自動検出する。 手動指定も可能:
+`deno task bump-version 1.10.2`
 
 ## 重要: 連続マージの禁止事項
 
-**release/* → develop → main への連続マージは、必ずユーザーの明示的な指示を受けてから実行すること。**
+__release/_ → develop → main
+への連続マージは、必ずユーザーの明示的な指示を受けてから実行すること。_*
 
 禁止事項:
+
 - ユーザーの指示なしに連続マージを実行
 - 「リリースして」等の曖昧な指示で main まで一気にマージ
 - 独自判断での develop → main マージ
 
 正しい手順:
+
 1. 各 PR 作成後、ユーザーに報告して次の指示を待つ
 2. 「develop まで」「main まで」等の明示的な指示を確認
 3. vtag 作成もユーザーの指示を待つ
@@ -118,9 +124,9 @@ wc -c docs/*.md docs/guides/en/*.md docs/guides/ja/*.md
 
 このプロジェクトでは以下の2ファイルでバージョンを管理:
 
-| ファイル | 用途 |
-|---------|------|
-| `deno.json` | JSR パッケージバージョン（`"version": "x.y.z"`） |
+| ファイル         | 用途                                                       |
+| ---------------- | ---------------------------------------------------------- |
+| `deno.json`      | JSR パッケージバージョン（`"version": "x.y.z"`）           |
 | `src/version.ts` | CLI バージョン定数（`BREAKDOWN_LOGGER_VERSION = "x.y.z"`） |
 
 **重要**: 両ファイルのバージョンは必ず一致させること。CIで自動チェックされる。
@@ -220,7 +226,8 @@ grep 'export const BREAKDOWN_LOGGER_VERSION' src/version.ts
 
 #### ステップ 2: ローカルCI確認
 
-**重要**: プッシュ前に必ずローカルでCIを通すこと。実行方法の詳細は `/local-ci` skill を参照。
+**重要**: プッシュ前に必ずローカルでCIを通すこと。実行方法の詳細は `/local-ci`
+skill を参照。
 
 ```bash
 deno task ci
@@ -238,7 +245,8 @@ chmod +x examples/**/*.sh examples/*.sh
 ./examples/07_clean.sh
 ```
 
-対象: `01_setup` ～ `06_registry` の各カテゴリ。詳細は [`examples/README.md`](../../examples/README.md) を参照。
+対象: `01_setup` ～ `06_registry` の各カテゴリ。詳細は
+[`examples/README.md`](../../examples/README.md) を参照。
 
 #### ステップ 3: コミット & プッシュ
 
@@ -311,7 +319,8 @@ git push origin vx.y.z
 
 #### ステップ 9: クリーンアップ（ブランチ削除）
 
-マージ後のブランチ削除を行う。削除判断基準・手順の詳細は `/branch-management` skill を参照。
+マージ後のブランチ削除を行う。削除判断基準・手順の詳細は `/branch-management`
+skill を参照。
 
 ```bash
 # release ブランチ削除例
@@ -325,10 +334,10 @@ git push origin --delete release/x.y.z
 
 ### チェック内容
 
-| チェック項目 | 対象ブランチ | 失敗時のエラー |
-|-------------|-------------|---------------|
-| deno.json と version.ts の一致 | 全ブランチ | `Version mismatch: deno.json=X, version.ts=Y` |
-| ブランチ名とバージョンの一致 | release/* のみ | `Branch version mismatch: branch=X, deno.json=Y` |
+| チェック項目                   | 対象ブランチ   | 失敗時のエラー                                   |
+| ------------------------------ | -------------- | ------------------------------------------------ |
+| deno.json と version.ts の一致 | 全ブランチ     | `Version mismatch: deno.json=X, version.ts=Y`    |
+| ブランチ名とバージョンの一致   | release/* のみ | `Branch version mismatch: branch=X, deno.json=Y` |
 
 ### release/* ブランチでの追加チェック
 

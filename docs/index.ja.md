@@ -1,5 +1,8 @@
 # ライブラリ概要
 
+> **関連ドキュメント**: [English Version](index.md) |
+> [開発ガイド](development.ja.md) | [用語集](glossary.ja.md)
+
 Denoで構築され、JSRへ公開されるデバッグ用ログ出力のライブラリである。
 単体では動作せず、アプリケーションから呼ばれて利用される。
 
@@ -63,11 +66,17 @@ DebugLoggerは、アプリケーションの設定やパス解決のデバッグ
 #### 出力項目
 
 1. ログの出力項目
-   - タイムスタンプ
    - ログレベル
    - 出力場所KEY
    - メッセージ内容
-   - オブジェクトのダンプ（必要な場合）
+   - オブジェクトのダンプ（データがある場合）
+   - タイムスタンプ（データがある場合のみ、末尾に出力）
+
+出力フォーマット:
+
+- 基本: `[LEVEL] [key] message`
+- data付き:
+  `[LEVEL] [key] message\nData: {...}\nTimestamp: 2024-03-10T12:00:00.000Z`
 
 ### 実行時
 
@@ -221,6 +230,25 @@ function processUser(userId: number) {
 ## 配布方法
 
 - JSR へ公開するので、適した方法で構築すること。
+
+### サブパスインポート
+
+ロガーを直接インポートすることも可能です：
+
+```typescript
+import { BreakdownLogger } from "@tettuan/breakdownlogger/logger";
+```
+
+### Validate CLI
+
+非テストファイル内の `@tettuan/breakdownlogger` のimportを検出する。
+
+```bash
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate [target-dir]
+```
+
+違反が見つかった場合は終了コード1、クリーンな場合は0。テストファイルの除外には
+`TEST_FILE_PATTERNS` を使用。
 
 ### その他
 

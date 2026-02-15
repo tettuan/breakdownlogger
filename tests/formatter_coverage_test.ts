@@ -42,7 +42,7 @@ Deno.test("LogFormatter - Coverage Completion Tests", async (t) => {
       () => {
         const objWithFunction = {
           name: "test",
-          func: function () {
+          func: function (): string {
             return "hello";
           },
           symbol: Symbol("test"),

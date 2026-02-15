@@ -1,9 +1,9 @@
 /**
  * Environment configuration management for BreakdownLogger.
  *
- * This module handles parsing and caching of environment variables that control
- * logging behavior. It implements a singleton pattern to ensure consistent
- * configuration across the application while providing methods to reset when needed.
+ * This module handles parsing of environment variables that control
+ * logging behavior. Each instance reads and caches environment variables
+ * at construction time, ensuring a consistent snapshot per logger instance.
  *
  * @module
  */

@@ -18,7 +18,8 @@ allowed-tools: [Read, Glob, Grep]
 
 ## Why This Exists
 
-Symptom-driven fixes are wrong fixes. Seeing an error and immediately "fixing" it without understanding WHY the error occurs leads to:
+Symptom-driven fixes are wrong fixes. Seeing an error and immediately "fixing"
+it without understanding WHY the error occurs leads to:
 
 - Breaking the design
 - Introducing new bugs
@@ -33,6 +34,7 @@ Do NOT write code yet. Do NOT edit files yet.
 ### 2. Ask "Why?"
 
 The error is a symptom. Ask:
+
 - Why is this error occurring?
 - What is the system trying to do?
 - What did the system expect vs what happened?
@@ -40,11 +42,13 @@ The error is a symptom. Ask:
 ### 3. Read the Design
 
 Before changing ANY code:
+
 - Find the relevant design document
 - Read it completely
 - Understand the intended behavior
 
 Common locations:
+
 - `agents/docs/design/` - Agent architecture
 - `docs/` - Project documentation
 - Schema files - Structural contracts
@@ -52,6 +56,7 @@ Common locations:
 ### 4. Trace the Flow
 
 Follow the execution path:
+
 1. What triggered this code?
 2. What state was expected?
 3. Where did it diverge?
@@ -60,16 +65,17 @@ Follow the execution path:
 
 The fix location is often NOT where the error appears.
 
-| Error Location | Root Cause Location |
-|----------------|---------------------|
-| Runtime validation | Schema definition |
-| Intent not allowed | Prompt instruction |
-| Type mismatch | Interface contract |
-| Test failure | Implementation logic |
+| Error Location     | Root Cause Location  |
+| ------------------ | -------------------- |
+| Runtime validation | Schema definition    |
+| Intent not allowed | Prompt instruction   |
+| Type mismatch      | Interface contract   |
+| Test failure       | Implementation logic |
 
 ### 6. Verify Your Understanding
 
 Before fixing, state:
+
 - What is the root cause?
 - Why does the design work this way?
 - What is the minimal correct fix?
@@ -82,7 +88,8 @@ Only now: make the smallest change that addresses the root cause.
 
 **Bad**: "Error says X not in Y, so add X to Y"
 
-**Good**: "Error says X not in Y. Why is code producing X? Is X correct? What does design say about X?"
+**Good**: "Error says X not in Y. Why is code producing X? Is X correct? What
+does design say about X?"
 
 ## Example
 
@@ -125,15 +132,9 @@ tmp/
 ```markdown
 ## Problem Structure
 
-\`\`\`mermaid
-flowchart TD
-    A[Error: X not found] --> B{Where?}
-    B --> C[Validation layer]
-    B --> D[Schema definition]
-    C --> E[Symptom]
-    D --> F[Root Cause]
-    F --> G[Fix: Update schema]
-\`\`\`
+\`\`\`mermaid flowchart TD A[Error: X not found] --> B{Where?} B -->
+C[Validation layer] B --> D[Schema definition] C --> E[Symptom] D --> F[Root
+Cause] F --> G[Fix: Update schema] \`\`\`
 ```
 
 ### When to Use
@@ -144,8 +145,8 @@ flowchart TD
 
 ### Output Quality
 
-| Bad | Good |
-|-----|------|
-| 長文の羅列 | mermaid図で構造化 |
-| 500行超のファイル | 要約して分割 |
-| 症状の列挙のみ | 本質的な構造の特定 |
+| Bad               | Good               |
+| ----------------- | ------------------ |
+| 長文の羅列        | mermaid図で構造化  |
+| 500行超のファイル | 要約して分割       |
+| 症状の列挙のみ    | 本質的な構造の特定 |

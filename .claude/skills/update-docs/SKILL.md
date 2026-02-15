@@ -8,11 +8,14 @@ allowed-tools: [Read, Edit, Grep, Glob, Bash]
 
 ## Purpose
 
-Ensure that user-facing changes are properly documented across all relevant locations. This skill determines the appropriate scope of documentation updates based on the type and impact of the change.
+Ensure that user-facing changes are properly documented across all relevant
+locations. This skill determines the appropriate scope of documentation updates
+based on the type and impact of the change.
 
 ## Trigger Conditions
 
 Use this skill when:
+
 - Adding new CLI options or commands
 - Changing existing behavior or API
 - Adding new features or capabilities
@@ -21,14 +24,14 @@ Use this skill when:
 
 ## Documentation Locations
 
-| Location | Purpose | Update Criteria |
-|----------|---------|-----------------|
-| `README.md` | Quick reference | Major features, CLI syntax changes |
-| `README.ja.md` | Japanese reference | Same as README.md |
-| `--help` output | CLI help | All CLI option changes |
-| `agents/README.md` | Agent-specific docs | Agent behavior changes |
-| `docs/` | Detailed guides | Complex features, tutorials |
-| `CLAUDE.md` | Development guidelines | Internal workflow changes |
+| Location           | Purpose                | Update Criteria                    |
+| ------------------ | ---------------------- | ---------------------------------- |
+| `README.md`        | Quick reference        | Major features, CLI syntax changes |
+| `README.ja.md`     | Japanese reference     | Same as README.md                  |
+| `--help` output    | CLI help               | All CLI option changes             |
+| `agents/README.md` | Agent-specific docs    | Agent behavior changes             |
+| `docs/`            | Detailed guides        | Complex features, tutorials        |
+| `CLAUDE.md`        | Development guidelines | Internal workflow changes          |
 
 ## Decision Matrix
 
@@ -71,6 +74,7 @@ git diff --cached --name-only
 ### Step 2: Categorize the Change
 
 Ask yourself:
+
 1. Does this add a new user-facing feature? → README, --help
 2. Does this change existing behavior? → README, CHANGELOG
 3. Does this add/modify CLI options? → --help (REQUIRED)
@@ -82,6 +86,7 @@ Ask yourself:
 #### For CLI Options (src/cli/*)
 
 1. Check `--help` output:
+
 ```bash
 deno run -A mod.ts --help
 deno run -A mod.ts <command> --help
@@ -90,10 +95,11 @@ deno run -A mod.ts <command> --help
 2. Update help strings in code if needed
 
 3. Update README if option is commonly used:
+
 ```markdown
-| Option | Short | Description |
-|--------|-------|-------------|
-| `--new-option` | `-n` | New option description |
+| Option         | Short | Description            |
+| -------------- | ----- | ---------------------- |
+| `--new-option` | `-n`  | New option description |
 ```
 
 #### For Features
@@ -133,10 +139,7 @@ deno run -A mod.ts --help 2>&1 | grep -i "<feature>"
 
 Brief description in one sentence.
 
-**Example:**
-\`\`\`bash
-command --option value
-\`\`\`
+**Example:** \`\`\`bash command --option value \`\`\`
 ```
 
 ### What NOT to Document
@@ -177,6 +180,7 @@ Agent change:
 Change: Added `--verbose` flag
 
 Documentation:
+
 - `--help`: "Enable verbose output for debugging"
 - README.md: Add to Key Options table
 - CHANGELOG: "Added: `--verbose` flag for debugging"
@@ -186,6 +190,7 @@ Documentation:
 Change: Added `askUserAutoResponse` config
 
 Documentation:
+
 - agents/README.md: Add to behavior config section
 - agent.schema.json: Add description (already in schema)
 - CHANGELOG: "Added: Autonomous execution mode with `askUserAutoResponse`"
@@ -195,5 +200,7 @@ Documentation:
 Change: Refactored prompt resolver
 
 Documentation:
-- CLAUDE.md or agents/CLAUDE.md: Note architectural change (if affects development)
+
+- CLAUDE.md or agents/CLAUDE.md: Note architectural change (if affects
+  development)
 - No user-facing docs needed
