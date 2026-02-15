@@ -58,6 +58,18 @@ To specify a custom directory:
 deno run -A jsr:@tettuan/breakdownlogger/docs ./my-docs/
 ```
 
+## Validate
+
+Scan your project to detect accidental `@tettuan/breakdownlogger` imports in
+non-test (production) files:
+
+```bash
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate ./src
+```
+
+Exit code 1 if violations are found, 0 if clean. Test files (`*_test.ts`,
+`*.test.ts`, etc.) are automatically excluded.
+
 ## Usage
 
 ### Important Guidelines

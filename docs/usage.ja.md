@@ -648,3 +648,47 @@ LOG_LEVEL=debug LOG_KEY=req-a1b2c3d4 LOG_LENGTH=W deno test --allow-env --allow-
 ```
 
 このパターンは、同一ロジックの複数インスタンスが並行実行され、特定の1つの実行を追跡する必要があるあらゆるシナリオに適用できる。
+
+## 10. 本番コードでの使用検知
+
+BreakdownLoggerはテストコード専用に設計されている。デバッグ後に本番ファイルにimportを残してしまった場合、ロガーは何も出力しないが、不要なimportがコードベースに残り続ける。
+
+validateツールは、非テストファイル内の `@tettuan/breakdownlogger` のimportをスキャンし、違反として報告する。
+
+### バリデータの実行
+
+```bash
+# カレントディレクトリをスキャン
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate
+
+# 特定のディレクトリをスキャン
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate ./src
+```
+
+違反が見つかった場合は終了コード1、クリーンな場合は0を返す。
+
+### 検知対象
+
+バリデータは、非テストファイル内の `@tettuan/breakdownlogger` への全ての参照形式を検知する。
+
+- 静的import: `import { BreakdownLogger } from "@tettuan/breakdownlogger"`
+- サブパスimport: `import { BreakdownLogger } from "@tettuan/breakdownlogger/logger"`
+- 動的import: `await import("@tettuan/breakdownlogger")`
+- 再エクスポート: `export { BreakdownLogger } from "@tettuan/breakdownlogger"`
+
+テストファイル（`*_test.ts`、`*.test.ts`、`*_test.js`、`*.test.js`、その他のテストパターン）は自動的に除外される。
+
+### CI連携
+
+CIパイプラインにバリデータを追加し、消し忘れたimportを検出する。
+
+```bash
+# テスト通過後に実行
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate ./src
+```
+
+違反時の非ゼロ終了コードは、非ゼロ終了でフェイルするCIシステムと自然に統合される。
+
+### スキャンが十分である理由
+
+BreakdownLoggerをカスタムクラスでラップした場合でも、ラッパーファイルは `@tettuan/breakdownlogger` からimportする必要がある。バリデータはimportチェーンの根元でこれを検知する。直接的または間接的にロガーを使用する非テストファイルには、スキャナーが検出するimport文が必ず少なくとも1つ存在する。

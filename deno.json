@@ -4,7 +4,8 @@
   "exports": {
     ".": "./mod.ts",
     "./logger": "./src/logger.ts",
-    "./docs": "./src/docs_cli.ts"
+    "./docs": "./src/docs_cli.ts",
+    "./validate": "./src/validate_cli.ts"
   },
   "description": "A debug logging library for Deno applications, designed for use in test environments with configurable levels and filtering",
   "repository": "https://github.com/tettuan/breakdownlogger",

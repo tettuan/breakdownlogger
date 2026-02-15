@@ -689,3 +689,57 @@ LOG_LEVEL=debug LOG_KEY=req-a1b2c3d4 LOG_LENGTH=W deno test --allow-env --allow-
 
 This pattern scales to any scenario where multiple instances of the same logic
 run in parallel and you need to trace one specific execution.
+
+## 10. Production Usage Detection
+
+BreakdownLogger is designed for test code only. If you accidentally leave an
+import in a production file after a debugging session, the logger silently does
+nothing -- but the dead import remains in your codebase.
+
+The validate tool scans your project for `@tettuan/breakdownlogger` imports in
+non-test files and reports them as violations.
+
+### Running the Validator
+
+```bash
+# Scan the current directory
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate
+
+# Scan a specific directory
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate ./src
+```
+
+Exit code 1 if any violations are found, 0 if clean.
+
+### What It Detects
+
+The validator catches all forms of `@tettuan/breakdownlogger` references in
+non-test files:
+
+- Static imports: `import { BreakdownLogger } from "@tettuan/breakdownlogger"`
+- Subpath imports:
+  `import { BreakdownLogger } from "@tettuan/breakdownlogger/logger"`
+- Dynamic imports: `await import("@tettuan/breakdownlogger")`
+- Re-exports: `export { BreakdownLogger } from "@tettuan/breakdownlogger"`
+
+Test files (`*_test.ts`, `*.test.ts`, `*_test.js`, `*.test.js`, and other test
+patterns) are automatically excluded.
+
+### CI Integration
+
+Add the validator to your CI pipeline to catch forgotten imports:
+
+```bash
+# Run after tests pass
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate ./src
+```
+
+The non-zero exit code on violations integrates naturally with CI systems that
+fail on non-zero exits.
+
+### Why Scanning Is Sufficient
+
+Even if someone wraps BreakdownLogger in a custom class, the wrapper file must
+still import from `@tettuan/breakdownlogger`. The validator catches this at the
+root of the import chain. Any non-test file that directly or indirectly uses the
+logger must have at least one import statement that the scanner will find.

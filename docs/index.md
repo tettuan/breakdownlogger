@@ -669,6 +669,17 @@ You can also import the logger directly:
 import { BreakdownLogger } from "@tettuan/breakdownlogger/logger";
 ```
 
+### Validate CLI
+
+Scan for accidental `@tettuan/breakdownlogger` imports in non-test files:
+
+```bash
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate [target-dir]
+```
+
+Exit code 1 if violations found, 0 if clean. Uses `TEST_FILE_PATTERNS` to
+exclude test files.
+
 ### Other
 
 - Custom formatter support: Not required

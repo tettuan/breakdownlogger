@@ -239,6 +239,17 @@ function processUser(userId: number) {
 import { BreakdownLogger } from "@tettuan/breakdownlogger/logger";
 ```
 
+### Validate CLI
+
+非テストファイル内の `@tettuan/breakdownlogger` のimportを検出する。
+
+```bash
+deno run --allow-read jsr:@tettuan/breakdownlogger/validate [target-dir]
+```
+
+違反が見つかった場合は終了コード1、クリーンな場合は0。テストファイルの除外には
+`TEST_FILE_PATTERNS` を使用。
+
 ### その他
 
 - カスタムフォーマッターのサポート：不要
