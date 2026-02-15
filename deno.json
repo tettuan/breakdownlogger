@@ -72,7 +72,9 @@
       "README.md",
       "LICENSE",
       "docs/usage.md",
-      "docs/usage.ja.md"
+      "docs/usage.ja.md",
+      ".claude/skills/implement-logger/SKILL.md",
+      ".claude/skills/debug-with-logger/SKILL.md"
     ],
     "exclude": [
       "coverage_dir/",
