@@ -2,7 +2,7 @@
 - use `LOG_LEVEL=debug deno test --allow-env --allow-write --allow-read` to
   debug, or other log level.
 - publish JSR with CI. see `https://jsr.io/@tettuan/breakdownlogger/publish`
-- run `./scripts/local_ci.sh` before commit and push.
+- run `deno task ci` before commit and push. See `/local-ci` skill for details.
 
 # Export modules
 

@@ -434,28 +434,16 @@ The script:
 - Runs format, lint, and test checks
 - Commits and pushes the updated `deno.lock`
 
-#### 2. Version Management (`scripts/bump_version.sh`)
+#### 2. Version Management
 
-This script handles version bumping and tag creation:
-
-```bash
-./scripts/bump_version.sh
-```
-
-The script:
-
-- Verifies GitHub Actions workflow status
-- Checks latest version from JSR
-- Removes any GitHub tags newer than the JSR version
-- Increments the patch version
-- Updates `deno.json`
-- Creates and pushes a new version tag
+Version bumping and release flow are managed via the `/release-procedure` skill.
+See `.claude/skills/release-procedure/SKILL.md` for details.
 
 Typical publishing workflow:
 
 1. Make your changes
 2. Run `./scripts/publish.sh` to prepare
-3. Run `./scripts/bump_version.sh` to create a new version
+3. Follow the `/release-procedure` skill to bump version and release
 4. The GitHub Actions workflow will automatically publish to JSR
 
 ## License
