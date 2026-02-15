@@ -1,7 +1,4 @@
-import {
-  assertEquals,
-  assertMatch,
-} from "https://deno.land/std@0.219.0/assert/mod.ts";
+import { assertEquals, assertMatch } from "@std/assert";
 import { LogFormatter } from "../src/log_formatter.ts";
 import type { LogEntry } from "../src/types.ts";
 import { LogLength, LogLevel } from "../src/types.ts";

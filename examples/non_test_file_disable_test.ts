@@ -1,5 +1,5 @@
 import { BreakdownLogger } from "../mod.ts";
-import { assert, assertEquals } from "jsr:@std/assert@^1.0.0";
+import { assert, assertEquals } from "@std/assert";
 
 // This test verifies that loggers are disabled in non-test files
 // when LOG_LEVEL is not set or when LOG_KEY doesn't match

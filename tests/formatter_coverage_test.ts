@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.219.0/assert/mod.ts";
+import { assertEquals } from "@std/assert";
 import { LogFormatter } from "../src/log_formatter.ts";
 import type { LogLength } from "../mod.ts";
 

@@ -1,14 +1,5 @@
-import {
-  assert,
-  assertEquals,
-  assertExists,
-} from "https://deno.land/std@0.219.0/assert/mod.ts";
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  it,
-} from "https://deno.land/std@0.219.0/testing/bdd.ts";
+import { assert, assertEquals, assertExists } from "@std/assert";
+import { afterEach, beforeEach, describe, it } from "@std/testing/bdd";
 import { BreakdownLogger } from "../mod.ts";
 import { EnvironmentConfig } from "../src/environment_config.ts";
 import { LogLength, LogLevel } from "../src/types.ts";
