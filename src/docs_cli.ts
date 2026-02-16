@@ -11,6 +11,8 @@
  *   docs   → {target-dir}/usage.md, usage.ja.md
  *   skills → .claude/skills/breakdownlogger-implement-logger/SKILL.md
  *            .claude/skills/breakdownlogger-debug-with-logger/SKILL.md
+ *
+ * @module
  */
 
 const DOC_FILES = ["usage.md", "usage.ja.md"];
