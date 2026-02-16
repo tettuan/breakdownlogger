@@ -15,7 +15,7 @@ import {
   NO_TRUNCATION,
   TRUNCATION_SUFFIX,
   TRUNCATION_SUFFIX_LENGTH,
-} from "./constants.ts";
+} from "./format_constants.ts";
 
 /**
  * Handles formatting and presentation of log messages for BreakdownLogger.

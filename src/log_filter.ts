@@ -1,50 +1,33 @@
 /**
  * Log filtering logic for BreakdownLogger.
  *
- * This module handles filtering of log messages based on log levels,
- * test environment detection, and log key filtering. It ensures that
- * logs are only output in appropriate contexts and at the correct verbosity levels.
+ * This module provides pure filtering decisions based on log levels
+ * and key matching. Test environment detection is handled separately
+ * by TestEnvironmentDetector.
  *
  * @module
  */
 
 import type { LogLevel } from "./types.ts";
-import {
-  DENO_TEST_PATTERNS,
-  FORCE_TEST_MODE_ENV,
-  TEST_FILE_PATTERNS,
-} from "./constants.ts";
 
 /**
- * Handles filtering of log messages based on various criteria.
+ * Provides pure log filtering based on level and key criteria.
  *
- * This class determines whether log messages should be output based on
- * the current environment (test vs production), log levels, and key filtering.
- * It provides the core security mechanism that prevents logging in production.
+ * This class contains no side effects or environment detection.
+ * It makes simple comparison decisions that determine whether
+ * a log message passes the configured filters.
  *
  * @since 1.0.0
  */
 export class LogFilter {
-  private isTestEnvironment: boolean;
-
-  constructor() {
-    this.isTestEnvironment = this.checkTestEnvironment();
-  }
-
   /**
-   * Determines if a log message should be output based on level and environment.
+   * Determines if a log message should be output based on level.
    *
    * @param level - The log level of the message being evaluated
    * @param currentLevel - The minimum log level threshold from configuration
-   * @returns true if the message should be logged, false otherwise
+   * @returns true if the message level meets or exceeds the threshold
    */
   shouldLog(level: LogLevel, currentLevel: LogLevel): boolean {
-    // Always false if not test code
-    if (!this.isTestEnvironment) {
-      return false;
-    }
-
-    // Output only logs at or above current log level
     return level >= currentLevel;
   }
 
@@ -52,44 +35,13 @@ export class LogFilter {
    * Determines if a log key should be output based on the allowed keys filter.
    *
    * @param key - The logger key to check
-   * @param allowedKeys - Array of keys that are allowed to output logs (from LOG_KEY env var)
+   * @param allowedKeys - Array of keys that are allowed to output logs
    * @returns true if the key should be output, false if filtered out
    */
   shouldOutputKey(key: string, allowedKeys: string[]): boolean {
-    // Output all if KEY is not specified
     if (allowedKeys.length === 0) {
       return true;
     }
-
-    // Check if included in specified KEY
     return allowedKeys.includes(key);
-  }
-
-  /**
-   * Checks if the current execution context is within a test environment.
-   *
-   * Uses stack trace analysis and environment variables to determine if
-   * the logger is being called from test code. This is the core security
-   * mechanism that prevents logging in production environments.
-   *
-   * @returns true if running in a test environment, false otherwise
-   * @private
-   */
-  private checkTestEnvironment(): boolean {
-    // Check if in Deno.test context
-    // In Deno test context, stack trace contains specific patterns
-    const stack = new Error().stack;
-    if (!stack) return false;
-
-    // Check if Deno test runner is included
-    const isDenoTest = DENO_TEST_PATTERNS.some((p) => stack.includes(p));
-
-    // Check test file patterns
-    const hasTestPattern = TEST_FILE_PATTERNS.some((p) => stack.includes(p));
-
-    // Force test mode via environment variable (for debugging)
-    const forceTestMode = Deno.env.get(FORCE_TEST_MODE_ENV) === "true";
-
-    return isDenoTest || hasTestPattern || forceTestMode;
   }
 }

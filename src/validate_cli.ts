@@ -12,7 +12,7 @@
  */
 
 import { walk } from "@std/fs/walk";
-import { TEST_FILE_PATTERNS } from "./constants.ts";
+import { TEST_FILE_PATTERNS } from "./test_detector.ts";
 
 /** A single violation: a non-test file importing @tettuan/breakdownlogger. */
 export interface Violation {

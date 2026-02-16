@@ -22,6 +22,8 @@ import { type LogEntry, LogLevel } from "./types.ts";
 import { EnvironmentConfig } from "./environment_config.ts";
 import { LogFormatter } from "./log_formatter.ts";
 import { LogFilter } from "./log_filter.ts";
+import { TestEnvironmentDetector } from "./test_detector.ts";
+import { LogOutput } from "./log_output.ts";
 
 /**
  * A debug logging utility designed exclusively for test environments.
@@ -55,6 +57,12 @@ export class BreakdownLogger {
   /** Log filter for determining whether messages should be output based on level and environment. */
   private readonly filter: LogFilter;
 
+  /** Test environment detector for gating log output to test contexts only. */
+  private readonly detector: TestEnvironmentDetector;
+
+  /** Log output router for directing formatted messages to the appropriate stream. */
+  private readonly output: LogOutput;
+
   /**
    * Creates a new BreakdownLogger instance.
    *
@@ -64,8 +72,10 @@ export class BreakdownLogger {
   constructor(key: string = "default") {
     this.key = key;
     this.environmentConfig = new EnvironmentConfig();
-    this.formatter = new LogFormatter();
+    this.detector = new TestEnvironmentDetector();
     this.filter = new LogFilter();
+    this.formatter = new LogFormatter();
+    this.output = new LogOutput();
   }
 
   /**
@@ -77,17 +87,18 @@ export class BreakdownLogger {
    * @private
    */
   private log(level: LogLevel, message: string, data?: unknown): void {
+    // Stage 1: Environment gate
+    if (!this.detector.isTestEnvironment()) return;
+
+    // Stage 2: Level filter
     const currentLevel = this.environmentConfig.getLogLevel();
+    if (!this.filter.shouldLog(level, currentLevel)) return;
 
-    if (!this.filter.shouldLog(level, currentLevel)) {
-      return;
-    }
-
+    // Stage 3: Key filter
     const allowedKeys = this.environmentConfig.getLogKeys();
-    if (!this.filter.shouldOutputKey(this.key, allowedKeys)) {
-      return;
-    }
+    if (!this.filter.shouldOutputKey(this.key, allowedKeys)) return;
 
+    // Stage 4: Build entry
     const entry: LogEntry = {
       timestamp: new Date(),
       level,
@@ -96,15 +107,13 @@ export class BreakdownLogger {
       data,
     };
 
+    // Stage 5: Format
     const logLength = this.environmentConfig.getLogLength();
     const maxLength = this.formatter.getMaxLength(logLength);
-    const formattedMessage = this.formatter.formatLogEntry(entry, maxLength);
+    const formatted = this.formatter.formatLogEntry(entry, maxLength);
 
-    if (level === LogLevel.ERROR) {
-      console.error(formattedMessage);
-    } else {
-      console.log(formattedMessage);
-    }
+    // Stage 6: Output
+    this.output.write(formatted, level);
   }
 
   /**
